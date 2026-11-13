@@ -1,0 +1,3590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Nandhi Inn — Pure Veg Restaurant • AC Lodge • Tandoor & South Indian | Smart QR Menu</title>
+  <link rel="icon" href="/hotel-logo.png" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Socket.io Client -->
+  <script src="/socket.io/socket.io.js"></script>
+  
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              gold: '#F59E0B',
+              amber: '#D97706',
+              deepGold: '#B45309',
+              green: '#10B981',
+              darkGreen: '#047857',
+              bgDark: '#0E1116',
+              cardDark: '#161B22',
+              surface: '#21262D',
+              border: '#30363D'
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #0E1116; }
+    ::-webkit-scrollbar-thumb { background: #30363D; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+
+    .glass-card {
+      background: rgba(22, 27, 34, 0.85);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(245, 158, 11, 0.16);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.65);
+    }
+    .glass-card:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-2px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gold-gradient-bg {
+      background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    }
+
+    .veg-dot-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 14px;
+      height: 14px;
+      border: 1.5px solid #10B981;
+      border-radius: 3px;
+      background: rgba(14, 17, 22, 0.85);
+      backdrop-filter: blur(4px);
+    }
+    .veg-dot-badge::after {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10B981;
+    }
+
+    .call-waiter-pulse {
+      box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7);
+      animation: pulse-ring 2s infinite cubic-bezier(0.66, 0, 0, 1);
+    }
+    @keyframes pulse-ring {
+      to { box-shadow: 0 0 0 16px rgba(245, 158, 11, 0); }
+    }
+
+    .memory-card { perspective: 1000px; }
+    .memory-inner { transition: transform 0.4s; transform-style: preserve-3d; }
+    .memory-inner.flipped { transform: rotateY(180deg); }
+    .memory-front, .memory-back { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+    .memory-back { transform: rotateY(180deg); }
+  </style>
+</head>
+
+<body class="bg-[#0A0D12] text-slate-100 font-sans min-h-screen flex justify-center selection:bg-amber-500 selection:text-black">
+
+  <main class="w-full max-w-md min-h-screen bg-[#0E1116] flex flex-col relative pb-32 shadow-2xl border-x border-[#21262D]">
+    
+    <!-- TOP STICKY STATUS & TABLE BAR -->
+    <header class="sticky top-0 z-30 bg-[#0E1116]/95 backdrop-blur-md px-4 py-3 border-b border-[#21262D] flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="inline-flex items-center justify-center w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 font-bold text-xs border border-amber-500/30">
+          <i class="fa-solid fa-utensils text-xs"></i>
+        </span>
+        <div>
+          <div class="text-[10px] uppercase tracking-wider text-slate-400 font-semibold leading-tight">Dine-In Station</div>
+          <div class="text-xs font-extrabold text-amber-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="currentTableDisplay">Table #01</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="triggerCallWaiter()" class="flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-lg bg-amber-500/20 text-amber-300 hover:text-amber-200 hover:bg-amber-500/30 border border-amber-500/40 transition active:scale-95">
+          <i class="fa-solid fa-bell-concierge text-amber-400"></i>
+          <span>Call Waiter</span>
+        </button>
+
+        <button onclick="openTabModal()" class="flex items-center gap-1 text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700 hover:bg-slate-700 transition active:scale-95">
+          <i class="fa-solid fa-receipt text-amber-400"></i>
+          <span id="headerTotalBadge">₹0.00</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- PROMINENT FLOATING CALL WAITER BUTTON -->
+    <div class="fixed bottom-20 right-4 z-40 max-w-md">
+      <button onclick="triggerCallWaiter()" class="call-waiter-pulse flex items-center gap-2.5 bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 text-black px-4 py-3 rounded-full font-extrabold text-xs shadow-2xl border-2 border-yellow-300 active:scale-95 transition">
+        <span class="w-2.5 h-2.5 rounded-full bg-black animate-ping"></span>
+        <i class="fa-solid fa-bell-concierge text-sm"></i>
+        <span>Need Help? Call Waiter</span>
+      </button>
+    </div>
+
+    <!-- MAIN HERO BRANDING CARD -->
+    <section class="p-4">
+      <div class="relative overflow-hidden rounded-2xl p-5 border border-amber-500/25 bg-gradient-to-br from-[#1A1F28] via-[#161B22] to-[#0d151c] shadow-lg">
+        <div class="absolute -right-8 -top-8 w-36 h-36 bg-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
+        <div class="absolute -left-8 -bottom-8 w-36 h-36 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <div class="relative mb-2">
+            <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-amber-600 via-yellow-500 to-amber-300 p-[1.5px] shadow-lg shadow-amber-500/20 flex items-center justify-center overflow-hidden">
+              <img src="/hotel-logo.png" alt="Hotel Nandhi Inn Logo" class="w-full h-full rounded-2xl object-cover bg-[#12161E]" />
+            </div>
+            <span class="absolute -bottom-1 -right-3 bg-amber-500 text-black text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-amber-300 flex items-center gap-0.5 shadow">
+              🍹 CAFE & LOUNGE
+            </span>
+          </div>
+
+          <h1 class="text-2xl font-serif font-bold text-white tracking-wide">HOTEL NANDHI INN</h1>
+          <p class="text-[11px] uppercase tracking-widest text-amber-400/90 font-medium mt-0.5">
+            Pure Veg Restaurant • Deluxe AC Lodge • Room Service • Chamarajanagar
+          </p>
+          <p class="text-xs italic text-slate-300 mt-1 font-serif">"Fresh Juice, Food & Drink — Crafted for Good Times"</p>
+
+          <div class="grid grid-cols-3 gap-2 w-full mt-4 pt-3 border-t border-slate-700/60">
+            <a href="https://www.justdial.com/Chamarajanagar/hotel-nandhi-inn-Opposite-To-Honda-Showroom-Double-Road-Chamarajanagar/9999P8226-8226-230704162145-S5X3_BZDET" target="_blank" rel="noopener noreferrer" 
+               class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/80 hover:bg-pink-900/30 border border-slate-700/80 hover:border-pink-500/40 text-slate-300 transition active:scale-95 group">
+              <i class="fa-brands fa-instagram text-base text-pink-400 group-hover:scale-110 transition"></i>
+              <span class="text-[10px] font-semibold mt-1">Instagram</span>
+            </a>
+
+            <a href="https://maps.app.goo.gl/nLwSdu5rog3DVc7QA?g_st=ac" target="_blank" rel="noopener noreferrer" 
+               class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/80 hover:bg-amber-900/30 border border-slate-700/80 hover:border-amber-500/40 text-slate-300 transition active:scale-95 group">
+              <div class="flex items-center text-amber-400 text-xs">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-location-dot ml-1 text-red-400"></i>
+              </div>
+              <span class="text-[10px] font-semibold mt-1">Review Us</span>
+            </a>
+
+            <button onclick="openWifiModal()"
+               class="flex flex-col items-center justify-center p-2 rounded-xl bg-slate-800/80 hover:bg-emerald-900/30 border border-slate-700/80 hover:border-emerald-500/40 text-slate-300 transition active:scale-95 group">
+              <i class="fa-solid fa-wifi text-base text-emerald-400 group-hover:scale-110 transition"></i>
+              <span class="text-[10px] font-semibold mt-1">Free Wi-Fi</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WAIT TIME BUSTER -->
+    <section class="px-4 mb-2">
+      <div onclick="switchView('games')" class="cursor-pointer relative overflow-hidden rounded-xl p-3 bg-gradient-to-r from-amber-950/60 via-slate-800 to-emerald-950/50 border border-amber-500/40 flex items-center justify-between hover:border-amber-400 transition shadow-md active:scale-[0.98]">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl shadow-inner border border-amber-500/30">
+            <i class="fa-solid fa-gamepad"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold text-white">Food Boredom Buster</span>
+              <span class="text-[9px] uppercase px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-extrabold">Instant Play</span>
+            </div>
+            <p class="text-[11px] text-slate-300">Pass wait time: Cafe Match & Lucky Spin Wheel!</p>
+          </div>
+        </div>
+        <div class="text-amber-400 text-sm">
+          <i class="fa-solid fa-chevron-right"></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTENT VIEWS: MENU -->
+    <div id="viewContainer" class="flex-1 flex flex-col">
+      <section id="menuView" class="flex-1 flex flex-col">
+        
+        <!-- CATEGORY TABS (ALL 7 CATEGORIES INCLUDED) -->
+        <div class="sticky top-[57px] z-20 bg-[#0E1116]/95 backdrop-blur-md px-4 py-2 border-y border-[#21262D]">
+                    <div class="flex items-center gap-2 overflow-x-auto no-scrollbar scroll-smooth">
+            <button onclick="filterCategory('all')" id="tab-all" class="category-btn active px-3.5 py-2 rounded-xl text-xs font-bold whitespace-nowrap bg-amber-500 text-black shadow-md shadow-amber-500/20 transition">
+              <i class="fa-solid fa-layer-group mr-1.5"></i> All Items (160)
+            </button>
+            <button onclick="filterCategory('fresh_juice')" id="tab-fresh_juice" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🧃 Fresh Juice
+            </button>
+            <button onclick="filterCategory('milk_shake')" id="tab-milk_shake" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🥤 Milk Shake
+            </button>
+            <button onclick="filterCategory('ice_cream_shake')" id="tab-ice_cream_shake" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍨 Ice Cream Milk Shake
+            </button>
+            <button onclick="filterCategory('special_shakes')" id="tab-special_shakes" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🌟 Special Shakes
+            </button>
+            <button onclick="filterCategory('dry_fruits_shakes')" id="tab-dry_fruits_shakes" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🥜 Dry Fruits Shakes
+            </button>
+            <button onclick="filterCategory('beverages')" id="tab-beverages" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              ☕ Beverages
+            </button>
+            <button onclick="filterCategory('smoothies')" id="tab-smoothies" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍓 Smoothies
+            </button>
+            <button onclick="filterCategory('falooda')" id="tab-falooda" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍧 Falooda
+            </button>
+            <button onclick="filterCategory('sundaes')" id="tab-sundaes" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍨 Sundaes
+            </button>
+            <button onclick="filterCategory('ice_cream_special')" id="tab-ice_cream_special" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍦 Ice-cream Special
+            </button>
+            <button onclick="filterCategory('malba')" id="tab-malba" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍧 Malba
+            </button>
+            <button onclick="filterCategory('lassi')" id="tab-lassi" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🥛 Lassi
+            </button>
+            <button onclick="filterCategory('mocktails')" id="tab-mocktails" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍹 Mocktails
+            </button>
+            <button onclick="filterCategory('lime_zone')" id="tab-lime_zone" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍋 Lime Zone
+            </button>
+            <button onclick="filterCategory('sodas')" id="tab-sodas" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🫧 Soda's
+            </button>
+            <button onclick="filterCategory('veg_pizza')" id="tab-veg_pizza" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍕 Pizza (Veg)
+            </button>
+            <button onclick="filterCategory('non_veg_pizza')" id="tab-non_veg_pizza" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍕 Non Veg Pizza
+            </button>
+            <button onclick="filterCategory('veg_burger')" id="tab-veg_burger" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍔 Veg Burger
+            </button>
+            <button onclick="filterCategory('non_veg_burger')" id="tab-non_veg_burger" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍔 Non Veg Burger
+            </button>
+            <button onclick="filterCategory('veg_sandwich')" id="tab-veg_sandwich" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🥪 Veg Sandwich
+            </button>
+            <button onclick="filterCategory('non_veg_sandwich')" id="tab-non_veg_sandwich" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🥪 Non Veg Sandwich
+            </button>
+            <button onclick="filterCategory('veg_rolls')" id="tab-veg_rolls" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🌯 Veg Rolls
+            </button>
+            <button onclick="filterCategory('non_veg_rolls')" id="tab-non_veg_rolls" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🌯 Non Veg Rolls
+            </button>
+            <button onclick="filterCategory('snacks')" id="tab-snacks" class="category-btn px-3.5 py-2 rounded-xl text-xs font-semibold whitespace-nowrap bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition">
+              🍟 Hotel Nandhi Inn Spl. Snacks
+            </button>
+          </div>
+        </div>
+
+        <div class="px-4 pt-3 pb-1">
+          <div class="relative">
+            <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-slate-500 text-xs"></i>
+            <input type="text" id="menuSearch" oninput="handleMenuSearch()" placeholder="Search Falooda, Pizza, Zinger Burger, Mojito, Shakes..." 
+                   class="w-full bg-[#161B22] border border-slate-700 rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+            <button onclick="clearSearch()" id="clearSearchBtn" class="hidden absolute right-3 top-2.5 text-slate-400 hover:text-white text-xs">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
+
+        <div id="itemsContainer" class="p-4 space-y-3.5"></div>
+      </section>
+
+      <section id="gamesView" class="hidden p-4 space-y-5">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <div>
+            <h2 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-dice text-amber-400"></i> Waiting Zone Arcade
+            </h2>
+            <p class="text-[11px] text-slate-400">Play while kitchen chefs prepare your food!</p>
+          </div>
+          <button onclick="switchView('menu')" class="text-xs px-3 py-1.5 rounded-lg bg-slate-800 text-amber-400 font-semibold border border-slate-700">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back to Menu
+          </button>
+        </div>
+
+        <div class="rounded-2xl p-4 bg-[#161B22] border border-amber-500/20 shadow-md">
+          <div class="flex items-center justify-between mb-3">
+            <div>
+              <div class="text-xs font-bold text-amber-400 uppercase tracking-wide">Game 1: Quick Flip</div>
+              <h3 class="text-sm font-bold text-white">Hotel Nandhi Inn Cafe Memory Match</h3>
+            </div>
+            <div class="text-right">
+              <span id="memoryScore" class="text-xs font-bold text-emerald-400">Pairs: 0/6</span>
+              <button onclick="initMemoryGame()" class="block text-[10px] text-slate-400 hover:text-amber-400 underline">Restart</button>
+            </div>
+          </div>
+          <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
+        </div>
+
+        <div class="rounded-2xl p-4 bg-[#161B22] border border-emerald-500/20 shadow-md text-center">
+          <div class="text-xs font-bold text-emerald-400 uppercase tracking-wide mb-1">Game 2: Fun Fortune</div>
+          <h3 class="text-sm font-bold text-white mb-2">Chef's Lucky Surprise Wheel</h3>
+          <p class="text-[11px] text-slate-400 mb-3">Spin for a chef's special surprise or discount!</p>
+          
+          <div class="relative w-48 h-48 mx-auto my-2 flex items-center justify-center">
+            <div class="absolute -top-2 z-20 text-amber-400 text-xl filter drop-shadow">
+              <i class="fa-solid fa-caret-down"></i>
+            </div>
+            <canvas id="wheelCanvas" width="190" height="190" class="rounded-full shadow-lg border-2 border-amber-500/40"></canvas>
+          </div>
+
+          <button onclick="spinWheel()" id="spinBtn" class="mt-3 px-6 py-2 rounded-xl gold-gradient-bg text-black font-bold text-xs shadow-md shadow-amber-500/20 active:scale-95 transition">
+            <i class="fa-solid fa-arrows-rotate mr-1.5"></i> Spin Wheel Now
+          </button>
+          <div id="wheelResult" class="mt-2 text-xs font-bold text-amber-300 min-h-[1.5rem]"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- FLOATING CART BAR -->
+    <div id="floatingCart" class="fixed bottom-16 left-0 right-0 max-w-md mx-auto px-4 z-40 transition-all duration-300 transform translate-y-32 opacity-0 pointer-events-none">
+      <div onclick="openTabModal()" class="cursor-pointer glass-card !bg-amber-600/95 text-black px-4 py-3 rounded-2xl flex items-center justify-between shadow-2xl border border-amber-300/40 active:scale-98">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-xl bg-black/20 text-white flex items-center justify-center font-bold text-sm">
+            <span id="floatingCartCount">0</span>
+          </div>
+          <div>
+            <div class="text-xs font-extrabold text-white leading-tight">View Your Order Tab</div>
+            <div class="text-[11px] text-amber-100 font-semibold" id="floatingCartSummary">0 items selected</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-white font-extrabold text-sm">
+          <span id="floatingCartTotal">₹0</span>
+          <i class="fa-solid fa-chevron-right text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM APP NAVIGATION DOCK -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#0E1116]/95 backdrop-blur-lg border-t border-[#21262D] z-30 px-6 py-2.5 flex items-center justify-between">
+      <button onclick="switchView('menu')" id="navMenuBtn" class="flex flex-col items-center text-amber-400 transition">
+        <i class="fa-solid fa-book-open text-base"></i>
+        <span class="text-[10px] font-bold mt-0.5">Dine Menu</span>
+      </button>
+
+      <button onclick="switchView('games')" id="navGamesBtn" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition">
+        <i class="fa-solid fa-gamepad text-base"></i>
+        <span class="text-[10px] font-medium mt-0.5">Play Games</span>
+      </button>
+
+      <button onclick="openTabModal()" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition relative">
+        <i class="fa-solid fa-receipt text-base"></i>
+        <span class="text-[10px] font-medium mt-0.5">My Tab</span>
+        <span id="navCartDot" class="hidden absolute top-0 right-1 w-2 h-2 rounded-full bg-amber-400"></span>
+      </button>
+
+      <a href="https://maps.app.goo.gl/nLwSdu5rog3DVc7QA?g_st=ac" target="_blank" class="flex flex-col items-center text-slate-400 hover:text-amber-400 transition">
+        <i class="fa-solid fa-star text-base"></i>
+        <span class="text-[10px] font-medium mt-0.5">Feedback</span>
+      </a>
+    </nav>
+
+    <!-- MODAL: ORDER TAB & CHECKOUT -->
+    <div id="tabModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-end justify-center">
+      <div class="w-full max-w-md bg-[#161B22] border-t border-amber-500/30 rounded-t-3xl p-5 max-h-[85vh] flex flex-col shadow-2xl animate-in slide-in-from-bottom duration-200">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h3 class="text-sm font-bold text-white"><span id="tabModalTableLabel">Table 1</span> Live Order Tab</h3>
+          </div>
+          <button onclick="closeTabModal()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-sm">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+
+        <div id="cartItemList" class="flex-1 overflow-y-auto py-3 space-y-3"></div>
+
+        <div class="pt-3 border-t border-slate-800 space-y-1.5 text-xs text-slate-300">
+          <div class="flex justify-between">
+            <span>Subtotal</span>
+            <span id="cartSubtotal">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-slate-400">
+            <span>GST (5% Cafe Dining)</span>
+            <span id="cartGst">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-base font-extrabold text-amber-400 pt-1 border-t border-slate-800/60">
+            <span>Payable Amount</span>
+            <span id="cartFinalTotal">₹0.00</span>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-2">
+          <button onclick="requestDineInOrder()" class="py-2.5 px-3 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs shadow-md transition active:scale-95 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-paper-plane"></i> Send to Kitchen
+          </button>
+          <button onclick="requestFinalBill()" class="py-2.5 px-3 rounded-xl gold-gradient-bg text-black font-extrabold text-xs shadow-md shadow-amber-500/20 transition active:scale-95 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-qrcode"></i> Ask for Bill / Pay
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: DUAL OPTION BILL PAYMENT -->
+    <div id="customerPayModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center px-4">
+      <div class="w-full max-w-sm bg-[#161B22] border border-amber-500/40 rounded-3xl p-5 shadow-2xl text-center relative animate-in fade-in zoom-in duration-200">
+        <button onclick="closeCustomerPayModal()" class="absolute top-4 right-4 w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-sm">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+
+        <div class="inline-block px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-[10px] font-extrabold uppercase tracking-widest mb-1.5">
+          Hotel Nandhi Inn Smart Cafe
+        </div>
+
+        <h3 class="text-base font-bold text-white">Hotel Nandhi Inn Bill Payment</h3>
+        <p class="text-[11px] text-slate-400 mb-3">Tap to launch your UPI app or scan the QR code</p>
+
+        <!-- PRIMARY DIRECT UPI ACTION BUTTON -->
+        <a id="directUpiDeepLinkBtn" href="#" class="mb-3 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-black font-extrabold text-xs shadow-lg shadow-emerald-500/25 active:scale-95 transition flex items-center justify-center gap-2">
+          <i class="fa-solid fa-mobile-screen-button text-sm"></i>
+          <span>Open GPay / PhonePe / Paytm</span>
+        </a>
+
+        <!-- QUICK LAUNCH APP PILLS -->
+        <div class="grid grid-cols-3 gap-2 mb-3">
+          <button onclick="launchUpiIntent('gpay')" class="py-2 px-1 rounded-lg bg-slate-800/90 border border-slate-700 hover:border-amber-400 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 active:scale-95 transition">
+            <i class="fa-brands fa-google-pay text-base text-amber-400"></i> GPay
+          </button>
+          <button onclick="launchUpiIntent('phonepe')" class="py-2 px-1 rounded-lg bg-slate-800/90 border border-slate-700 hover:border-amber-400 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 active:scale-95 transition">
+            <i class="fa-solid fa-bolt text-purple-400"></i> PhonePe
+          </button>
+          <button onclick="launchUpiIntent('paytm')" class="py-2 px-1 rounded-lg bg-slate-800/90 border border-slate-700 hover:border-amber-400 text-slate-200 text-[11px] font-bold flex items-center justify-center gap-1 active:scale-95 transition">
+            <i class="fa-solid fa-wallet text-sky-400"></i> Paytm
+          </button>
+        </div>
+
+        <!-- QR Code Container -->
+        <div class="bg-white p-2 rounded-2xl inline-block shadow-lg border-2 border-amber-500/50 mb-2">
+          <img id="customerUpiQrImage" src="" alt="Scan UPI QR" class="w-36 h-36 block mx-auto" />
+        </div>
+
+        <div class="text-2xl font-extrabold text-amber-400 leading-tight" id="customerPayAmount">₹0.00</div>
+        <div class="text-[10px] text-slate-400 mb-2.5">(Includes 5% Cafe GST)</div>
+
+        <div class="bg-slate-900/90 rounded-xl p-2.5 border border-slate-800 text-left text-xs space-y-1 mb-3">
+          <div class="flex justify-between">
+            <span class="text-slate-400">Paying To:</span>
+            <span class="font-bold text-white">Hotel Nandhi Inn</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-slate-400">UPI ID:</span>
+            <span class="font-mono font-bold text-amber-400">hotel-nandhi-inn@upi</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-slate-400">Table Station:</span>
+            <span class="font-bold text-emerald-400" id="customerPayTableStation">Table #01</span>
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <!-- "I Completed Payment in App" BUTTON (Notifies cashier, does not force local clear) -->
+          <button onclick="notifyPaymentCompletedInApp()" class="w-full py-2.5 rounded-xl gold-gradient-bg text-black font-extrabold text-xs shadow-md shadow-amber-500/25 active:scale-95 transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-circle-check"></i> I Completed Payment in App
+          </button>
+
+          <button onclick="requestCashPayment()" class="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-300 font-bold text-xs border border-amber-500/30 active:scale-95 transition flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-money-bill-wave text-emerald-400"></i> Pay with Cash (Call Floor Staff)
+          </button>
+        </div>
+
+        <p class="text-[10px] text-slate-500 mt-2">Cashier will verify and confirm settlement on POS.</p>
+      </div>
+    </div>
+
+    <!-- MODAL: FREE WI-FI CREDENTIALS -->
+    <div id="wifiModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-center px-4">
+      <div class="w-full max-w-sm bg-[#161B22] border border-emerald-500/30 rounded-2xl p-5 shadow-2xl text-center">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto text-xl mb-3">
+          <i class="fa-solid fa-wifi"></i>
+        </div>
+        <h3 class="text-base font-bold text-white">Guest Wi-Fi Connection</h3>
+        <p class="text-xs text-slate-400 mt-1 mb-4">Enjoy high-speed internet while dining at Hotel Nandhi Inn.</p>
+
+        <div class="bg-slate-900/90 rounded-xl p-3 border border-slate-800 text-left space-y-2 mb-4">
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400">Network Name:</span>
+            <span class="font-bold text-white">Hotel_Nandhi_Inn_Guest</span>
+          </div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-slate-400">Password:</span>
+            <span class="font-bold text-amber-400 font-mono">Nandhi@2026</span>
+          </div>
+        </div>
+
+        <button onclick="copyWifiPassword()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition active:scale-95">
+          <i class="fa-regular fa-copy mr-1"></i> Copy Wi-Fi Password
+        </button>
+        <button onclick="closeWifiModal()" class="w-full mt-2 py-2 text-xs text-slate-400 hover:text-white">Close</button>
+      </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastNotification" class="fixed top-5 left-1/2 transform -translate-x-1/2 z-50 transition-all duration-300 opacity-0 pointer-events-none translate-y-[-20px]">
+      <div class="bg-slate-900 border border-amber-500/40 text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400"></i>
+        <span id="toastMsg">Action completed</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const parsedTableParam = urlParams.get('table');
+    const CURRENT_TABLE_ID = parsedTableParam ? parseInt(parsedTableParam.replace(/\D/g, '')) || 1 : 1;
+    const CURRENT_TABLE_NAME = `Table #${CURRENT_TABLE_ID < 10 ? '0' + CURRENT_TABLE_ID : CURRENT_TABLE_ID}`;
+
+    const STORAGE_KEY = `hotel-nandhi-inn_table_${CURRENT_TABLE_ID}_orders`;
+
+    let currentCategory = 'all';
+    let searchQuery = '';
+    let cart = {}; 
+    let confirmedOrders = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); 
+    let activeUpiUrl = '';
+
+    // CORE HELPER: Purges local storage and resets all UI amounts to 0
+    function clearCustomerSession(message) {
+      localStorage.removeItem(STORAGE_KEY);
+      confirmedOrders = [];
+      cart = {};
+      updateCartUI();
+      renderMenuItems();
+      renderCartModalList();
+      closeTabModal();
+      closeCustomerPayModal();
+      if (message) {
+        showToast(message, 'fa-solid fa-circle-check');
+      }
+    }
+
+    let socket;
+    try {
+      socket = io();
+      socket.on('connect', () => {
+        console.log(`Connected for ${CURRENT_TABLE_NAME}. Socket ID:`, socket.id);
+        socket.emit('get-table-status', { tableId: CURRENT_TABLE_ID });
+      });
+
+      // AUTO-PURGE LISTENER: Sync with server. If table is available/idle, clear customer session
+      socket.on(`table-status-${CURRENT_TABLE_ID}`, (data) => {
+        if (data && (data.status === 'idle' || data.status === 'available')) {
+          clearCustomerSession('Table is now available. Session cleared.');
+        }
+      });
+
+      // REAL-TIME LISTENER: Triggered ONLY when cashier confirms settlement on Floor POS
+      socket.on('table-paid', (data) => {
+        if (!data || parseInt(data.tableId) === CURRENT_TABLE_ID) {
+          clearCustomerSession('Payment confirmed by cashier! Tab cleared.');
+        }
+      });
+
+      socket.on('confirm-settlement', (data) => {
+        if (data && parseInt(data.tableId) === CURRENT_TABLE_ID) {
+          clearCustomerSession('Bill paid and verified! Thank you for dining with us.');
+        }
+      });
+
+      // REAL-TIME LISTENER: Table reset by Floor staff
+      socket.on(`session-reset-${CURRENT_TABLE_ID}`, () => {
+        clearCustomerSession('Table session has been reset.');
+      });
+
+      socket.on('table-cleared', (data) => {
+        if (data && parseInt(data.tableId) === CURRENT_TABLE_ID) {
+          clearCustomerSession('Table cleared by staff.');
+        }
+      });
+    } catch(e) {
+      console.warn('Socket server not detected. Running standalone mode.');
+    }
+
+    
+    let soldOutSet = new Set();
+    if (socket) {
+      socket.on('stock-sync', (data) => {
+        if (data && Array.isArray(data.soldOutIds)) {
+          soldOutSet = new Set(data.soldOutIds.map(x => String(x)));
+        }
+        if (data && Array.isArray(data.customDishes)) {
+          data.customDishes.forEach(cd => {
+            if (!MENU_ITEMS.some(m => String(m.id) === String(cd.id))) {
+              MENU_ITEMS.unshift({
+                id: String(cd.id),
+                name: cd.name,
+                category: cd.category || 'fresh_juice',
+                price: Number(cd.price) || 70,
+                desc: cd.description || 'Hotel Nandhi Inn Special',
+                badge: 'New',
+                rating: '5.0',
+                image: cd.image ? cd.image.replace(/^\//, '') : '',
+                icon: '🍲'
+              });
+            }
+          });
+        }
+        // Remove any sold-out item from customer cart
+        for (let cid in cart) {
+          const mItem = MENU_ITEMS.find(m => m.id === cid);
+          if (soldOutSet.has(String(cid)) || (mItem && soldOutSet.has(mItem.name.toLowerCase().trim()))) {
+            delete cart[cid];
+          }
+        }
+        updateCartUI();
+        renderMenuItems();
+      });
+    }
+
+    const MENU_ITEMS = [
+  {
+    "id": "ndh_1",
+    "name": "Bisibele Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Bisibele Bath \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Bisibele Bath.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_2",
+    "name": "Button Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Button Idli \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Button Idli.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_3",
+    "name": "Chow Chow Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Chow Chow Bath \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Chow Chow Bath.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_4",
+    "name": "Gee Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Gee Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Gee Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_5",
+    "name": "Gee Karam Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 90,
+    "desc": "Gee Karam Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Gee Karam Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_6",
+    "name": "Gee Pudi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 90,
+    "desc": "Gee Pudi Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Gee Pudi Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_7",
+    "name": "Gee Pudi Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 100,
+    "desc": "Gee Pudi Masala Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Gee Pudi Masala Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_8",
+    "name": "Idli Vada Sambar",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Idli Vada Sambar \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Idli Vada Sambar.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_9",
+    "name": "Karam Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Karam Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Karam Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_10",
+    "name": "Karam Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 85,
+    "desc": "Karam Masala Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Karam Masala Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_11",
+    "name": "Kesari Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Kesari Bath \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Kesari Bath.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_12",
+    "name": "Morning Lemon Rice",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Morning Lemon Rice \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Lemon Rice.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_13",
+    "name": "Mangalore Bonda",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 50,
+    "desc": "Mangalore Bonda \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Mangalore Bonda.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_14",
+    "name": "Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Masala Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Masala Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_15",
+    "name": "Normal Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Normal Idli \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Normal Idli.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_16",
+    "name": "Onion Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Onion Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Onion Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_17",
+    "name": "Paddu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Paddu \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Paddu.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_18",
+    "name": "Pesarattu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Pesarattu \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Pesarattu.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_19",
+    "name": "Plain Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Plain Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Plain Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_20",
+    "name": "Pongal",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Pongal \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Pongal.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_21",
+    "name": "Pudi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Pudi Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Pudi Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_22",
+    "name": "Raagi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 70,
+    "desc": "Raagi Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Raagi Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_23",
+    "name": "Rava Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 85,
+    "desc": "Rava Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Rava Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_24",
+    "name": "Rava Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Rava Idli \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Rava Idli.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_25",
+    "name": "Set Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Set Dose \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Set Dose.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_26",
+    "name": "Shavige Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Shavige Bath \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Shavige Bath.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_27",
+    "name": "Tea Coffee",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 25,
+    "desc": "Tea Coffee \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Tea Coffee.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_28",
+    "name": "Thatte Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 45,
+    "desc": "Thatte Idli \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Thatte Idli.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_29",
+    "name": "Uddina Vada",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 35,
+    "desc": "Uddina Vada \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Uddina Vada.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_30",
+    "name": "Uppittu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Uppittu \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Uppittu.jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_31",
+    "name": "Vada Sambar",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 50,
+    "desc": "Vada Sambar \u2014 Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Vada Sambar..jpg",
+    "icon": "\ud83e\udd5e",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_32",
+    "name": "Aloo Chat",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 75,
+    "desc": "Aloo Chat \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Aloo Chat.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_33",
+    "name": "American Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 120,
+    "desc": "American Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/American Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_34",
+    "name": "Boondi Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 65,
+    "desc": "Boondi Raita \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Boondi Raita.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_35",
+    "name": "Channa Chat",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 80,
+    "desc": "Channa Chat \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Channa Chat.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_36",
+    "name": "Cucumber Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 60,
+    "desc": "Cucumber Raita \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Cucumber Raita.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_37",
+    "name": "Cucumber Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 55,
+    "desc": "Cucumber Salad \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Cucumber Salad.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_38",
+    "name": "Green Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 65,
+    "desc": "Green Salad \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Green Salad.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_39",
+    "name": "Hot & Sour Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Hot & Sour Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Hot & Sour Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_40",
+    "name": "Classic Hot & Sour Veg Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Classic Hot & Sour Veg Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Hot and Sour Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_41",
+    "name": "Lemon Coriander Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 105,
+    "desc": "Lemon Coriander Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Lemon Coriander Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_42",
+    "name": "Manchow Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 115,
+    "desc": "Manchow Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Manchow Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_43",
+    "name": "Masala Papad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 45,
+    "desc": "Masala Papad \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Masala Papad.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_44",
+    "name": "Mix Pakoda",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 85,
+    "desc": "Mix Pakoda \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Mix Pakoda.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_45",
+    "name": "Mix Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 70,
+    "desc": "Mix Raita \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Mix Raita.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_46",
+    "name": "Plain Curd",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 40,
+    "desc": "Plain Curd \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Plain Curd.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_47",
+    "name": "Plain Papad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 25,
+    "desc": "Plain Papad \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Plain Papad.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_48",
+    "name": "Raja Special Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 95,
+    "desc": "Raja Special Salad \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Raja Special Salad.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_49",
+    "name": "Sweet Corn Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 105,
+    "desc": "Sweet Corn Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Sweet Corn Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_50",
+    "name": "Sweet Corn Veg Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Sweet Corn Veg Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Sweet Corn Veg Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_51",
+    "name": "Tomato Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 95,
+    "desc": "Tomato Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Tomato Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_52",
+    "name": "Veg Clear Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 90,
+    "desc": "Veg Clear Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Veg Clear Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_53",
+    "name": "Veg Manchow Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 115,
+    "desc": "Veg Manchow Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Veg Manchow Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_54",
+    "name": "Wonton Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 120,
+    "desc": "Wonton Soup \u2014 Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Wonton Soup.jpg",
+    "icon": "\ud83e\udd63",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_55",
+    "name": "Aloo Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 75,
+    "desc": "Aloo Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Aloo Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_56",
+    "name": "Butter Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Kulcha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Butter Kulcha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_57",
+    "name": "Butter Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Naan \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Butter Naan.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_58",
+    "name": "Butter Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Butter Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_59",
+    "name": "Butter Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 40,
+    "desc": "Butter Roti \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Butter Roti.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_60",
+    "name": "Cheese Garlic Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 95,
+    "desc": "Cheese Garlic Naan \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Cheese Garlic Naan.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_61",
+    "name": "Garlic Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 65,
+    "desc": "Garlic Kulcha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Garlic Kulcha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_62",
+    "name": "Garlic Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 70,
+    "desc": "Garlic Naan \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Garlic Naan.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_63",
+    "name": "Gobi Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 80,
+    "desc": "Gobi Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Gobi Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_64",
+    "name": "Harabhara Kabab",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 180,
+    "desc": "Harabhara Kabab \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Harabhara Kabab.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_65",
+    "name": "Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Kulcha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Kulcha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_66",
+    "name": "Mushroom Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 210,
+    "desc": "Mushroom Tikka \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Mushroom Tikka.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_67",
+    "name": "Paneer Hariyali Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 240,
+    "desc": "Paneer Hariyali Tikka \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Hariyali Tikka.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_68",
+    "name": "Paneer Malai",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 250,
+    "desc": "Paneer Malai \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Malai.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_69",
+    "name": "Paneer Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 100,
+    "desc": "Paneer Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_70",
+    "name": "Paneer Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 230,
+    "desc": "Paneer Tikka \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Tikka.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_71",
+    "name": "Plain Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Kulcha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Plain Kulcha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_72",
+    "name": "Plain Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Naan \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Plain Naan.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_73",
+    "name": "Plain Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Plain Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_74",
+    "name": "Plain Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 30,
+    "desc": "Plain Roti \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Plain Roti.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_75",
+    "name": "Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 30,
+    "desc": "Roti \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Roti.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_76",
+    "name": "Tandoori Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Tandoori Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Tandoori Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_77",
+    "name": "Veg Stuff Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 85,
+    "desc": "Veg Stuff Paratha \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Veg Stuff Paratha.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_78",
+    "name": "Wheat Butter Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Wheat Butter Roti \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Wheat Butter Roti.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_79",
+    "name": "Wheat Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 35,
+    "desc": "Wheat Roti \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Wheat Roti.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_80",
+    "name": "Tandoori Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 75,
+    "desc": "Tandoori Naan \u2014 Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/naan.jpg",
+    "icon": "\ud83e\uded3",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_81",
+    "name": "Aloo Gobi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 160,
+    "desc": "Aloo Gobi \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Aloo Gobi.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_82",
+    "name": "Aloo Jeera",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 150,
+    "desc": "Aloo Jeera \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Aloo Jeera.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_83",
+    "name": "Channa Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Channa Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Channa Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_84",
+    "name": "Dal Fry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 140,
+    "desc": "Dal Fry \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Dal Fry.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_85",
+    "name": "Dal Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 160,
+    "desc": "Dal Kolhapuri \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Dal Kolhapuri.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_86",
+    "name": "Dal Makhani",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Dal Makhani \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Dal Makhani.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_87",
+    "name": "Dal Palak",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 155,
+    "desc": "Dal Palak \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Dal Palak.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_88",
+    "name": "Dal Thadka",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 155,
+    "desc": "Dal Thadka \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Dal Thadka.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_89",
+    "name": "Kaju Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 265,
+    "desc": "Kaju Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Kaju Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_90",
+    "name": "Malai Kofta",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 225,
+    "desc": "Malai Kofta \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Malai Kofta.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_91",
+    "name": "Matar Paneer",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 205,
+    "desc": "Matar Paneer \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Matar Paneer.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_92",
+    "name": "Mix Veg Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 175,
+    "desc": "Mix Veg Curry \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Mix Veg Curry.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_93",
+    "name": "Mushroom Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 215,
+    "desc": "Mushroom Hyderabadi \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Mushroom Hyderabadi.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_94",
+    "name": "Mushroom Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Mushroom Kolhapuri \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Mushroom Kolhapuri.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_95",
+    "name": "Mushroom Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 205,
+    "desc": "Mushroom Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Mushroom Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_96",
+    "name": "Navratan Kurma",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Navratan Kurma \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Navratan Kurma.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_97",
+    "name": "Nizami Haandi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 220,
+    "desc": "Nizami Haandi \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Nizami Haandi.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_98",
+    "name": "Palak Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Palak Curry \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Palak Curry.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_99",
+    "name": "Palak Paneer",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Palak Paneer \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Palak Paneer.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_100",
+    "name": "Paneer Bhurji",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 240,
+    "desc": "Paneer Bhurji \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Bhurji.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_101",
+    "name": "Paneer Butter Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 225,
+    "desc": "Paneer Butter Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Butter Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_102",
+    "name": "Paneer Chatpata",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 230,
+    "desc": "Paneer Chatpata \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Chatpata.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_103",
+    "name": "Paneer Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 235,
+    "desc": "Paneer Hyderabadi \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Hyderabadi.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_104",
+    "name": "Paneer Kadai",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 230,
+    "desc": "Paneer Kadai \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Kadai.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_105",
+    "name": "Paneer Lawabar",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 240,
+    "desc": "Paneer Lawabar \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Lawabar.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_106",
+    "name": "Paneer Nandhi Special",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 270,
+    "desc": "Paneer Nandhi Special \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Nandhi Special.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_107",
+    "name": "Paneer Tawa",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 235,
+    "desc": "Paneer Tawa \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Tawa.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_108",
+    "name": "Paneer Tikka Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 250,
+    "desc": "Paneer Tikka Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Tikka Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_109",
+    "name": "Sweet Corn Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Sweet Corn Masala \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Sweet Corn Masala.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_110",
+    "name": "Veg Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Veg Curry \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Veg Curry.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_111",
+    "name": "Veg Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 195,
+    "desc": "Veg Hyderabadi \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Veg Hyderabadi.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_112",
+    "name": "Veg Kadai",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 190,
+    "desc": "Veg Kadai \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Veg Kadai.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_113",
+    "name": "Veg Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Veg Kolhapuri \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Veg Kolhapuri.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_114",
+    "name": "Vegetable Kurma",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 175,
+    "desc": "Vegetable Kurma \u2014 Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Vegetable Kurma.jpg",
+    "icon": "\ud83c\udf5b",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_115",
+    "name": "Curd Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 95,
+    "desc": "Curd Rice \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Curd Rice.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_116",
+    "name": "Dal Kichdi",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 150,
+    "desc": "Dal Kichdi \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Dal Kichdi.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_117",
+    "name": "Ghee Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 145,
+    "desc": "Ghee Rice \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Ghee Rice.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_118",
+    "name": "Green Peas Biryani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 175,
+    "desc": "Green Peas Biryani \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Green Peas biryani.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_119",
+    "name": "Jeera Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 130,
+    "desc": "Jeera Rice \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Jeera Rice.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_120",
+    "name": "Special Ghee Lemon Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 60,
+    "desc": "Special Ghee Lemon Rice \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Lemon Rice.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_121",
+    "name": "Palak Kichdi",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 160,
+    "desc": "Palak Kichdi \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Palak Kichdi.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_122",
+    "name": "Palak Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 145,
+    "desc": "Palak Rice \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Palak Rice.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_123",
+    "name": "Paneer Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 220,
+    "desc": "Paneer Biriyani \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Paneer Biriyani.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_124",
+    "name": "Veg Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 175,
+    "desc": "Veg Biriyani \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Veg Biriyani.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_125",
+    "name": "Veg Hyderabadi Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 195,
+    "desc": "Veg Hyderabadi Biriyani \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Veg Hyderabadi Biriyani.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_126",
+    "name": "Veg Palav",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 150,
+    "desc": "Veg Palav \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Veg Palav.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_127",
+    "name": "Mushroom Biryani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 205,
+    "desc": "Mushroom Biryani \u2014 Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/mushroom biryani.jpg",
+    "icon": "\ud83c\udf5a",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_128",
+    "name": "Hakka Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 155,
+    "desc": "Hakka Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Hakka Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_129",
+    "name": "Mushroom Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 170,
+    "desc": "Mushroom Fried Rice \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Mushroom Fried Rice.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_130",
+    "name": "Mushroom Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 175,
+    "desc": "Mushroom Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Mushroom Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_131",
+    "name": "Paneer Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 185,
+    "desc": "Paneer Fried Rice \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Paneer Fried Rice.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_132",
+    "name": "Paneer Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 185,
+    "desc": "Paneer Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Paneer Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_133",
+    "name": "Schezwan Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 160,
+    "desc": "Schezwan Fried Rice \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Schezwan Fried Rice..jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_134",
+    "name": "Schezwan Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 165,
+    "desc": "Schezwan Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Schezwan Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_135",
+    "name": "Triple Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 210,
+    "desc": "Triple Fried Rice \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Triple Fried Rice.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_136",
+    "name": "Triple Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 210,
+    "desc": "Triple Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Triple Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_137",
+    "name": "Veg Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 140,
+    "desc": "Veg Fried Rice \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Veg Fried Rice.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_138",
+    "name": "Veg Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 140,
+    "desc": "Veg Noodles \u2014 High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Veg Noodles.jpg",
+    "icon": "\ud83c\udf5c",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_139",
+    "name": "All Veggies Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 240,
+    "desc": "All Veggies Pizza \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/All Veggies Pizza.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_140",
+    "name": "Aloo Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 75,
+    "desc": "Aloo Cutlet \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Aloo Cutlet.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_141",
+    "name": "Cheese Burst Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 145,
+    "desc": "Cheese Burst Garlic Bread \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Cheese Burst Garlic Bread.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_142",
+    "name": "Cheese Burst Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 275,
+    "desc": "Cheese Burst Pizza \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Cheese Burst Pizza.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_143",
+    "name": "Cheese Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 110,
+    "desc": "Cheese Cutlet \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Cheese Cutlet.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_144",
+    "name": "Cheese Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 120,
+    "desc": "Cheese Garlic Bread \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Cheese Garlic Bread.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_145",
+    "name": "Chilli Cheese Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 130,
+    "desc": "Chilli Cheese Garlic Bread \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Chilli Cheese Garlic Bread.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_146",
+    "name": "Classic Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 95,
+    "desc": "Classic Garlic Bread \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Classic Garlic Bread.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_147",
+    "name": "Corn Cheese Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 210,
+    "desc": "Corn Cheese Pizza \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Corn Cheese Pizza.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_148",
+    "name": "Hara Bara Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 95,
+    "desc": "Hara Bara Cutlet \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Hara Bara Cutlet.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_149",
+    "name": "Mushroom Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 225,
+    "desc": "Mushroom Pizza \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Mushroom Pizza.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_150",
+    "name": "Pahadi Cheese Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 150,
+    "desc": "Pahadi Cheese Grilled Sandwich \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Pahadi Cheese Grilled Sandwich.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_151",
+    "name": "Paneer Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 115,
+    "desc": "Paneer Cutlet \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Paneer Cutlet.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_152",
+    "name": "Pesto Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 205,
+    "desc": "Pesto Pasta \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Pesto Pasta.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_153",
+    "name": "Pink Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 195,
+    "desc": "Pink Sauce Pasta \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Pink Sauce Pasta.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_154",
+    "name": "Pizza Margherita",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 190,
+    "desc": "Pizza Margherita \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Pizza Margherita.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_155",
+    "name": "Red Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 180,
+    "desc": "Red Sauce Pasta \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Red Sauce Pasta.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_156",
+    "name": "Veg Cheese Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 135,
+    "desc": "Veg Cheese Grilled Sandwich \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Veg Cheese Grilled Sandwich.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_157",
+    "name": "Veg Cheese Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 110,
+    "desc": "Veg Cheese Sandwich \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Veg Cheese Sandwich.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_158",
+    "name": "Veg Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 80,
+    "desc": "Veg Cutlet \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Veg Cutlet.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_159",
+    "name": "Veg Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 115,
+    "desc": "Veg Grilled Sandwich \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Veg Grilled Sandwich.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_160",
+    "name": "White Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 185,
+    "desc": "White Sauce Pasta \u2014 Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/White Sauce Pasta.jpg",
+    "icon": "\ud83c\udf55",
+    "isVeg": true,
+    "prepTime": "15 min"
+  }
+];
+
+    window.onload = function () {
+      document.getElementById('currentTableDisplay').innerText = CURRENT_TABLE_NAME;
+      document.getElementById('tabModalTableLabel').innerText = `Table ${CURRENT_TABLE_ID}`;
+      document.getElementById('customerPayTableStation').innerText = CURRENT_TABLE_NAME;
+
+      renderMenuItems();
+      initMemoryGame();
+      drawWheel();
+      updateCartUI();
+
+      if (socket) {
+        socket.emit('get-table-status', { tableId: CURRENT_TABLE_ID });
+      }
+    };
+
+    function renderMenuItems() {
+      const container = document.getElementById('itemsContainer');
+      container.innerHTML = '';
+
+      const filtered = MENU_ITEMS.filter(item => {
+        const matchesCategory = currentCategory === 'all' || item.category === currentCategory;
+        const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                              item.desc.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesCategory && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="text-center py-12 px-4">
+            <div class="w-14 h-14 mx-auto rounded-full bg-slate-800 flex items-center justify-center text-slate-500 text-xl mb-3">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <h4 class="text-sm font-bold text-white">No dishes found</h4>
+            <p class="text-xs text-slate-400 mt-1">Try another search term or browse other categories.</p>
+          </div>
+        `;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const qty = cart[item.id] || 0;
+        const card = document.createElement('div');
+        card.className = "glass-card rounded-2xl p-3.5 flex gap-3.5 transition-all relative overflow-hidden group";
+        
+        card.innerHTML = `
+          <div class="w-24 h-24 rounded-xl overflow-hidden bg-slate-900 border border-slate-700/60 flex-shrink-0 relative shadow-md">
+            <img src="${encodeURI(item.image)}" 
+                 alt="${item.name}" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            
+            <div class="hidden w-full h-full items-center justify-center text-3xl bg-slate-800">
+              ${item.icon || '🍲'}
+            </div>
+
+            ${item.isVeg === false ? `<span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-rose-950/90 border border-rose-500 text-[9px] font-extrabold text-rose-400">🔴 NON-VEG</span>` : `<span class="absolute top-1.5 left-1.5 px-1.5 py-0.5 rounded bg-emerald-950/90 border border-emerald-500 text-[9px] font-extrabold text-emerald-400">🟢 VEG</span>`}
+          </div>
+
+          <div class="flex-1 flex flex-col justify-between">
+            <div>
+              <div class="flex items-start justify-between gap-1">
+                <h3 class="text-sm font-bold text-white leading-snug group-hover:text-amber-400 transition">${item.name}</h3>
+                <span class="text-[10px] font-bold text-amber-400 flex items-center gap-0.5 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20 whitespace-nowrap">
+                  <i class="fa-solid fa-star text-[9px]"></i> ${item.rating}
+                </span>
+              </div>
+              <p class="text-[11px] text-slate-400 line-clamp-2 mt-1 leading-relaxed">${item.desc}</p>
+            </div>
+
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-slate-800/80">
+              <div class="text-sm font-extrabold text-amber-400">
+                ₹${item.price}
+                <span class="text-[9px] font-normal text-slate-400 block -mt-0.5">Hotel Nandhi Inn Cafe</span>
+              </div>
+
+              <div>
+                ${(soldOutSet.has(String(item.id)) || soldOutSet.has(item.name.toLowerCase().trim())) ? `
+                  <span class="px-3 py-1.5 rounded-xl bg-rose-500/20 text-rose-400 font-extrabold text-[11px] border border-rose-500/40 inline-flex items-center gap-1 cursor-not-allowed">
+                    <i class="fa-solid fa-ban text-[10px]"></i> SOLD OUT
+                  </span>
+                ` : qty === 0 ? `
+                  <button onclick="addToCart('${item.id}')" class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-black font-extrabold text-xs border border-amber-500/30 transition-all flex items-center gap-1 active:scale-90 shadow-sm">
+                    <i class="fa-solid fa-plus text-[10px]"></i> ADD
+                  </button>
+                ` : `
+                  <div class="flex items-center bg-slate-800 border border-amber-500/40 rounded-xl overflow-hidden shadow">
+                    <button onclick="changeQty('${item.id}', -1)" class="w-7 h-7 flex items-center justify-center text-amber-400 hover:bg-slate-700 active:bg-amber-500 active:text-black text-xs font-bold transition">
+                      <i class="fa-solid fa-minus"></i>
+                    </button>
+                    <span class="w-7 text-center font-bold text-xs text-white">${qty}</span>
+                    <button onclick="changeQty('${item.id}', 1)" class="w-7 h-7 flex items-center justify-center text-amber-400 hover:bg-slate-700 active:bg-amber-500 active:text-black text-xs font-bold transition">
+                      <i class="fa-solid fa-plus"></i>
+                    </button>
+                  </div>
+                `}
+              </div>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.category-btn').forEach(btn => {
+        btn.classList.remove('bg-amber-500', 'text-black', 'shadow-md', 'shadow-amber-500/20');
+        btn.classList.add('bg-slate-800/80', 'text-slate-300');
+      });
+      const activeBtn = document.getElementById(`tab-${cat}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800/80', 'text-slate-300');
+        activeBtn.classList.add('bg-amber-500', 'text-black', 'shadow-md', 'shadow-amber-500/20');
+      }
+      renderMenuItems();
+    }
+
+    function handleMenuSearch() {
+      const input = document.getElementById('menuSearch');
+      searchQuery = input.value;
+      document.getElementById('clearSearchBtn').classList.toggle('hidden', searchQuery.length === 0);
+      renderMenuItems();
+    }
+
+    function clearSearch() {
+      document.getElementById('menuSearch').value = '';
+      searchQuery = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderMenuItems();
+    }
+
+    function addToCart(itemId) {
+      cart[itemId] = 1;
+      showToast('Added to your order tab!', 'fa-solid fa-check');
+      updateCartUI();
+      renderMenuItems();
+    }
+
+    function changeQty(itemId, delta) {
+      if (!cart[itemId]) return;
+      cart[itemId] += delta;
+      if (cart[itemId] <= 0) {
+        delete cart[itemId];
+      }
+      updateCartUI();
+      renderMenuItems();
+      renderCartModalList();
+    }
+
+    function updateCartUI() {
+      let currentCartQty = 0;
+      let currentCartSubtotal = 0;
+
+      for (let id in cart) {
+        const item = MENU_ITEMS.find(m => m.id === id);
+        if (item) {
+          currentCartQty += cart[id];
+          currentCartSubtotal += item.price * cart[id];
+        }
+      }
+
+      const confirmedSubtotal = confirmedOrders.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const totalSessionSubtotal = currentCartSubtotal + confirmedSubtotal;
+      const totalSessionGrand = totalSessionSubtotal + (totalSessionSubtotal * 0.05);
+
+      document.getElementById('headerTotalBadge').innerText = `₹${totalSessionGrand.toFixed(2)}`;
+
+      const floatingCart = document.getElementById('floatingCart');
+      const navCartDot = document.getElementById('navCartDot');
+
+      if (currentCartQty > 0) {
+        floatingCart.classList.remove('translate-y-32', 'opacity-0', 'pointer-events-none');
+        document.getElementById('floatingCartCount').innerText = currentCartQty;
+        document.getElementById('floatingCartSummary').innerText = `${currentCartQty} new item${currentCartQty > 1 ? 's' : ''} in cart`;
+        document.getElementById('floatingCartTotal').innerText = `₹${currentCartSubtotal}`;
+        navCartDot.classList.remove('hidden');
+      } else {
+        floatingCart.classList.add('translate-y-32', 'opacity-0', 'pointer-events-none');
+        navCartDot.classList.toggle('hidden', confirmedOrders.length === 0);
+      }
+    }
+
+    function switchView(viewName) {
+      const menuView = document.getElementById('menuView');
+      const gamesView = document.getElementById('gamesView');
+      const navMenuBtn = document.getElementById('navMenuBtn');
+      const navGamesBtn = document.getElementById('navGamesBtn');
+
+      if (viewName === 'games') {
+        menuView.classList.add('hidden');
+        gamesView.classList.remove('hidden');
+        navGamesBtn.classList.add('text-amber-400');
+        navGamesBtn.classList.remove('text-slate-400');
+        navMenuBtn.classList.remove('text-amber-400');
+        navMenuBtn.classList.add('text-slate-400');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        gamesView.classList.add('hidden');
+        menuView.classList.remove('hidden');
+        navMenuBtn.classList.add('text-amber-400');
+        navMenuBtn.classList.remove('text-slate-400');
+        navGamesBtn.classList.remove('text-amber-400');
+        navGamesBtn.classList.add('text-slate-400');
+      }
+    }
+
+    function openTabModal() {
+      renderCartModalList();
+      document.getElementById('tabModal').classList.remove('hidden');
+    }
+
+    function closeTabModal() {
+      document.getElementById('tabModal').classList.add('hidden');
+    }
+
+    function renderCartModalList() {
+      const list = document.getElementById('cartItemList');
+      list.innerHTML = '';
+
+      const pendingIds = Object.keys(cart);
+      const hasPending = pendingIds.length > 0;
+      const hasConfirmed = confirmedOrders.length > 0;
+
+      if (!hasPending && !hasConfirmed) {
+        list.innerHTML = `
+          <div class="text-center py-8">
+            <i class="fa-solid fa-basket-shopping text-3xl text-slate-600 mb-2"></i>
+            <p class="text-xs text-slate-400">Your table order is empty.</p>
+            <p class="text-[11px] text-amber-400 mt-1">Select your favorite Juices, Shakes, Pizzas, Burgers & Sundaes!</p>
+          </div>
+        `;
+        document.getElementById('cartSubtotal').innerText = '₹0.00';
+        document.getElementById('cartGst').innerText = '₹0.00';
+        document.getElementById('cartFinalTotal').innerText = '₹0.00';
+        return;
+      }
+
+      let subtotal = 0;
+
+      if (hasConfirmed) {
+        const confirmedHeader = document.createElement('div');
+        confirmedHeader.className = "flex items-center gap-1.5 text-xs font-bold text-emerald-400 pb-1 border-b border-emerald-500/20";
+        confirmedHeader.innerHTML = `<i class="fa-solid fa-fire-burner"></i> Already in Kitchen (Preparing)`;
+        list.appendChild(confirmedHeader);
+
+        confirmedOrders.forEach((item, index) => {
+          const itemTotal = item.price * item.qty;
+          subtotal += itemTotal;
+
+          const row = document.createElement('div');
+          row.className = "flex items-center justify-between p-2.5 rounded-xl bg-emerald-950/20 border border-emerald-500/20 text-xs";
+          row.innerHTML = `
+            <div class="flex items-center gap-2">
+              <img src="${encodeURI(item.image || '')}" class="w-8 h-8 rounded-lg object-cover" onerror="this.outerHTML='<span class=\\'text-base\\'>${item.icon || '🍲'}</span>'" />
+              <div>
+                <div class="font-bold text-slate-200">${item.qty}x ${item.name}</div>
+                <div class="text-[10px] text-emerald-400/80">Round ${item.round || 1} • In Kitchen</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <div class="font-extrabold text-emerald-300">₹${itemTotal.toFixed(2)}</div>
+              <button onclick="requestItemModification(${index})" class="px-2 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500 text-rose-300 hover:text-white border border-rose-500/40 text-[10px] font-bold transition active:scale-90">
+                Change / Cancel
+              </button>
+            </div>
+          `;
+          list.appendChild(row);
+        });
+      }
+
+      if (hasPending) {
+        const pendingHeader = document.createElement('div');
+        pendingHeader.className = "flex items-center gap-1.5 text-xs font-bold text-amber-400 pt-2 pb-1 border-b border-amber-500/20";
+        pendingHeader.innerHTML = `<i class="fa-solid fa-cart-plus"></i> New Items to Send`;
+        list.appendChild(pendingHeader);
+
+        pendingIds.forEach(id => {
+          const item = MENU_ITEMS.find(m => m.id === id);
+          const qty = cart[id];
+          const itemTotal = (item ? item.price : 0) * qty;
+          subtotal += itemTotal;
+
+          const row = document.createElement('div');
+          row.className = "flex items-center justify-between p-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs";
+          row.innerHTML = `
+            <div class="flex items-center gap-2">
+              <img src="${encodeURI(item ? item.image : '')}" class="w-8 h-8 rounded-lg object-cover" onerror="this.outerHTML='<span class=\\'text-lg\\'>${item ? item.icon : '🍲'}</span>'" />
+              <div>
+                <div class="font-bold text-white">${item ? item.name : id}</div>
+                <div class="text-[10px] text-slate-400">₹${item ? item.price : 0} each</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="flex items-center bg-slate-800 border border-slate-700 rounded-lg overflow-hidden">
+                <button onclick="changeQty('${id}', -1)" class="w-6 h-6 text-amber-400 font-bold hover:bg-slate-700">-</button>
+                <span class="w-6 text-center text-white font-bold text-[11px]">${qty}</span>
+                <button onclick="changeQty('${id}', 1)" class="w-6 h-6 text-amber-400 font-bold hover:bg-slate-700">+</button>
+              </div>
+              <div class="font-extrabold text-amber-400 w-12 text-right">₹${itemTotal}</div>
+            </div>
+          `;
+          list.appendChild(row);
+        });
+      }
+
+      const gst = subtotal * 0.05;
+      const grandTotal = subtotal + gst;
+
+      document.getElementById('cartSubtotal').innerText = `₹${subtotal.toFixed(2)}`;
+      document.getElementById('cartGst').innerText = `₹${gst.toFixed(2)}`;
+      document.getElementById('cartFinalTotal').innerText = `₹${grandTotal.toFixed(2)}`;
+    }
+
+    function requestItemModification(itemIndex) {
+      const targetItem = confirmedOrders[itemIndex];
+      if (!targetItem) return;
+
+      const choice = prompt(
+        `Modify "${targetItem.name}" (Current Qty: ${targetItem.qty}):\n\nEnter new quantity (0 to cancel item completely):`,
+        targetItem.qty
+      );
+
+      if (choice === null) return;
+      const newQty = parseInt(choice);
+
+      if (isNaN(newQty) || newQty < 0) {
+        alert("Please enter a valid quantity (0 or higher).");
+        return;
+      }
+
+      const oldQty = targetItem.qty;
+      const oldName = targetItem.name;
+
+      if (newQty === 0) {
+        confirmedOrders.splice(itemIndex, 1);
+      } else {
+        targetItem.qty = newQty;
+      }
+
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(confirmedOrders));
+      updateCartUI();
+      renderCartModalList();
+
+      if (socket) {
+        socket.emit('order-modified', {
+          tableId: CURRENT_TABLE_ID,
+          table: `Table ${CURRENT_TABLE_ID}`,
+          action: newQty === 0 ? 'ITEM_CANCELED' : 'QTY_REDUCED',
+          itemName: oldName,
+          oldQty: oldQty,
+          newQty: newQty,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+      }
+
+      showToast(`Kitchen updated: ${oldName} (${oldQty} → ${newQty})`, 'fa-solid fa-triangle-exclamation');
+    }
+
+    function triggerCallWaiter() {
+      if (socket) {
+        socket.emit('call-waiter', { 
+          table: `Table ${CURRENT_TABLE_ID}`, 
+          tableId: CURRENT_TABLE_ID, 
+          time: new Date().toLocaleTimeString() 
+        });
+      }
+      showToast(`Captain notified! Waiter arriving at Table ${CURRENT_TABLE_ID} momentarily.`, 'fa-solid fa-bell-concierge');
+    }
+
+    function requestDineInOrder() {
+      const pendingIds = Object.keys(cart);
+      if (pendingIds.length === 0) {
+        showToast('No new items to send to kitchen!', 'fa-solid fa-circle-exclamation');
+        return;
+      }
+
+      const roundItems = pendingIds.map(id => {
+        const item = MENU_ITEMS.find(m => m.id === id);
+        return {
+          id: item ? item.id : id,
+          name: item ? item.name : 'Selected Item',
+          price: item ? item.price : 0,
+          qty: cart[id],
+          image: item ? item.image : '',
+          icon: item ? item.icon : '🍲',
+          round: (confirmedOrders.length > 0 ? (confirmedOrders[confirmedOrders.length - 1].round || 1) + 1 : 1)
+        };
+      });
+
+      const roundTotal = roundItems.reduce((acc, i) => acc + (i.price * i.qty), 0);
+      const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      const orderPayload = {
+        table: `Table ${CURRENT_TABLE_ID}`,
+        tableId: CURRENT_TABLE_ID,
+        orderId: "#" + Math.floor(1000 + Math.random() * 9000),
+        items: roundItems,
+        total: roundTotal,
+        roundTotal: roundTotal,
+        round: roundItems[0].round,
+        time: currentTime,
+        timestamp: currentTime
+      };
+
+      if (socket) {
+        socket.emit('order-placed', orderPayload);
+      }
+
+      confirmedOrders.push(...roundItems);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(confirmedOrders));
+
+      cart = {};
+      updateCartUI();
+      renderMenuItems();
+      renderCartModalList();
+
+      showToast(`Round ${orderPayload.round} sent to kitchen!`, 'fa-solid fa-fire-burner');
+      closeTabModal();
+    }
+
+    function requestFinalBill() {
+      const totalItems = [...confirmedOrders];
+      for (let id in cart) {
+        const item = MENU_ITEMS.find(m => m.id === id);
+        if (item) {
+          totalItems.push({ name: item.name, price: item.price, qty: cart[id] });
+        }
+      }
+
+      if (totalItems.length === 0) {
+        showToast(`No active orders on Table ${CURRENT_TABLE_ID}.`, 'fa-solid fa-circle-info');
+        return;
+      }
+
+      const subtotal = totalItems.reduce((acc, i) => acc + (i.price * i.qty), 0);
+      const grandTotal = (subtotal * 1.05).toFixed(2);
+
+      if (socket) {
+        socket.emit('request-bill', {
+          table: `Table ${CURRENT_TABLE_ID}`,
+          tableId: CURRENT_TABLE_ID,
+          total: grandTotal,
+          items: totalItems
+        });
+      }
+
+      const upiId = "hotel-nandhi-inn@upi";
+      const payeeName = "Hotel Nandhi Inn";
+      const note = `Table ${CURRENT_TABLE_ID} Dining Bill`;
+
+      activeUpiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${grandTotal}&cu=INR&tn=${encodeURIComponent(note)}`;
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(activeUpiUrl)}`;
+
+      const deepLinkBtn = document.getElementById('directUpiDeepLinkBtn');
+      if (deepLinkBtn) deepLinkBtn.href = activeUpiUrl;
+
+      document.getElementById('customerUpiQrImage').src = qrCodeUrl;
+      document.getElementById('customerPayAmount').innerText = `₹${grandTotal}`;
+      document.getElementById('customerPayTableStation').innerText = CURRENT_TABLE_NAME;
+
+      closeTabModal();
+      document.getElementById('customerPayModal').classList.remove('hidden');
+
+      if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+        setTimeout(() => {
+          window.location.href = activeUpiUrl;
+        }, 350);
+      }
+    }
+
+    function launchUpiIntent(app) {
+      if (!activeUpiUrl) return;
+      window.location.href = activeUpiUrl;
+    }
+
+    function closeCustomerPayModal() {
+      document.getElementById('customerPayModal').classList.add('hidden');
+    }
+
+    // CRITICAL: Tells floor counter the customer completed UPI, but keeps table intact until Cashier confirms
+    function notifyPaymentCompletedInApp() {
+      const amountText = document.getElementById('customerPayAmount').innerText.replace('₹', '');
+      if (socket) {
+        socket.emit('customer-paid-notification', {
+          tableId: CURRENT_TABLE_ID,
+          table: CURRENT_TABLE_NAME,
+          amount: parseFloat(amountText) || 0,
+          method: 'UPI-App'
+        });
+      }
+      closeCustomerPayModal();
+      showToast('Payment submitted! Waiting for cashier confirmation...', 'fa-solid fa-clock');
+    }
+
+    function requestCashPayment() {
+      if (socket) {
+        socket.emit('request-cash-payment', {
+          tableId: CURRENT_TABLE_ID,
+          table: `Table ${CURRENT_TABLE_ID}`,
+          total: document.getElementById('customerPayAmount').innerText
+        });
+      }
+      closeCustomerPayModal();
+      showToast(`Captain notified to collect cash at Table ${CURRENT_TABLE_ID}!`, 'fa-solid fa-money-bill-wave');
+    }
+
+    function openWifiModal() { document.getElementById('wifiModal').classList.remove('hidden'); }
+    function closeWifiModal() { document.getElementById('wifiModal').classList.add('hidden'); }
+
+    function copyWifiPassword() {
+      const password = "Nandhi@2026";
+      const dummy = document.createElement("textarea");
+      document.body.appendChild(dummy);
+      dummy.value = password;
+      dummy.select();
+      document.execCommand("copy");
+      document.body.removeChild(dummy);
+      showToast('Wi-Fi Password copied to clipboard!', 'fa-solid fa-clipboard-check');
+      closeWifiModal();
+    }
+
+    function showToast(message, iconClass = 'fa-solid fa-circle-check') {
+      const toast = document.getElementById('toastNotification');
+      document.getElementById('toastMsg').innerText = message;
+      document.getElementById('toastIcon').className = `${iconClass} text-emerald-400`;
+
+      toast.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+      toast.classList.add('opacity-100', 'translate-y-0');
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-20px]');
+        toast.classList.remove('opacity-100', 'translate-y-0');
+      }, 3000);
+    }
+
+    // GAME 1: MEMORY GAME
+    const CARD_ICONS = ['🍕', '🍔', '🍧', '🍹', '🍟', '🍦'];
+    let memoryDeck = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+
+    function initMemoryGame() {
+      memoryDeck = [...CARD_ICONS, ...CARD_ICONS].sort(() => 0.5 - Math.random());
+      flippedCards = [];
+      matchedPairs = 0;
+      document.getElementById('memoryScore').innerText = `Pairs: 0/${CARD_ICONS.length}`;
+
+      const grid = document.getElementById('memoryGrid');
+      grid.innerHTML = '';
+
+      memoryDeck.forEach((icon, index) => {
+        const card = document.createElement('div');
+        card.className = "memory-card h-16 cursor-pointer";
+        card.innerHTML = `
+          <div class="memory-inner relative w-full h-full rounded-xl" id="mem-${index}" onclick="flipMemoryCard(${index})">
+            <div class="memory-front absolute inset-0 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-amber-400 font-bold text-sm shadow">
+              <i class="fa-solid fa-leaf text-xs text-emerald-400"></i>
+            </div>
+            <div class="memory-back absolute inset-0 bg-gradient-to-br from-amber-500/20 to-slate-900 border border-amber-500 rounded-xl flex items-center justify-center text-2xl shadow">
+              ${icon}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function flipMemoryCard(index) {
+      if (flippedCards.length === 2) return;
+      const cardInner = document.getElementById(`mem-${index}`);
+      if (cardInner.classList.contains('flipped') || cardInner.dataset.matched === "true") return;
+
+      cardInner.classList.add('flipped');
+      flippedCards.push({ index, icon: memoryDeck[index] });
+
+      if (flippedCards.length === 2) {
+        if (flippedCards[0].icon === flippedCards[1].icon) {
+          matchedPairs++;
+          document.getElementById(`mem-${flippedCards[0].index}`).dataset.matched = "true";
+          document.getElementById(`mem-${flippedCards[1].index}`).dataset.matched = "true";
+          document.getElementById('memoryScore').innerText = `Pairs: ${matchedPairs}/${CARD_ICONS.length}`;
+          flippedCards = [];
+
+          if (matchedPairs === CARD_ICONS.length) {
+            setTimeout(() => {
+              showToast('Super memory! You cleared the game!', 'fa-solid fa-trophy');
+            }, 300);
+          }
+        } else {
+          setTimeout(() => {
+            document.getElementById(`mem-${flippedCards[0].index}`).classList.remove('flipped');
+            document.getElementById(`mem-${flippedCards[1].index}`).classList.remove('flipped');
+            flippedCards = [];
+          }, 800);
+        }
+      }
+    }
+
+    // GAME 2: LUCKY WHEEL
+    const wheelSegments = ["10% Off Shakes", "Free French Fries", "Extra Ice Cream Scoop", "Free Mint Mojito", "Special Falooda Upgrade", "5% Off Total Bill"];
+    const wheelColors = ["#B45309", "#065F46", "#D97706", "#047857", "#F59E0B", "#10B981"];
+    let isSpinning = false;
+    let currentAngle = 0;
+
+    function drawWheel() {
+      const canvas = document.getElementById('wheelCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+      const radius = width / 2;
+      const arc = (2 * Math.PI) / wheelSegments.length;
+
+      ctx.clearRect(0, 0, width, height);
+
+      wheelSegments.forEach((text, i) => {
+        const angle = currentAngle + i * arc;
+        ctx.beginPath();
+        ctx.fillStyle = wheelColors[i];
+        ctx.moveTo(radius, radius);
+        ctx.arc(radius, radius, radius - 4, angle, angle + arc);
+        ctx.lineTo(radius, radius);
+        ctx.fill();
+        ctx.strokeStyle = '#0E1116';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.save();
+        ctx.translate(radius, radius);
+        ctx.rotate(angle + arc / 2);
+        ctx.textAlign = "right";
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "bold 9px 'Plus Jakarta Sans'";
+        ctx.fillText(text, radius - 15, 3);
+        ctx.restore();
+      });
+
+      ctx.beginPath();
+      ctx.arc(radius, radius, 16, 0, 2 * Math.PI);
+      ctx.fillStyle = '#0E1116';
+      ctx.fill();
+      ctx.strokeStyle = '#F59E0B';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#F59E0B';
+      ctx.font = "bold 11px fontawesome";
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('🍲', radius, radius);
+    }
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+      document.getElementById('wheelResult').innerText = "Wheel spinning...";
+
+      const spinDuration = 3500;
+      const startAngle = currentAngle;
+      const randomExtraSpins = 5 + Math.random() * 5;
+      const targetAngle = startAngle + randomExtraSpins * 2 * Math.PI;
+      const startTime = performance.now();
+
+      function animateWheel(time) {
+        const elapsed = time - startTime;
+        const progress = Math.min(elapsed / spinDuration, 1);
+        const easeOut = 1 - Math.pow(1 - progress, 3);
+        currentAngle = startAngle + (targetAngle - startAngle) * easeOut;
+        drawWheel();
+
+        if (progress < 1) {
+          requestAnimationFrame(animateWheel);
+        } else {
+          isSpinning = false;
+          const normalized = (2 * Math.PI - (currentAngle % (2 * Math.PI))) % (2 * Math.PI);
+          const segmentAngle = (2 * Math.PI) / wheelSegments.length;
+          const winningIndex = Math.floor(((normalized + 1.5 * Math.PI) % (2 * Math.PI)) / segmentAngle);
+          const prize = wheelSegments[winningIndex] || wheelSegments[0];
+          document.getElementById('wheelResult').innerHTML = `🎉 Won: <span class="text-amber-400 font-extrabold">${prize}</span> (Show to Captain!)`;
+          showToast(`Wheel Result: ${prize}!`, 'fa-solid fa-gift');
+        }
+      }
+
+      requestAnimationFrame(animateWheel);
+    }
+  </script>
+</body>
+</html>

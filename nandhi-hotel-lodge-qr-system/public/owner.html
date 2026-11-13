@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hotel Nandhi Inn — Executive Owner Command Center | 3D & Motion Analytics</title>
+  <link rel="icon" href="/hotel-logo.png" />
+
+  <!-- Socket.io Real-Time Client -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js 3D WebGL Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- GSAP & ScrollTrigger for Motion Choreography -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              gold: '#F59E0B',
+              amber: '#D97706',
+              emerald: '#10B981',
+              cyan: '#06B6D4',
+              rose: '#F43F5E',
+              bgDark: '#05080F',
+              cardDark: '#0C121E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      --mouse-x: 50%;
+      --mouse-y: 50%;
+    }
+
+    body {
+      background-color: #05080F;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* 3D WebGL Background Canvas */
+    #webgl-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Ambient Mesh Glows */
+    .ambient-glow-gold {
+      position: fixed;
+      top: -15%;
+      left: -10%;
+      width: 55vw;
+      height: 55vw;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0) 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .ambient-glow-emerald {
+      position: fixed;
+      bottom: -20%;
+      right: -10%;
+      width: 50vw;
+      height: 50vw;
+      border-radius: 9999px;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0) 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Interactive Spotlight & 3D Tilt Bento Card */
+    .spotlight-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(16, 23, 38, 0.82) 0%, rgba(10, 15, 26, 0.92) 100%);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: border-color 0.35s var(--ease-out-expo), box-shadow 0.35s var(--ease-out-expo), transform 0.25s ease-out;
+      transform-style: preserve-3d;
+    }
+
+    .spotlight-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(500px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(245, 158, 11, 0.12), transparent 40%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .spotlight-card:hover::before {
+      opacity: 1;
+    }
+
+    .spotlight-card:hover {
+      border-color: rgba(245, 158, 11, 0.35);
+      box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.7), 0 0 25px -5px rgba(245, 158, 11, 0.15);
+    }
+
+    /* Shimmer Gold Text */
+    .gold-shimmer {
+      background: linear-gradient(90deg, #FDE68A 0%, #F59E0B 45%, #FFFBEB 50%, #F59E0B 55%, #D97706 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 6s linear infinite;
+    }
+
+    @keyframes shine {
+      to { background-position: 200% center; }
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #05080F; }
+    ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
+    ::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+
+    /* Table Pod Interactive Pulse */
+    @keyframes call-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.5); }
+      50% { box-shadow: 0 0 0 10px rgba(244, 63, 94, 0); }
+    }
+    .table-call-pulse {
+      animation: call-pulse 1.6s infinite;
+    }
+  </style>
+</head>
+<body class="selection:bg-amber-500 selection:text-black">
+
+  <!-- 3D WebGL Background Particle Wave Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+  <div class="ambient-glow-gold"></div>
+  <div class="ambient-glow-emerald"></div>
+
+  <!-- MAIN CONTENT LAYER -->
+  <div class="relative z-10 min-h-screen flex flex-col">
+
+    <!-- ULTRA-LUXURY STICKY HEADER -->
+    <header id="ownerHeader" class="sticky top-0 z-50 bg-[#070B14]/80 backdrop-blur-2xl border-b border-white/10 px-4 sm:px-8 py-3.5 shadow-2xl">
+      <div class="max-w-[1440px] mx-auto flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Left Brand & Official Hotel Nandhi Inn Logo -->
+        <div class="flex items-center gap-4">
+          <div class="relative group cursor-pointer" onclick="window.location.href='/website.html'">
+            <div class="absolute -inset-1 rounded-2xl bg-gradient-to-r from-amber-500 to-emerald-500 opacity-60 blur group-hover:opacity-100 transition duration-300"></div>
+            <img src="/hotel-logo.png" alt="Hotel Nandhi Inn" class="relative w-12 h-12 rounded-2xl object-cover border border-amber-400/50 shadow-xl" />
+          </div>
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h1 class="text-lg sm:text-xl font-extrabold tracking-tight text-white">HOTEL NANDHI INN</h1>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-widest bg-gradient-to-r from-amber-500/20 to-amber-500/10 text-amber-300 border border-amber-400/30 flex items-center gap-1">
+                <i class="fa-solid fa-crown text-[9px] text-amber-400"></i> Executive Owner Command
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
+              <span><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i>WWHM+42F, Urban, Chamarajanagar, Karnataka 571313</span>
+              <span class="hidden sm:inline text-slate-600">•</span>
+              <span id="liveClock" class="hidden sm:inline font-mono text-[11px] text-emerald-400">Live Clock</span>
+            </p>
+          </div>
+        </div>
+
+        <!-- Center Role Switcher -->
+        <nav class="flex items-center gap-1.5 bg-[#0D1424]/90 p-1.5 rounded-2xl border border-white/10 text-xs font-bold shadow-inner">
+          <a href="/owner.html" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-slate-950 font-extrabold shadow-lg">
+            <i class="fa-solid fa-crown"></i>
+            <span>Owner Command</span>
+          </a>
+          <a href="/dashboard.html" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-orange-300 hover:text-white hover:bg-orange-500/20 border border-transparent hover:border-orange-500/30 transition">
+            <i class="fa-solid fa-gauge-high text-orange-400"></i>
+            <span>Admin Dashboard</span>
+          </a>
+          <a href="/waiter.html" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition">
+            <i class="fa-solid fa-bell-concierge text-amber-400"></i>
+            <span>Waiter POS</span>
+          </a>
+          <a href="/kitchen.html" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/5 transition">
+            <i class="fa-solid fa-fire-burner text-rose-400"></i>
+            <span>Kitchen (KDS)</span>
+          </a>
+          <a href="/convention-hall.html" target="_blank" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-purple-300 hover:text-white hover:bg-purple-500/15 transition border-l border-white/10 pl-3"><i class="fa-solid fa-gopuram text-purple-400"></i><span>Convention Hall</span></a>
+          <a href="/website.html" target="_blank" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-emerald-300 hover:text-white hover:bg-emerald-500/15 transition border-l border-white/10 pl-3">
+            <i class="fa-solid fa-globe text-emerald-400"></i>
+            <span>Public Website</span>
+          </a>
+        </nav>
+
+        <!-- Right Quick Actions & Sound / Cloud Status -->
+        <div class="flex items-center gap-2.5">
+          <button onclick="toggleOwnerSound()" id="ownerSoundBtn" class="px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5 hover:bg-emerald-500/20 transition" title="Toggle Live Alert Chime">
+            <i class="fa-solid fa-volume-high"></i>
+            <span class="hidden xl:inline">Audio On</span>
+          </button>
+
+          <button onclick="openOwnerExpenseModal()" class="magnetic-btn bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 px-4 py-2 rounded-xl text-xs font-extrabold shadow-lg flex items-center gap-2 transition">
+            <i class="fa-solid fa-plus-circle"></i>
+            <span>Log Expense</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- MAIN COMMAND WORKSPACE -->
+    <main class="flex-1 max-w-[1440px] mx-auto w-full px-4 sm:px-8 py-8 space-y-8">
+
+      <!-- HERO EXECUTIVE BANNER WITH LIVE METRICS TICKER -->
+      <section class="gsap-reveal spotlight-card p-6 sm:p-8 border border-amber-500/25 relative overflow-hidden">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center relative z-10">
+          <div class="lg:col-span-7 space-y-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-[11px] font-bold uppercase tracking-widest">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Real-Time WebSocket & Google Sheets Cloud Active</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold tracking-tight text-white">
+              Welcome Back, <span class="gold-shimmer">Hotel Nandhi Inn Management</span>
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
+              Live telemetry across all <b>25 Smart QR Tables</b>, <b>160 Pure Veg Restaurant Dishes across 7 Categories, 20 Deluxe Lodge Rooms & Table Reservations</b>, Kitchen Display Queue, and automated Google Sheets financial accounting.
+            </p>
+          </div>
+
+          <!-- Quick Launch Pills -->
+          <div class="lg:col-span-5 flex flex-wrap items-center justify-start lg:justify-end gap-3">
+            <a href="/dashboard.html" class="px-4 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-extrabold text-xs shadow-xl flex items-center gap-2.5 transition transform hover:-translate-y-0.5">
+              <i class="fa-solid fa-sliders text-sm"></i>
+              <div>
+                <span class="block leading-none">Open Orange Admin UI</span>
+                <span class="text-[10px] text-orange-100 font-normal">KOT Print, BT Printer & Stock</span>
+              </div>
+            </a>
+            <a href="/index.html?table=1" target="_blank" class="px-4 py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-bold text-xs flex items-center gap-2.5 transition">
+              <i class="fa-solid fa-qrcode text-cyan-400 text-base"></i>
+              <div>
+                <span class="block leading-none">Test Table 01 QR</span>
+                <span class="text-[10px] text-slate-400 font-normal">Customer Mobile View</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6 ULTRA-SLEEK BENTO KPI CARDS (RESTAURANT + 20-ROOM LODGE + CONVENTION HALL) -->
+      <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-4">
+        
+        <!-- KPI 1: Total Group Gross Revenue -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between border border-amber-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-amber-300 uppercase tracking-wider">Total Group Revenue</span>
+            <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiGrossSales" class="text-xl sm:text-2xl font-extrabold text-white font-mono tracking-tight">₹5,63,413</h3>
+            <div class="text-[10px] text-emerald-400 font-semibold mt-1">
+              <span>Restaurant + Lodge + Hall</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 2: Convention Hall Revenue (Nandhi Bhavana) -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between border border-purple-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-purple-300 uppercase tracking-wider">Convention Hall Revenue</span>
+            <div class="w-9 h-9 rounded-xl bg-purple-500/15 border border-purple-500/30 text-purple-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-gopuram"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiConventionRev" class="text-xl sm:text-2xl font-extrabold text-purple-300 font-mono tracking-tight">₹4,93,000</h3>
+            <div id="kpiConventionSub" class="text-[10px] text-emerald-300 font-semibold mt-1">
+              <span>50% Adv: ₹2,46,500 (4 Events)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 3: 20-Room Lodge Revenue -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between border border-emerald-500/30">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-emerald-300 uppercase tracking-wider">20-Room Lodge Sales</span>
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-bed"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiLodgeRevCard" class="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono tracking-tight">₹15,563</h3>
+            <div id="kpiLodgeOccCard" class="text-[10px] text-slate-300 font-semibold mt-1">
+              <span>3 / 20 Rooms Booked</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 4: Restaurant Live Running Bills -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Restaurant Dining</span>
+            <div class="w-9 h-9 rounded-xl bg-cyan-500/15 border border-cyan-500/30 text-cyan-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-receipt"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiRunningBills" class="text-xl sm:text-2xl font-extrabold text-amber-400 font-mono tracking-tight">₹54,850</h3>
+            <div id="kpiOccupiedSub" class="text-[10px] text-cyan-300 font-semibold mt-1">
+              <span>0 / 25 tables currently dining</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 5: Kitchen Orders & Menu Stock -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Kitchen & 160 Dishes</span>
+            <div class="w-9 h-9 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-utensils"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiOrdersCount" class="text-xl sm:text-2xl font-extrabold text-white font-mono tracking-tight">94 Orders</h3>
+            <div id="kpiStockSub" class="text-[10px] text-slate-400 font-medium mt-1">
+              <span>160 In Stock • <span id="kpiSoldOutCount" class="text-rose-400 font-bold">0 Sold Out</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI 6: Net Operating Profit -->
+        <div class="gsap-reveal spotlight-card tilt-card p-5 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Net Group Profit</span>
+            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 flex items-center justify-center text-sm">
+              <i class="fa-solid fa-sack-dollar"></i>
+            </div>
+          </div>
+          <div>
+            <h3 id="kpiNetProfit" class="text-xl sm:text-2xl font-extrabold text-emerald-400 font-mono tracking-tight">₹5,59,313</h3>
+            <div class="text-[10px] text-slate-400 font-medium mt-1">
+              <span>After ₹<span id="kpiExpenseInline">4,100</span> expenses</span>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ANALYTICS CHARTS & LIVE ACTIVITY STREAM BENTO GRID -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Hourly Revenue & Orders Dual Chart (7 cols) -->
+        <div class="gsap-reveal lg:col-span-7 spotlight-card p-6 flex flex-col justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-6">
+            <div>
+              <h3 class="text-lg font-extrabold text-white tracking-tight">Shift Revenue & Order Velocity</h3>
+              <p class="text-xs text-slate-400">Morning Refreshers (10:30 AM–1 PM), Afternoon Cafe & Snacks (1 PM–6 PM) & Evening Lounge Rush (6 PM–10:30 PM)</p>
+            </div>
+            <div class="flex items-center gap-2 text-xs">
+              <span class="px-3 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 font-bold">
+                Peak Hour: 8:00 PM (₹11,400)
+              </span>
+            </div>
+          </div>
+          <div class="relative h-72 w-full">
+            <canvas id="ownerRevenueChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Category Mix Doughnut + Top Bestsellers (5 cols) -->
+        <div class="gsap-reveal lg:col-span-5 spotlight-card p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h3 class="text-lg font-extrabold text-white tracking-tight">Cuisine Revenue Share</h3>
+                <p class="text-xs text-slate-400">Sales breakdown across 7 Pure Veg Restaurant categories & 20 Lodge Rooms</p>
+              </div>
+              <span class="text-xs font-mono text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-lg border border-emerald-500/20">100% Pure Veg & Lodge</span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+              <div class="relative h-48 w-full flex items-center justify-center">
+                <canvas id="ownerCategoryChart"></canvas>
+              </div>
+              <div class="space-y-2.5 text-xs">
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                  <span class="flex items-center gap-2 text-slate-200"><span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>Main Course & Paneer Curries</span>
+                  <span class="font-bold text-amber-400">38%</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                  <span class="flex items-center gap-2 text-slate-200"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>Breakfast & South Indian Tiffin</span>
+                  <span class="font-bold text-emerald-400">26%</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                  <span class="flex items-center gap-2 text-slate-200"><span class="w-2.5 h-2.5 rounded-full bg-cyan-500"></span>Biryani, Rice & Tandoor</span>
+                  <span class="font-bold text-cyan-400">20%</span>
+                </div>
+                <div class="flex items-center justify-between p-2 rounded-xl bg-white/[0.03] border border-white/5">
+                  <span class="flex items-center gap-2 text-slate-200"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>Continental, Chinese & Soups</span>
+                  <span class="font-bold text-purple-400">16%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top 3 Dishes Mini Bar -->
+          <div class="pt-4 mt-4 border-t border-white/10">
+            <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2.5">Today's Top Moving Signature Dishes</p>
+            <div class="grid grid-cols-3 gap-2.5 text-xs">
+              <div class="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20">
+                <p class="font-bold text-white truncate">Paneer Nandhi Special</p>
+                <p class="text-[11px] text-amber-400 font-bold mt-0.5">112 Orders • ₹270</p>
+              </div>
+              <div class="p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                <p class="font-bold text-white truncate">Gee Pudi Masala Dose</p>
+                <p class="text-[11px] text-emerald-400 font-bold mt-0.5">168 Orders • ₹100</p>
+              </div>
+              <div class="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/20">
+                <p class="font-bold text-white truncate">Veg Hyderabadi Biriyani</p>
+                <p class="text-[11px] text-cyan-400 font-bold mt-0.5">94 Orders • ₹195</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      
+      <!-- ===================================================================== -->
+      <!-- HOTEL NANDHI INN — 20-ROOM LODGE MATRIX & RESERVATIONS COMMAND        -->
+      <!-- ===================================================================== -->
+      <section class="gsap-reveal spotlight-card p-6 sm:p-8 border border-amber-500/30">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/10 mb-6">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h3 class="text-xl font-extrabold text-white tracking-tight">
+                <i class="fa-solid fa-hotel text-amber-400 mr-2"></i>Hotel Nandhi Inn — 20-Room Lodge & Suite Live Matrix
+              </h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-500/15 text-amber-300 border border-amber-500/30">Floors 1 & 2 (Rooms 101–210)</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1">Every room reservation, check-in, check-out, advance payment, and balance settlement syncs here in real time. Click any room card to manage guest stay.</p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <span id="ownerLodgeRevenueBadge" class="px-3.5 py-1.5 rounded-xl bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 font-mono">Lodge Revenue: ₹15,563</span>
+            <button onclick="setLodgeFilter('all')" id="lf-all" class="px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold transition">All 20 Rooms</button>
+            <button onclick="setLodgeFilter('occupied')" id="lf-occupied" class="px-3 py-1.5 rounded-xl bg-white/5 text-rose-300 border border-white/10 hover:bg-white/10 transition">Occupied</button>
+            <button onclick="setLodgeFilter('reserved')" id="lf-reserved" class="px-3 py-1.5 rounded-xl bg-white/5 text-amber-300 border border-white/10 hover:bg-white/10 transition">Reserved</button>
+            <button onclick="setLodgeFilter('available')" id="lf-available" class="px-3 py-1.5 rounded-xl bg-white/5 text-emerald-300 border border-white/10 hover:bg-white/10 transition">Available</button>
+            <a href="/website.html#lodge-booking" target="_blank" class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold shadow">+ New Room Booking</a>
+          </div>
+        </div>
+
+        <!-- 20 Lodge Rooms Grid -->
+        <div id="ownerLodgeMatrix" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-3.5 mb-8">
+          <!-- Populated dynamically for Rooms 101-110 & 201-210 -->
+        </div>
+
+        <!-- 2-Column Live Feed: Lodge Room Bookings Ledger & Restaurant Table Reservations -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-6 border-t border-white/10">
+          <!-- Lodge Room Bookings Feed (7 cols) -->
+          <div class="lg:col-span-7">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-sm font-extrabold text-white flex items-center gap-2">
+                <i class="fa-solid fa-bed text-amber-400"></i>
+                <span>Live Lodge Room Bookings & Guest Check-In Ledger</span>
+              </h4>
+              <span id="ownerLodgeBookingsCount" class="text-[11px] font-mono text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/20">3 Active Bookings</span>
+            </div>
+            <div id="ownerLodgeBookingsFeed" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-xs">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Restaurant Table Reservations Feed (5 cols) -->
+          <div class="lg:col-span-5">
+            <div class="flex items-center justify-between mb-3">
+              <h4 class="text-sm font-extrabold text-white flex items-center gap-2">
+                <i class="fa-solid fa-calendar-check text-emerald-400"></i>
+                <span>Live Restaurant Table Reservations</span>
+              </h4>
+              <span id="ownerTableResCount" class="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-2.5 py-0.5 rounded-full border border-emerald-500/20">1 Confirmed</span>
+            </div>
+            <div id="ownerTableReservationsFeed" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-xs">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+      <!-- ===================================================================== -->
+      <!-- NANDHI BHAVANA — CONVENTION HALL OWNER DASHBOARD & REVENUE LEDGER     -->
+      <!-- ===================================================================== -->
+      <section id="ownerConventionSection" class="gsap-reveal spotlight-card p-6 sm:p-8 border border-purple-500/35">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/10 mb-6">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-purple-300 bg-purple-500/15 px-3 py-1 rounded-full border border-purple-500/30">Nandhi Group Executive Portal • LIC Office Road, Chamarajanagar</span>
+            <h3 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight mt-2">
+              <i class="fa-solid fa-gopuram text-amber-400 mr-2"></i>Nandhi Bhavana (ನಂದಿ ಭವನ) — Convention Hall Owner Dashboard
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">Live event reservation ledger, 50% booking advance tracking, pending balances, 16-room allocation, and CSV/Excel export</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2.5 text-xs font-bold">
+            <button type="button" onclick="exportOwnerConventionCsv()" class="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold shadow transition">
+              <i class="fa-solid fa-file-excel mr-1.5"></i>Export Convention Hall Ledger (CSV)
+            </button>
+            <a href="/convention-hall.html#availability-calendar" target="_blank" class="px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-extrabold shadow transition">
+              + New Hall Booking
+            </a>
+          </div>
+        </div>
+
+        <!-- 4 Convention Hall KPI Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-amber-500/25">
+            <span class="text-[10px] font-bold uppercase text-slate-400">Total Contracted Revenue</span>
+            <p id="ownerHallTotalRev" class="text-2xl font-extrabold text-amber-400 font-mono mt-1">₹4,93,000</p>
+            <span id="ownerHallEventsCount" class="text-[11px] text-emerald-400 font-semibold">4 Confirmed Events</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-emerald-500/25">
+            <span class="text-[10px] font-bold uppercase text-slate-400">50% Advances Collected</span>
+            <p id="ownerHallAdvanceRev" class="text-2xl font-extrabold text-emerald-400 font-mono mt-1">₹2,46,500</p>
+            <span class="text-[11px] text-slate-300">RTGS / UPI / Cheque Verified</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-rose-500/25">
+            <span class="text-[10px] font-bold uppercase text-slate-400">Pending Event Balances</span>
+            <p id="ownerHallBalanceRev" class="text-2xl font-extrabold text-rose-400 font-mono mt-1">₹2,46,500</p>
+            <span class="text-[11px] text-slate-300">Due Prior to Muhurtham</span>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-cyan-500/25">
+            <span class="text-[10px] font-bold uppercase text-slate-400">Hall Rooms & Parking</span>
+            <p class="text-2xl font-extrabold text-cyan-400 font-mono mt-1">16 Rooms</p>
+            <span class="text-[11px] text-slate-300">700–1,000 Seats • 200 Car Parking</span>
+          </div>
+        </div>
+
+        <!-- Confirmed Convention Hall Bookings & Muhurtham Schedule -->
+        <div>
+          <h4 class="text-sm font-extrabold text-white mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-calendar-days text-amber-400"></i>
+            <span>Confirmed Convention Hall Bookings & Muhurtham Schedule</span>
+          </h4>
+          <div id="ownerConventionBookingsList" class="space-y-3 text-xs"></div>
+        </div>
+      </section>
+
+      <!-- INTERACTIVE 25-TABLE VISUAL FLOOR COMMAND MATRIX -->
+      <section class="gsap-reveal spotlight-card p-6 sm:p-8">
+        <div class="flex flex-wrap items-center justify-between gap-4 pb-5 border-b border-white/10 mb-6">
+          <div>
+            <div class="flex items-center gap-2.5">
+              <h3 class="text-xl font-extrabold text-white tracking-tight">Interactive 25-Table Live Floor Matrix</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">Real-Time Socket.io</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-0.5">Click any table pod to inspect active orders, settle cash/UPI bills to Google Sheets, or reset table state</p>
+          </div>
+
+          <!-- Filter Pills -->
+          <div class="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <button onclick="setFloorFilter('all')" id="ff-all" class="px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold transition">All 25 Tables</button>
+            <button onclick="setFloorFilter('occupied')" id="ff-occupied" class="px-3.5 py-1.5 rounded-xl bg-white/5 text-amber-300 border border-white/10 hover:bg-white/10 transition">Occupied</button>
+            <button onclick="setFloorFilter('available')" id="ff-available" class="px-3.5 py-1.5 rounded-xl bg-white/5 text-emerald-300 border border-white/10 hover:bg-white/10 transition">Available</button>
+            <button onclick="setFloorFilter('alert')" id="ff-alert" class="px-3.5 py-1.5 rounded-xl bg-white/5 text-rose-400 border border-white/10 hover:bg-white/10 transition">Waiter / Bill Alerts</button>
+          </div>
+        </div>
+
+        <!-- 25 Table Pods Grid -->
+        <div id="ownerFloorMatrix" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          <!-- Dynamically populated for Tables 01 - 25 -->
+        </div>
+      </section>
+
+      <!-- LIVE ORDERS STREAM & GOOGLE SHEETS EXPENSE LEDGER (2 COLUMNS) -->
+      <section class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Live Incoming Orders Stream (7 cols) -->
+        <div class="gsap-reveal lg:col-span-7 spotlight-card p-6">
+          <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+            <div>
+              <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+                <i class="fa-solid fa-satellite-dish text-amber-400"></i>
+                <span>Live Incoming Order Stream</span>
+              </h3>
+              <p class="text-xs text-slate-400">Real-time orders from Customer QR Scans, Waiter POS & Public Website</p>
+            </div>
+            <a href="/dashboard.html" class="text-xs font-bold text-amber-400 hover:underline flex items-center gap-1">
+              <span>Print KOT in Admin UI</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+
+          <div id="ownerLiveOrdersFeed" class="space-y-3 max-h-96 overflow-y-auto pr-1">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Operational Expenses & Google Sheets Ledger (5 cols) -->
+        <div class="gsap-reveal lg:col-span-5 spotlight-card p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+              <div>
+                <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
+                  <i class="fa-solid fa-file-invoice-dollar text-emerald-400"></i>
+                  <span>Operational Expense Ledger</span>
+                </h3>
+                <p class="text-xs text-slate-400">Synced with Google Sheets Monthly Expenses</p>
+              </div>
+              <button onclick="openOwnerExpenseModal()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 px-3 py-1.5 rounded-xl text-xs font-extrabold transition shadow">
+                + Add Expense
+              </button>
+            </div>
+
+            <div id="ownerExpensesList" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-xs">
+              <!-- Populated from /api/expenses and socket -->
+            </div>
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+            <span class="text-xs text-slate-400">Total Logged Expenses Today:</span>
+            <span id="ownerTotalExpenses" class="text-lg font-extrabold text-rose-400 font-mono">₹3,550.00</span>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-[#05080F]/90 py-6 px-4 sm:px-8 text-center text-xs text-slate-500">
+      <div class="max-w-[1440px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-2">
+          <img src="/hotel-logo.png" alt="Logo" class="w-6 h-6 rounded-md object-cover" />
+          <span class="font-bold text-slate-300">HOTEL NANDHI INN — Fresh Juice • Food & Drink Cafe</span>
+          <span>• WWHM+42F, Urban, Chamarajanagar, Karnataka 571313</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="/dashboard.html" class="text-amber-400 hover:underline font-semibold">Admin Dashboard</a>
+          <a href="/waiter.html" class="text-slate-400 hover:text-white">Waiter POS</a>
+          <a href="/kitchen.html" class="text-slate-400 hover:text-white">Kitchen KDS</a>
+          <a href="/convention-hall.html" target="_blank" class="magnetic-btn flex items-center gap-2 px-3.5 py-2 rounded-xl text-purple-300 hover:text-white hover:bg-purple-500/15 transition border-l border-white/10 pl-3"><i class="fa-solid fa-gopuram text-purple-400"></i><span>Convention Hall</span></a>
+          <a href="/website.html" target="_blank" class="text-emerald-400 hover:underline font-semibold">Public Website</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- TABLE DETAIL & BILL SETTLEMENT MODAL -->
+  <div id="tableDetailModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="spotlight-card max-w-lg w-full p-6 border border-amber-500/30 shadow-2xl relative">
+      <button onclick="closeTableDetailModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div id="tableModalContent"></div>
+    </div>
+  </div>
+
+  
+  <!-- LODGE ROOM DETAIL & RECEPTION CONTROL MODAL -->
+  <div id="lodgeRoomModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="spotlight-card max-w-lg w-full p-6 border border-amber-500/30 shadow-2xl relative">
+      <button onclick="closeLodgeRoomModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div id="lodgeRoomModalContent"></div>
+    </div>
+  </div>
+
+  <!-- LOG EXPENSE MODAL -->
+  <div id="ownerExpenseModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+    <div class="spotlight-card max-w-md w-full p-6 border border-amber-500/30 shadow-2xl relative">
+      <button onclick="closeOwnerExpenseModal()" class="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <div class="flex items-center gap-3 mb-5">
+        <div class="w-11 h-11 rounded-2xl bg-amber-500/15 border border-amber-500/30 text-amber-400 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-coins"></i>
+        </div>
+        <div>
+          <h3 class="font-extrabold text-white text-lg">Log Operational Expense</h3>
+          <p class="text-xs text-slate-400">Pushes live to Google Sheets Monthly Ledger</p>
+        </div>
+      </div>
+
+      <form onsubmit="submitOwnerExpense(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Category</label>
+          <select id="expCat" required class="w-full bg-[#080D1A] border border-white/15 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400">
+            <option value="Vegetables & Groceries">Vegetables & Groceries</option>
+            <option value="Fresh Fruits & Dairy Supply">Fresh Fruits & Dairy Supply</option>
+            <option value="Pizza Cheese & Bakery Buns">Pizza Cheese & Bakery Buns</option>
+            <option value="Staff Daily Advance">Staff Daily Advance</option>
+            <option value="Maintenance & Cleaning">Maintenance & Cleaning</option>
+            <option value="Packaging & Disposables">Packaging & Disposables</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Amount (₹)</label>
+          <input type="number" id="expAmt" step="0.5" required placeholder="e.g. 1500" class="w-full bg-[#080D1A] border border-white/15 px-3.5 py-2.5 rounded-xl text-white font-bold text-sm focus:outline-none focus:border-amber-400" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Vendor / Description</label>
+          <input type="text" id="expDesc" placeholder="e.g. Fresh coconut & vegetables market bill" class="w-full bg-[#080D1A] border border-white/15 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" onclick="closeOwnerExpenseModal()" class="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 py-2.5 rounded-xl font-bold">Cancel</button>
+          <button type="submit" id="expSubmitBtn" class="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 py-2.5 rounded-xl font-extrabold shadow-lg">Save & Sync Sheet</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SCRIPTS: THREE.JS 3D SCENE, GSAP CHOREOGRAPHY, CHART.JS & SOCKET.IO -->
+  <script>
+    const socket = io();
+    let ownerSound = true;
+    let floorFilter = 'all';
+    let tablesData = {};
+    let expensesList = [
+      { date: 'Today', category: 'Fresh Fruits & Dairy Supply', description: 'Morning fresh fruits, milk & ice cream stock', amount: 1450 },
+      { date: 'Today', category: 'Pizza Cheese & Bakery Buns', description: 'Mozzarella cheese blocks, burger buns & wraps', amount: 2100 }
+    ];
+    const baseRevenue = 54850;
+
+    // 1. Live Clock
+    setInterval(() => {
+      const el = document.getElementById('liveClock');
+      if (el) el.textContent = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    }, 1000);
+
+    // 2. Web Audio Chime
+    function playOwnerChime() {
+      if (!ownerSound) return;
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        [587.33, 880, 1174.66].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.12);
+          gain.gain.setValueAtTime(0.25, now + idx * 0.12);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.12 + 0.4);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + idx * 0.12);
+          osc.stop(now + idx * 0.12 + 0.42);
+        });
+      } catch (e) {}
+    }
+
+    function toggleOwnerSound() {
+      ownerSound = !ownerSound;
+      const btn = document.getElementById('ownerSoundBtn');
+      if (ownerSound) {
+        btn.className = 'px-3 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold flex items-center gap-1.5';
+        btn.innerHTML = '<i class="fa-solid fa-volume-high"></i><span class="hidden xl:inline">Audio On</span>';
+        playOwnerChime();
+      } else {
+        btn.className = 'px-3 py-2 rounded-xl bg-slate-800 border border-slate-700 text-slate-400 text-xs font-bold flex items-center gap-1.5';
+        btn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i><span class="hidden xl:inline">Muted</span>';
+      }
+    }
+
+    // 3. Three.js Interactive 3D Golden Particle Wave Background
+    function initThreeScene() {
+      const canvas = document.getElementById('webgl-canvas');
+      if (!canvas || !window.THREE) return;
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 12, 28);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // Create a 3D wave grid of golden & emerald particles
+      const cols = 45, rows = 25;
+      const count = cols * rows;
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+
+      let idx = 0;
+      for (let x = 0; x < cols; x++) {
+        for (let z = 0; z < rows; z++) {
+          positions[idx * 3] = (x - cols / 2) * 1.4;
+          positions[idx * 3 + 1] = 0;
+          positions[idx * 3 + 2] = (z - rows / 2) * 1.4;
+
+          // Alternate warm gold & emerald tint
+          if ((x + z) % 3 === 0) {
+            colors[idx * 3] = 0.96;     // R (Gold)
+            colors[idx * 3 + 1] = 0.62; // G
+            colors[idx * 3 + 2] = 0.04; // B
+          } else {
+            colors[idx * 3] = 0.06;     // R (Emerald)
+            colors[idx * 3 + 1] = 0.72; // G
+            colors[idx * 3 + 2] = 0.50; // B
+          }
+          idx++;
+        }
+      }
+
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const material = new THREE.PointsMaterial({
+        size: 0.18,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65
+      });
+
+      const points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      let mouseX = 0, mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      let clock = new THREE.Clock();
+      function animate() {
+        requestAnimationFrame(animate);
+        const t = clock.getElapsedTime();
+        const pos = geometry.attributes.position.array;
+
+        let i = 0;
+        for (let x = 0; x < cols; x++) {
+          for (let z = 0; z < rows; z++) {
+            pos[i * 3 + 1] = Math.sin(x * 0.25 + t * 1.2) * 1.1 + Math.cos(z * 0.3 + t * 0.9) * 1.1;
+            i++;
+          }
+        }
+        geometry.attributes.position.needsUpdate = true;
+
+        // Subtle camera parallax with mouse
+        camera.position.x += (mouseX * 4 - camera.position.x) * 0.03;
+        camera.position.y += (12 - mouseY * 2 - camera.position.y) * 0.03;
+        camera.lookAt(0, 0, 0);
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    // 4. Spotlight & 3D Tilt Card Physics + GSAP Entrance
+    function initMotionInteractions() {
+      // GSAP Staggered Entrance
+      if (window.gsap) {
+        gsap.fromTo('.gsap-reveal',
+          { y: 28, opacity: 0 },
+          { y: 0, opacity: 1, duration: 0.75, stagger: 0.08, ease: 'power3.out' }
+        );
+      }
+
+      // Spotlight & 3D Tilt tracking
+      document.querySelectorAll('.spotlight-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+          const rect = card.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          card.style.setProperty('--mouse-x', `${x}px`);
+          card.style.setProperty('--mouse-y', `${y}px`);
+
+          if (card.classList.contains('tilt-card')) {
+            const rotY = ((x / rect.width) - 0.5) * 8;
+            const rotX = ((y / rect.height) - 0.5) * -8;
+            card.style.transform = `perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-3px)`;
+          }
+        });
+
+        card.addEventListener('mouseleave', () => {
+          if (card.classList.contains('tilt-card')) {
+            card.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+          }
+        });
+      });
+    }
+
+    // 5. Initialize Executive Charts
+    function initOwnerCharts() {
+      const ctxRev = document.getElementById('ownerRevenueChart');
+      if (ctxRev && window.Chart) {
+        const gCtx = ctxRev.getContext('2d');
+        const grad = gCtx.createLinearGradient(0, 0, 0, 280);
+        grad.addColorStop(0, 'rgba(245, 158, 11, 0.85)');
+        grad.addColorStop(1, 'rgba(245, 158, 11, 0.15)');
+
+        new Chart(gCtx, {
+          type: 'bar',
+          data: {
+            labels: ['7 AM', '9 AM', '11 AM', '1 PM', '3 PM', '5 PM', '7 PM', '8 PM', '9:30 PM'],
+            datasets: [
+              {
+                type: 'line',
+                label: 'Order Velocity',
+                data: [2200, 5200, 4100, 7800, 3100, 4200, 9100, 11400, 7750],
+                borderColor: '#10B981',
+                borderWidth: 2.5,
+                tension: 0.4,
+                pointBackgroundColor: '#10B981',
+                pointRadius: 4
+              },
+              {
+                type: 'bar',
+                label: 'Shift Revenue (₹)',
+                data: [2200, 5200, 4100, 7800, 3100, 4200, 9100, 11400, 7750],
+                backgroundColor: grad,
+                borderRadius: 8,
+                barThickness: 26
+              }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: { label: (c) => '₹' + c.raw.toLocaleString('en-IN') }
+              }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#94A3B8', font: { size: 11 } } },
+              y: {
+                grid: { color: 'rgba(255,255,255,0.05)' },
+                ticks: { color: '#94A3B8', font: { size: 11 }, callback: v => '₹' + (v / 1000) + 'k' }
+              }
+            }
+          }
+        });
+      }
+
+      const ctxCat = document.getElementById('ownerCategoryChart');
+      if (ctxCat && window.Chart) {
+        new Chart(ctxCat, {
+          type: 'doughnut',
+          data: {
+            labels: ['Main Course & Paneer Curries', 'Breakfast & South Indian Tiffin', 'Biryani, Rice & Tandoor', 'Continental, Chinese & Soups'],
+            datasets: [{
+              data: [38, 26, 20, 16],
+              backgroundColor: ['#F59E0B', '#10B981', '#06B6D4', '#A855F7'],
+              borderWidth: 2,
+              borderColor: '#0C121E'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '72%',
+            plugins: { legend: { display: false } }
+          }
+        });
+      }
+    }
+
+    // 6. Render 25-Table Floor Matrix & Live Orders Stream
+    function setFloorFilter(f) {
+      floorFilter = f;
+      ['all', 'occupied', 'available', 'alert'].forEach(k => {
+        const btn = document.getElementById('ff-' + k);
+        if (!btn) return;
+        if (k === f) {
+          btn.className = 'px-3.5 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold transition';
+        } else {
+          btn.className = 'px-3.5 py-1.5 rounded-xl bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 transition';
+        }
+      });
+      renderOwnerDashboard();
+    }
+
+    function renderOwnerDashboard() {
+      const matrix = document.getElementById('ownerFloorMatrix');
+      const feed = document.getElementById('ownerLiveOrdersFeed');
+      if (!matrix || !feed) return;
+
+      matrix.innerHTML = '';
+      let runningTotal = 0;
+      let occupiedCount = 0;
+      let allLiveOrders = [];
+
+      for (let i = 1; i <= 25; i++) {
+        const t = tablesData[i] || { status: 'idle', total: 0, orders: [], waiterCalled: false, billRequested: false, cashRequested: false };
+        const total = parseFloat(t.total || 0);
+        const isOcc = t.status === 'occupied' || (t.orders && t.orders.length > 0);
+        const hasAlert = t.waiterCalled || t.billRequested || t.cashRequested;
+
+        if (isOcc) {
+          occupiedCount++;
+          runningTotal += total;
+        }
+
+        if (t.orders && Array.isArray(t.orders)) {
+          t.orders.forEach(o => {
+            allLiveOrders.push({ ...o, tableId: i, tableName: `Table ${i < 10 ? '0' + i : i}` });
+          });
+        }
+
+        if (floorFilter === 'occupied' && !isOcc) continue;
+        if (floorFilter === 'available' && isOcc) continue;
+        if (floorFilter === 'alert' && !hasAlert) continue;
+
+        let cardStyle = 'bg-white/[0.03] border-white/10 hover:border-emerald-500/40';
+        let badge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-500/15 text-emerald-400">Available</span>';
+
+        if (t.waiterCalled) {
+          cardStyle = 'bg-rose-950/30 border-rose-500/60 table-call-pulse';
+          badge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-rose-500 text-white">🔔 Calling!</span>';
+        } else if (t.billRequested || t.cashRequested) {
+          cardStyle = 'bg-cyan-950/30 border-cyan-400/60';
+          badge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-cyan-400 text-slate-950">💵 Bill Req</span>';
+        } else if (isOcc) {
+          cardStyle = 'bg-amber-500/10 border-amber-500/40';
+          badge = '<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-amber-500/20 text-amber-300">Occupied</span>';
+        }
+
+        const pod = document.createElement('div');
+        pod.className = `p-4 rounded-2xl border transition cursor-pointer flex flex-col justify-between ${cardStyle}`;
+        pod.onclick = () => openTableDetailModal(i);
+
+        const itemCount = (t.orders || []).reduce((acc, o) => acc + (o.items ? o.items.length : 0), 0);
+
+        pod.innerHTML = `
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-extrabold text-white text-sm">Table ${i < 10 ? '0' + i : i}</span>
+            ${badge}
+          </div>
+          <div class="flex items-end justify-between">
+            <div>
+              <p class="text-[11px] text-slate-400">${isOcc ? `${itemCount} dishes ordered` : 'Ready for walk-ins'}</p>
+              <p class="text-sm font-extrabold font-mono ${isOcc ? 'text-amber-400' : 'text-slate-500'} mt-0.5">₹${total.toFixed(0)}</p>
+            </div>
+            <i class="fa-solid fa-chevron-right text-[10px] text-slate-500"></i>
+          </div>
+        `;
+        matrix.appendChild(pod);
+      }
+
+      // Update Top KPIs
+      const gross = baseRevenue + runningTotal;
+      const expSum = expensesList.reduce((s, e) => s + Number(e.amount || 0), 0);
+      document.getElementById('kpiGrossSales').textContent = '₹' + gross.toLocaleString('en-IN');
+      document.getElementById('kpiNetProfit').textContent = '₹' + Math.max(0, gross - expSum).toLocaleString('en-IN');
+      document.getElementById('kpiExpenseInline').textContent = expSum.toLocaleString('en-IN');
+      document.getElementById('kpiRunningBills').textContent = '₹' + runningTotal.toLocaleString('en-IN');
+      document.getElementById('kpiOccupiedSub').textContent = `${occupiedCount} / 25 tables currently dining`;
+      document.getElementById('kpiOrdersCount').textContent = `${94 + allLiveOrders.length} Orders`;
+
+      // Render Live Orders Stream
+      if (allLiveOrders.length === 0) {
+        feed.innerHTML = `
+          <div class="text-center py-12 bg-white/[0.02] rounded-2xl border border-dashed border-white/10">
+            <i class="fa-solid fa-utensils text-2xl text-slate-600 mb-2"></i>
+            <p class="text-sm font-bold text-slate-300">No active table orders right now</p>
+            <p class="text-xs text-slate-500 mt-1">Place an order from Customer QR or Waiter POS to watch live telemetry</p>
+          </div>
+        `;
+      } else {
+        feed.innerHTML = '';
+        allLiveOrders.slice().reverse().forEach(ord => {
+          const row = document.createElement('div');
+          row.className = 'p-3.5 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3';
+          const itemsStr = (ord.items || []).map(x => `${x.qty || 1}x ${x.name}`).join(', ');
+          row.innerHTML = `
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-amber-500 text-slate-950 font-extrabold text-xs flex items-center justify-center shrink-0">
+                T-${ord.tableId}
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="font-bold text-white text-sm">${ord.tableName}</span>
+                  <span class="text-xs font-mono text-amber-400">${ord.orderId}</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-white/10 text-slate-300">${ord.status || 'Pending'}</span>
+                </div>
+                <p class="text-xs text-slate-300 mt-0.5">${itemsStr}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-3 self-end sm:self-center">
+              <span class="font-mono font-extrabold text-amber-400 text-sm">₹${ord.roundTotal || ord.total || 0}</span>
+              <a href="/dashboard.html" class="px-2.5 py-1 rounded-lg bg-orange-500/20 text-orange-300 border border-orange-500/30 text-[11px] font-bold hover:bg-orange-500 hover:text-white transition">
+                KOT / Manage
+              </a>
+            </div>
+          `;
+          feed.appendChild(row);
+        });
+      }
+    }
+
+    function renderExpenses() {
+      const container = document.getElementById('ownerExpensesList');
+      if (!container) return;
+      container.innerHTML = '';
+      let sum = 0;
+      expensesList.forEach(e => {
+        const amt = Number(e.amount || 0);
+        sum += amt;
+        const item = document.createElement('div');
+        item.className = 'flex items-center justify-between p-3 rounded-xl bg-white/[0.03] border border-white/10';
+        item.innerHTML = `
+          <div>
+            <p class="font-bold text-white">${e.category}</p>
+            <p class="text-[11px] text-slate-400">${e.description || 'Daily operational expense'} • ${e.date || 'Today'}</p>
+          </div>
+          <span class="font-mono font-extrabold text-rose-400">₹${amt.toLocaleString('en-IN')}</span>
+        `;
+        container.appendChild(item);
+      });
+      document.getElementById('ownerTotalExpenses').textContent = '₹' + sum.toLocaleString('en-IN');
+      renderOwnerDashboard();
+    }
+
+    // Modal Inspect for any of the 25 Tables
+    function openTableDetailModal(tableId) {
+      const t = tablesData[tableId] || { status: 'idle', total: 0, orders: [] };
+      const allItems = (t.orders || []).flatMap(o => o.items || []);
+      const content = document.getElementById('tableModalContent');
+
+      content.innerHTML = `
+        <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+          <div>
+            <h3 class="text-xl font-extrabold text-white">Table ${tableId < 10 ? '0' + tableId : tableId} Telemetry</h3>
+            <p class="text-xs text-slate-400">${t.orders ? t.orders.length : 0} order rounds active</p>
+          </div>
+          <span class="text-lg font-mono font-extrabold text-amber-400">₹${parseFloat(t.total || 0).toFixed(2)}</span>
+        </div>
+
+        <div class="space-y-2 max-h-60 overflow-y-auto mb-5 text-xs">
+          ${allItems.length === 0 ? '<p class="text-slate-500 py-6 text-center">No active orders on this table.</p>' : allItems.map(i => `
+            <div class="flex justify-between p-2.5 rounded-xl bg-white/5">
+              <span class="font-semibold text-white"><b>${i.qty || 1}x</b> ${i.name}</span>
+              <span class="font-mono text-amber-400">₹${(i.price || 0) * (i.qty || 1)}</span>
+            </div>
+          `).join('')}
+        </div>
+
+        <div class="flex flex-wrap gap-2.5">
+          ${parseFloat(t.total || 0) > 0 ? `
+            <button onclick="settleTableFromOwner(${tableId}, 'CASH')" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition">
+              💵 Settle Cash & Sync Sheet
+            </button>
+            <button onclick="settleTableFromOwner(${tableId}, 'UPI')" class="flex-1 bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition">
+              📱 Settle UPI & Sync Sheet
+            </button>
+          ` : ''}
+          <button onclick="resetTableFromOwner(${tableId})" class="bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/30 px-4 py-2.5 rounded-xl text-xs font-bold transition">
+            Reset Table
+          </button>
+        </div>
+      `;
+      document.getElementById('tableDetailModal').classList.remove('hidden');
+    }
+
+    function closeTableDetailModal() {
+      document.getElementById('tableDetailModal').classList.add('hidden');
+    }
+
+    function settleTableFromOwner(tableId, method) {
+      socket.emit('pay-bill', { tableId, method });
+      closeTableDetailModal();
+    }
+
+    function resetTableFromOwner(tableId) {
+      socket.emit('clear-table', { tableId });
+      closeTableDetailModal();
+    }
+
+    function openOwnerExpenseModal() {
+      document.getElementById('ownerExpenseModal').classList.remove('hidden');
+    }
+
+    function closeOwnerExpenseModal() {
+      document.getElementById('ownerExpenseModal').classList.add('hidden');
+    }
+
+    async function submitOwnerExpense(e) {
+      e.preventDefault();
+      const category = document.getElementById('expCat').value;
+      const amount = document.getElementById('expAmt').value;
+      const description = document.getElementById('expDesc').value;
+      const btn = document.getElementById('expSubmitBtn');
+      btn.disabled = true;
+      btn.textContent = 'Syncing...';
+
+      try {
+        await fetch('/api/expenses', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ category, amount, description })
+        });
+        closeOwnerExpenseModal();
+        e.target.reset();
+      } catch (err) {
+        alert('Failed to sync expense: ' + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save & Sync Sheet';
+      }
+    }
+
+    // Socket Events
+    socket.on('connect', () => {
+      socket.emit('get-table-status', { tableId: 1 });
+    });
+
+    socket.on('tables-sync', (tables) => {
+      tablesData = tables || {};
+      renderOwnerDashboard();
+    });
+
+    socket.on('stock-sync', (data) => {
+      if (data && Array.isArray(data.soldOutIds)) {
+        const count = Math.floor(data.soldOutIds.length / 2);
+        const el = document.getElementById('kpiSoldOutCount');
+        if (el) el.textContent = `${count} Sold Out`;
+      }
+    });
+
+    socket.on('admin-new-order', () => {
+      playOwnerChime();
+    });
+
+    socket.on('staff-alert', () => {
+      playOwnerChime();
+    });
+
+    socket.on('expense-added', (exp) => {
+      expensesList.unshift(exp);
+      renderExpenses();
+    });
+
+    
+    // =========================================================================
+    // HOTEL NANDHI INN — LODGE ROOMS & TABLE RESERVATIONS OWNER TELEMETRY
+    // =========================================================================
+    let lodgeFilter = 'all';
+    let ownerLodgeRooms = {};
+    let ownerLodgeBookings = [];
+    let ownerTableReservations = [];
+
+    function seedDefaultLodgeState() {
+      const cat = [
+        { roomNo: '101', floor: 1, type: 'Standard Non-AC Room', price: 1299 },
+        { roomNo: '102', floor: 1, type: 'Standard Non-AC Room', price: 1299, status: 'housekeeping' },
+        { roomNo: '103', floor: 1, type: 'Standard Non-AC Room', price: 1299 },
+        { roomNo: '104', floor: 1, type: 'Standard Non-AC Room', price: 1299 },
+        { roomNo: '105', floor: 1, type: 'Standard Non-AC Room', price: 1299 },
+        { roomNo: '106', floor: 1, type: 'Deluxe AC Room', price: 1899, status: 'occupied', guestName: 'Dr. Mahesh Gowda', phone: '+91 98450 11223', idProof: 'Aadhaar •••• 4821', nights: 2, totalAmount: 4534, advancePaid: 2500, balanceDue: 2034, bookingId: 'NDH-8401' },
+        { roomNo: '107', floor: 1, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '108', floor: 1, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '109', floor: 1, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '110', floor: 1, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '201', floor: 2, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '202', floor: 2, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '203', floor: 2, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '204', floor: 2, type: 'Deluxe AC Room', price: 1899 },
+        { roomNo: '205', floor: 2, type: 'Executive AC King Suite', price: 2599, status: 'occupied', guestName: 'Smt. Kavitha & Family', phone: '+91 94480 66789', idProof: 'Aadhaar •••• 9104', nights: 1, totalAmount: 3303, advancePaid: 3303, balanceDue: 0, bookingId: 'NDH-8402' },
+        { roomNo: '206', floor: 2, type: 'Executive AC King Suite', price: 2599 },
+        { roomNo: '207', floor: 2, type: 'Executive AC King Suite', price: 2599 },
+        { roomNo: '208', floor: 2, type: 'Executive AC King Suite', price: 2599 },
+        { roomNo: '209', floor: 2, type: 'Family Interconnected AC Suite', price: 3299, status: 'reserved', guestName: 'Sri Rajashekar Murthy', phone: '+91 99001 44556', idProof: 'Driving License', nights: 2, totalAmount: 7726, advancePaid: 3863, balanceDue: 3863, bookingId: 'NDH-8403' },
+        { roomNo: '210', floor: 2, type: 'Family Interconnected AC Suite', price: 3299 }
+      ];
+      cat.forEach(r => {
+        ownerLodgeRooms[r.roomNo] = { status: 'available', totalAmount: 0, advancePaid: 0, balanceDue: 0, ...r };
+      });
+      ownerLodgeBookings = [
+        { bookingId: 'NDH-8401', roomNo: '106', roomType: 'Deluxe AC Room', guestName: 'Dr. Mahesh Gowda', phone: '+91 98450 11223', idProof: 'Aadhaar •••• 4821', checkIn: '2026-11-13', checkOut: '2026-11-15', nights: 2, totalAmount: 4534, advancePaid: 2500, balanceDue: 2034, status: 'Checked-In', paymentMethod: 'UPI Advance' },
+        { bookingId: 'NDH-8402', roomNo: '205', roomType: 'Executive AC King Suite', guestName: 'Smt. Kavitha & Family', phone: '+91 94480 66789', idProof: 'Aadhaar •••• 9104', checkIn: '2026-11-13', checkOut: '2026-11-14', nights: 1, totalAmount: 3303, advancePaid: 3303, balanceDue: 0, status: 'Checked-In', paymentMethod: 'Full UPI Paid' },
+        { bookingId: 'NDH-8403', roomNo: '209', roomType: 'Family Interconnected AC Suite', guestName: 'Sri Rajashekar Murthy', phone: '+91 99001 44556', idProof: 'Driving License', checkIn: '2026-11-13', checkOut: '2026-11-15', nights: 2, totalAmount: 7726, advancePaid: 3863, balanceDue: 3863, status: 'Reserved', paymentMethod: '50% Advance UPI' }
+      ];
+      ownerTableReservations = [
+        { reservationId: 'RES-301', tableId: 4, tableName: 'Table 04', guestName: 'Pradeep Kumar & Family', phone: '+91 97412 33890', guestsCount: 6, timeSlot: '08:00 PM (Dinner)', area: 'Ground Floor Woven-Lamp Hall', status: 'Confirmed' }
+      ];
+    }
+    seedDefaultLodgeState();
+
+    function setLodgeFilter(f) {
+      lodgeFilter = f;
+      ['all','occupied','reserved','available'].forEach(k => {
+        const b = document.getElementById('lf-' + k);
+        if (!b) return;
+        if (k === f) {
+          b.className = 'px-3 py-1.5 rounded-xl bg-amber-500 text-slate-950 font-extrabold transition';
+        } else {
+          b.className = 'px-3 py-1.5 rounded-xl bg-white/5 text-slate-300 border border-white/10 hover:bg-white/10 transition';
+        }
+      });
+      renderOwnerLodgeMatrix();
+    }
+
+    function renderOwnerLodgeMatrix() {
+      const grid = document.getElementById('ownerLodgeMatrix');
+      if (!grid) return;
+      const roomsArr = Object.values(ownerLodgeRooms).sort((a,b) => Number(a.roomNo) - Number(b.roomNo));
+      const filtered = roomsArr.filter(r => lodgeFilter === 'all' || r.status === lodgeFilter);
+
+      let lodgeRev = 0;
+      ownerLodgeBookings.forEach(b => { lodgeRev += Number(b.totalAmount || 0); });
+      const revBadge = document.getElementById('ownerLodgeRevenueBadge');
+      if (revBadge) revBadge.textContent = `Lodge Revenue: ₹${lodgeRev.toLocaleString('en-IN')}`;
+
+      grid.innerHTML = filtered.map(r => {
+        const isOcc = r.status === 'occupied';
+        const isRes = r.status === 'reserved';
+        const isClean = r.status === 'housekeeping';
+        const cardStyle = isOcc
+          ? 'border-rose-500/40 bg-rose-500/10'
+          : (isRes ? 'border-amber-500/40 bg-amber-500/10' : (isClean ? 'border-cyan-500/40 bg-cyan-500/10' : 'border-emerald-500/25 bg-emerald-500/[0.04] hover:border-emerald-400/50'));
+        const badgeStyle = isOcc
+          ? 'bg-rose-500 text-white'
+          : (isRes ? 'bg-amber-500 text-slate-950' : (isClean ? 'bg-cyan-400 text-slate-950' : 'bg-emerald-500/20 text-emerald-300'));
+        return `
+          <div onclick="openLodgeRoomModal('${r.roomNo}')" class="p-3.5 rounded-2xl border ${cardStyle} cursor-pointer transition transform hover:-translate-y-0.5 flex flex-col justify-between">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-mono font-extrabold text-white text-sm">Room ${r.roomNo}</span>
+              <span class="px-2 py-0.5 rounded-full text-[9px] font-extrabold uppercase ${badgeStyle}">${r.status}</span>
+            </div>
+            <div>
+              <p class="text-[11px] font-bold text-slate-200 truncate">${r.guestName || r.type}</p>
+              <p class="text-[10px] text-slate-400 truncate mt-0.5">${r.guestName ? (r.phone || r.idProof || '') : `Floor ${r.floor} • ₹${r.price}/night`}</p>
+              <div class="flex items-center justify-between mt-2 pt-1.5 border-t border-white/10 text-[11px]">
+                <span class="font-mono font-bold text-amber-400">₹${(r.totalAmount || r.price).toLocaleString('en-IN')}</span>
+                <span class="text-[10px] ${r.balanceDue > 0 ? 'text-rose-400 font-bold' : 'text-emerald-400'}">${r.balanceDue > 0 ? 'Due ₹' + r.balanceDue : 'Manage →'}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Render Bookings Feed
+      const bFeed = document.getElementById('ownerLodgeBookingsFeed');
+      const bCnt = document.getElementById('ownerLodgeBookingsCount');
+      if (bCnt) bCnt.textContent = `${ownerLodgeBookings.length} Active Bookings`;
+      if (bFeed) {
+        bFeed.innerHTML = ownerLodgeBookings.map(b => `
+          <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">#${b.bookingId}</span>
+                <span class="font-extrabold text-white">Room ${b.roomNo} — ${b.guestName}</span>
+                <span class="text-[10px] px-2 py-0.5 rounded bg-emerald-500/15 text-emerald-300 font-bold">${b.status}</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">${b.roomType} • ${b.nights} Night(s) (${b.checkIn} to ${b.checkOut}) • ${b.phone} • ${b.idProof || 'ID Verified'}</p>
+            </div>
+            <div class="flex items-center gap-2 self-end sm:self-center">
+              <div class="text-right">
+                <p class="font-mono font-extrabold text-amber-400">₹${Number(b.totalAmount || 0).toLocaleString('en-IN')}</p>
+                <p class="text-[10px] ${b.balanceDue > 0 ? 'text-rose-400' : 'text-emerald-400'}">${b.balanceDue > 0 ? 'Bal: ₹' + b.balanceDue : 'Full Paid'}</p>
+              </div>
+              <button onclick="openLodgeRoomModal('${b.roomNo}')" class="px-2.5 py-1.5 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black font-bold text-[11px] transition">
+                Action
+              </button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render Table Reservations Feed
+      const rFeed = document.getElementById('ownerTableReservationsFeed');
+      const rCnt = document.getElementById('ownerTableResCount');
+      if (rCnt) rCnt.textContent = `${ownerTableReservations.length} Confirmed`;
+      if (rFeed) {
+        rFeed.innerHTML = ownerTableReservations.map(tr => `
+          <div class="p-3 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-between gap-2">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px]">${tr.tableName || 'Table ' + tr.tableId}</span>
+                <span class="font-bold text-white">${tr.guestName}</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mt-0.5">${tr.guestsCount || 4} Guests • ${tr.timeSlot} • ${tr.phone || ''}</p>
+            </div>
+            <span class="px-2.5 py-1 rounded-lg bg-emerald-500/15 text-emerald-300 font-bold text-[10px]">${tr.status || 'Reserved'}</span>
+          </div>
+        `).join('');
+      }
+    }
+
+    function openLodgeRoomModal(roomNo) {
+      const r = ownerLodgeRooms[roomNo];
+      if (!r) return;
+      const modal = document.getElementById('lodgeRoomModal');
+      const content = document.getElementById('lodgeRoomModalContent');
+      content.innerHTML = `
+        <div class="flex items-center justify-between pb-3 border-b border-white/10 mb-4">
+          <div>
+            <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-300">Floor ${r.floor} • ${r.type}</span>
+            <h3 class="text-xl font-extrabold text-white mt-1">Room ${r.roomNo} Reception & Telemetry</h3>
+          </div>
+          <span class="text-lg font-mono font-extrabold text-amber-400">₹${(r.totalAmount || r.price).toLocaleString('en-IN')}</span>
+        </div>
+        <div class="space-y-2.5 text-xs mb-5 bg-white/[0.03] p-4 rounded-2xl border border-white/10">
+          <div class="flex justify-between"><span class="text-slate-400">Current Status:</span><span class="font-bold uppercase text-white">${r.status}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Guest Name:</span><span class="font-bold text-white">${r.guestName || '— Available for Walk-In / Online —'}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Phone & ID Proof:</span><span class="text-slate-200">${r.phone || '—'} (${r.idProof || 'Standard ID'})</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Advance Paid:</span><span class="font-mono text-emerald-400 font-bold">₹${(r.advancePaid || 0).toLocaleString('en-IN')}</span></div>
+          <div class="flex justify-between"><span class="text-slate-400">Balance Due:</span><span class="font-mono text-rose-400 font-bold">₹${(r.balanceDue || 0).toLocaleString('en-IN')}</span></div>
+        </div>
+        <div class="grid grid-cols-2 gap-2.5 text-xs">
+          <button onclick="ownerRoomAction('${r.roomNo}', 'checkin')" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold py-2.5 rounded-xl transition">
+            🔑 Mark Checked-In
+          </button>
+          <button onclick="ownerRoomAction('${r.roomNo}', 'checkout', 'UPI')" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold py-2.5 rounded-xl transition">
+            ✅ Settle Balance & Check-Out
+          </button>
+          <button onclick="ownerRoomAction('${r.roomNo}', 'housekeeping')" class="bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 border border-cyan-500/30 font-bold py-2.5 rounded-xl transition">
+            🧹 Send to Housekeeping
+          </button>
+          <button onclick="ownerRoomAction('${r.roomNo}', 'available')" class="bg-white/10 hover:bg-white/20 text-white font-bold py-2.5 rounded-xl transition">
+            ✨ Mark Ready / Available
+          </button>
+        </div>
+      `;
+      modal.classList.remove('hidden');
+    }
+
+    function closeLodgeRoomModal() {
+      document.getElementById('lodgeRoomModal')?.classList.add('hidden');
+    }
+
+    function ownerRoomAction(roomNo, action, paymentMethod) {
+      socket.emit('update-room-status', { roomNo, action, paymentMethod });
+      const r = ownerLodgeRooms[roomNo];
+      if (r) {
+        if (action === 'checkin') r.status = 'occupied';
+        else if (action === 'checkout') { r.status = 'housekeeping'; r.guestName = null; r.balanceDue = 0; }
+        else if (action === 'housekeeping') r.status = 'housekeeping';
+        else if (action === 'available') { r.status = 'available'; r.guestName = null; r.balanceDue = 0; }
+        renderOwnerLodgeMatrix();
+      }
+      closeLodgeRoomModal();
+    }
+
+    socket.on('lodge-sync', (data) => {
+      if (data) {
+        if (data.rooms) ownerLodgeRooms = data.rooms;
+        if (data.bookings) ownerLodgeBookings = data.bookings;
+        if (data.tableReservations) ownerTableReservations = data.tableReservations;
+        renderOwnerLodgeMatrix();
+        renderOwnerDashboard();
+      }
+    });
+
+    
+    let ownerConventionBookings = [
+      { bookingId: 'NBH-2026-01', eventDate: '2026-11-15', eventType: 'Wedding & Muhurtham', clientName: 'Sri Venkataramana & Smt. Pushpa Family', phone: '+91 98451 22334', guests: 850, packageType: 'Full-Day Wedding + Floral Decor', totalValue: 145000, advancePaid: 72500, balanceDue: 72500, status: 'Confirmed (50% Paid)' },
+      { bookingId: 'NBH-2026-02', eventDate: '2026-11-22', eventType: 'Wedding & Muhurtham', clientName: 'Sri Mallikarjuna Gowda & Family', phone: '+91 94482 77889', guests: 1000, packageType: 'Full-Day Wedding + Turnkey Catering', totalValue: 235000, advancePaid: 117500, balanceDue: 117500, status: 'Confirmed (50% Paid)' },
+      { bookingId: 'NBH-2026-03', eventDate: '2026-11-29', eventType: 'Grand Reception & Sangeet', clientName: 'Dr. Raghuveer & Family', phone: '+91 99002 55667', guests: 550, packageType: 'Evening Reception & Chandelier Stage', totalValue: 65000, advancePaid: 32500, balanceDue: 32500, status: 'Confirmed (50% Paid)' },
+      { bookingId: 'NBH-2026-04', eventDate: '2026-12-06', eventType: 'Engagement / Naming Ceremony', clientName: 'Smt. Lakshmi & Sri Naveen', phone: '+91 97415 88990', guests: 400, packageType: 'Engagement Package (8-Hr + 4 Rooms)', totalValue: 48000, advancePaid: 24000, balanceDue: 24000, status: 'Confirmed (50% Paid)' }
+    ];
+
+    function renderOwnerConventionDashboard() {
+      let tot = 0, adv = 0, bal = 0;
+      ownerConventionBookings.forEach(b => {
+        tot += Number(b.totalValue || 0);
+        adv += Number(b.advancePaid || 0);
+        bal += Number(b.balanceDue || 0);
+      });
+      const elTot = document.getElementById('ownerHallTotalRev');
+      if (elTot) elTot.textContent = '₹' + tot.toLocaleString('en-IN');
+      const elCnt = document.getElementById('ownerHallEventsCount');
+      if (elCnt) elCnt.textContent = `${ownerConventionBookings.length} Confirmed Events`;
+      const elAdv = document.getElementById('ownerHallAdvanceRev');
+      if (elAdv) elAdv.textContent = '₹' + adv.toLocaleString('en-IN');
+      const elBal = document.getElementById('ownerHallBalanceRev');
+      if (elBal) elBal.textContent = '₹' + bal.toLocaleString('en-IN');
+
+      // Update Top KPI Card for Convention Hall
+      const kpiConv = document.getElementById('kpiConventionRev');
+      if (kpiConv) kpiConv.textContent = '₹' + tot.toLocaleString('en-IN');
+      const kpiConvSub = document.getElementById('kpiConventionSub');
+      if (kpiConvSub) kpiConvSub.textContent = `50% Adv: ₹${adv.toLocaleString('en-IN')} (${ownerConventionBookings.length} Events)`;
+
+      // Update Top KPI Card for Lodge
+      let lodgeRev = 0;
+      ownerLodgeBookings.forEach(b => { lodgeRev += Number(b.totalAmount || 0); });
+      const kpiLodge = document.getElementById('kpiLodgeRevCard');
+      if (kpiLodge) kpiLodge.textContent = '₹' + lodgeRev.toLocaleString('en-IN');
+      const kpiLodgeOcc = document.getElementById('kpiLodgeOccCard');
+      if (kpiLodgeOcc) kpiLodgeOcc.textContent = `${ownerLodgeBookings.length} / 20 Rooms Booked`;
+
+      const listEl = document.getElementById('ownerConventionBookingsList');
+      if (listEl) {
+        listEl.innerHTML = ownerConventionBookings.map(b => `
+          <div class="p-4 rounded-2xl bg-white/[0.03] border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div>
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="px-2.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[11px]">${b.bookingId}</span>
+                <span class="font-extrabold text-white text-sm">${b.eventDate} — ${b.clientName}</span>
+                <span class="px-2.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">${b.status}</span>
+              </div>
+              <p class="text-slate-400 mt-1">${b.eventType} • ${b.guests} Guests • ${b.packageType} • ${b.phone}</p>
+            </div>
+            <div class="text-right font-mono">
+              <p class="text-sm font-extrabold text-amber-400">Total: ₹${Number(b.totalValue || 0).toLocaleString('en-IN')}</p>
+              <p class="text-[11px] text-emerald-300">Adv: ₹${Number(b.advancePaid || 0).toLocaleString('en-IN')} | Bal: ₹${Number(b.balanceDue || 0).toLocaleString('en-IN')}</p>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function exportOwnerConventionCsv() {
+      const rows = [
+        ['Booking ID', 'Event Date', 'Event Type', 'Client Name', 'Phone', 'Guests', 'Package', 'Total Value (INR)', '50% Advance Paid (INR)', 'Balance Due (INR)', 'Status'],
+        ...ownerConventionBookings.map(b => [b.bookingId, b.eventDate, b.eventType, b.clientName, b.phone, b.guests, b.packageType, b.totalValue, b.advancePaid, b.balanceDue, b.status])
+      ];
+      const csv = rows.map(r => r.map(x => `"${String(x).replace(/"/g, '""')}"`).join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Nandhi_Bhavana_Convention_Hall_Bookings.csv';
+      a.click();
+    }
+
+    socket.on('convention-sync', (data) => {
+      if (data && Array.isArray(data.conventionBookings)) {
+        ownerConventionBookings = data.conventionBookings;
+        renderOwnerConventionDashboard();
+        renderOwnerDashboard();
+        playOwnerChime();
+      }
+    });
+
+    socket.on('lodge-new-booking', () => {
+      playOwnerChime();
+    });
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      renderOwnerLodgeMatrix();
+      try { const lr = await fetch('/api/lodge'); const ld = await lr.json(); if (ld && ld.rooms) { ownerLodgeRooms = ld.rooms; ownerLodgeBookings = ld.bookings || []; ownerTableReservations = ld.tableReservations || []; if (ld.conventionBookings) ownerConventionBookings = ld.conventionBookings; renderOwnerLodgeMatrix(); renderOwnerConventionDashboard(); renderOwnerDashboard(); } } catch(e) {}
+      initThreeScene();
+      initMotionInteractions();
+      initOwnerCharts();
+      renderExpenses();
+
+      try {
+        const res = await fetch('/api/expenses');
+        const d = await res.json();
+        if (d && Array.isArray(d.expenses)) {
+          expensesList = d.expenses;
+          renderExpenses();
+        }
+      } catch (e) {}
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,3508 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOTEL NANDHI INN (ಹೋಟೆಲ್ ನಂದಿ ಇನ್) — Pure Veg Restaurant • Deluxe AC Lodge • Room Service | Chamarajanagar</title>
+  <meta name="description" content="Discover Hotel Nandhi Inn (ಹೋಟೆಲ್ ನಂದಿ ಇನ್) — Chamarajanagar's premier cafe & juice lounge on B. Rachaiah Double Road. Explore 155+ fresh juices, milkshakes, faloodas, sundaes, pizzas, burgers, sandwiches, rolls & snacks." />
+  <link rel="icon" href="/hotel-logo.png" />
+
+  <!-- Socket.io for Live Menu Stock & Table Reservation Sync -->
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts matching Amrit Palace luxury aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bad+Script&family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Cormorant Garamond', 'serif'],
+            script: ['Bad Script', 'cursive'],
+          },
+          colors: {
+            triveni: {
+              gold: '#D4AF37',
+              amber: '#F59E0B',
+              emerald: '#062C1E',
+              deepDark: '#060E0B',
+              cardDark: '#0B1914',
+              cream: '#FDFBF7'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #060E0B;
+      color: #FDFBF7;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+    }
+    .font-serif-luxury {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .font-script-accent {
+      font-family: 'Bad Script', cursive;
+    }
+    .gold-gradient-text {
+      background: linear-gradient(135deg, #FDE68A 0%, #F59E0B 50%, #D97706 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .glass-nav {
+      background: rgba(6, 14, 11, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(245, 158, 11, 0.18);
+    }
+    .luxury-card {
+      background: linear-gradient(160deg, rgba(16, 36, 28, 0.9) 0%, rgba(8, 20, 15, 0.95) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.18);
+    }
+    .luxury-card:hover {
+      border-color: rgba(245, 158, 11, 0.5);
+      box-shadow: 0 20px 40px -15px rgba(245, 158, 11, 0.15);
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-amber-500 selection:text-black">
+
+  <!-- TOP LUXURY NAVIGATION BAR -->
+  <header class="fixed top-0 inset-x-0 z-50 glass-nav">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Official Logo & Brand -->
+      <a href="#top" class="flex items-center gap-3.5 group">
+        <img src="/hotel-logo.png" alt="Hotel Nandhi Inn Logo" class="w-13 h-13 w-12 h-12 rounded-2xl object-cover border-2 border-amber-400/60 shadow-lg group-hover:scale-105 transition" />
+        <div>
+          <span class="block text-xl sm:text-2xl font-bold tracking-wider font-serif-luxury text-white">HOTEL NANDHI INN</span>
+          <span class="block text-[10px] uppercase tracking-[0.22em] text-amber-400 font-bold">Pure Veg Restaurant • 20-Room AC Lodge • Chamarajanagar</span>
+        </div>
+      </a>
+
+      <!-- Center Navigation Links -->
+      <nav class="hidden md:flex items-center gap-8 text-xs font-bold uppercase tracking-widest text-slate-300">
+        <a href="#story" class="hover:text-amber-400 transition">Our Story</a>
+        <a href="#signatures" class="hover:text-amber-400 transition">Signature Plates</a>
+        <a href="#full-menu" class="hover:text-amber-400 transition">160-Dish Veg Menu</a>
+        <a href="#gallery" class="hover:text-amber-400 transition">Gallery & Video</a>
+        <a href="#reviews" class="hover:text-amber-400 transition">Reviews</a>
+        <a href="#reserve" class="hover:text-amber-400 transition">Book Table</a>
+      </nav>
+
+      <!-- Right Action Buttons -->
+      <div class="flex items-center gap-3">
+        <a href="tel:6363172214" class="hidden sm:inline-flex items-center gap-2 text-xs font-bold text-amber-300 bg-amber-500/10 border border-amber-500/30 px-3.5 py-2 rounded-xl hover:bg-amber-500/20 transition">
+          <i class="fa-solid fa-phone"></i>
+          <span>6363172214</span>
+        </a>
+        <a href="/index.html?table=1" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2">
+          <i class="fa-solid fa-utensils"></i>
+          <span>Order Online / QR</span>
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+    <!-- HERO SECTION WITH HOTEL NANDHI INN BACKGROUND VIDEO & EXTERIOR LIGHTS -->
+  <section id="top" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <!-- Background Video & Fallback Image -->
+    <div class="absolute inset-0 z-0">
+      <video autoplay loop muted playsinline poster="/media/exterior-night.png" class="w-full h-full object-cover opacity-55 scale-105">
+        <source src="/media/hotel-video-1.mp4" type="video/mp4" />
+      </video>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#060E0B]/85 via-[#060E0B]/60 to-[#060E0B]"></div>
+    </div>
+
+    <!-- Hero Content -->
+    <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center py-16">
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-widest mb-6">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+        <span>Nandhi Group: Symbol of Service • Pure Veg Restaurant & 20-Room Luxury Lodge</span>
+      </div>
+
+      <p class="font-script-accent text-2xl sm:text-4xl text-amber-400 mb-2">ಹೋಟೆಲ್ ನಂದಿ ಇನ್ • Hotel Nandhi Inn</p>
+      <h1 class="font-serif-luxury text-5xl sm:text-7xl lg:text-8xl font-bold uppercase tracking-tight leading-none text-white mb-6">
+        Heritage Taste & <span class="gold-gradient-text italic">Luxury Stay</span>
+      </h1>
+
+      <p class="max-w-2xl mx-auto text-slate-300 text-base sm:text-lg leading-relaxed mb-10">
+        Welcome to Chamarajanagar’s premier hospitality landmark at <b>WWHM+42F, Urban, Chamarajanagar, Karnataka 571313</b>. Savor 160 authentic pure vegetarian dishes across South Indian tiffin, clay-oven tandoor, North Indian curries, and biryanis, or book our 20 AC & Non-AC Deluxe Lodge Rooms and Family Suites.
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#lodge-booking" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold px-8 py-4 rounded-2xl text-sm uppercase tracking-wider shadow-2xl transition transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-bed mr-1.5"></i>Book Lodge Room (₹1,299+)
+        </a>
+        <a href="#full-menu" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold px-8 py-4 rounded-2xl text-sm uppercase tracking-wider shadow-2xl transition transform hover:-translate-y-0.5">
+          <i class="fa-solid fa-utensils mr-1.5"></i>Explore 160-Dish Menu
+        </a>
+        <a href="#reserve" class="bg-white/10 hover:bg-white/15 backdrop-blur-md text-white border border-white/20 font-bold px-8 py-4 rounded-2xl text-sm uppercase tracking-wider transition">
+          Reserve A Table (01–25)
+        </a>
+      </div>
+
+      <!-- 3 Trust Pillars -->
+      <div class="grid grid-cols-3 gap-4 max-w-2xl mx-auto mt-14 pt-8 border-t border-amber-500/20">
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-400 flex items-center justify-center mx-auto mb-2">
+            <i class="fa-solid fa-leaf"></i>
+          </div>
+          <p class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-amber-100">100% Pure Vegetarian</p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-400 flex items-center justify-center mx-auto mb-2">
+            <i class="fa-solid fa-bed"></i>
+          </div>
+          <p class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-amber-100">20 AC & Non-AC Rooms</p>
+        </div>
+        <div class="text-center">
+          <div class="w-10 h-10 rounded-full bg-amber-500/15 border border-amber-400/40 text-amber-400 flex items-center justify-center mx-auto mb-2">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <p class="text-[11px] sm:text-xs font-extrabold uppercase tracking-wider text-amber-100">Elevator & Free Parking</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+    <!-- THE SPIRIT OF PURE VEG DINING & LODGE HOSPITALITY (OUR STORY, PHOTOS & VIDEOS) -->
+  <section id="story" class="py-20 bg-[#08130F] border-y border-amber-500/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Left Photo Collage -->
+        <div class="grid grid-cols-2 gap-4 relative">
+          <div class="space-y-4">
+            <img src="/media/hotel-logo.png" alt="Hotel Nandhi Inn Official Emblem" class="w-full h-72 object-cover rounded-3xl border border-amber-500/30 shadow-2xl" />
+            <img src="/media/exterior-night.png" alt="Hotel Nandhi Inn Illuminated Night Exterior" class="w-full h-48 object-cover rounded-3xl border border-amber-500/20 shadow-xl" />
+          </div>
+          <div class="space-y-4 pt-8">
+            <img src="/media/dining-arch.png" alt="Hotel Nandhi Inn Bamboo Pendant Dining Hall" class="w-full h-56 object-cover rounded-3xl border border-amber-500/20 shadow-xl" />
+            <img src="/media/storefront-day.png" alt="Hotel Nandhi Inn Exterior Building" class="w-full h-64 object-cover rounded-3xl border border-amber-500/20 shadow-xl" />
+          </div>
+        </div>
+
+        <!-- Right Story Copy -->
+        <div class="space-y-6">
+          <p class="font-script-accent text-2xl text-amber-400">Nandhi Group • Symbol of Service</p>
+          <h2 class="font-serif-luxury text-4xl sm:text-5xl font-bold text-white leading-tight">
+            Pure Vegetarian Culinary Excellence & Effortless Stay
+          </h2>
+          <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+            Situated at <b>WWHM+42F, Urban, Chamarajanagar, Karnataka 571313</b>, <b>Hotel Nandhi Inn (ಹೋಟೆಲ್ ನಂದಿ ಇನ್)</b> combines a warm woven-lamp ground floor pure vegetarian restaurant with two upper floors of 20 modern AC & Non-AC Deluxe Lodge Rooms and Family Suites.
+          </p>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Our kitchen prepares <b>160 freshly cooked dishes across 7 signature categories</b>—from crispy pure-ghee masala dosas and South Indian tiffins to clay-oven tandoori kebabs, rich paneer gravies, aromatic biryanis, Indo-Chinese wok dishes, and continental wood-fired pizzas.
+          </p>
+
+          <div class="grid grid-cols-3 gap-4 pt-4">
+            <div class="luxury-card p-4 rounded-2xl text-center">
+              <h4 class="text-2xl sm:text-3xl font-extrabold text-amber-400">160</h4>
+              <p class="text-xs text-slate-400 mt-1">Pure Veg Dishes</p>
+            </div>
+            <div class="luxury-card p-4 rounded-2xl text-center">
+              <h4 class="text-2xl sm:text-3xl font-extrabold text-emerald-400">20 Rooms</h4>
+              <p class="text-xs text-slate-400 mt-1">AC & Non-AC Lodge</p>
+            </div>
+            <div class="luxury-card p-4 rounded-2xl text-center">
+              <h4 class="text-2xl sm:text-3xl font-extrabold text-amber-400">25 Tables</h4>
+              <p class="text-xs text-slate-400 mt-1">Smart QR Dining</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE HOTEL VIDEO WALKTHROUGH SHOWCASE (RIGHT BELOW PHOTOS) -->
+      <div class="pt-6 border-t border-amber-500/20">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6">
+          <div>
+            <span class="text-xs font-extrabold uppercase tracking-widest text-amber-400"><i class="fa-solid fa-video mr-1.5"></i>Live Property Walkthrough Videos</span>
+            <h3 class="font-serif-luxury text-3xl font-bold text-white mt-1">Experience Hotel Nandhi Inn in Motion</h3>
+          </div>
+          <span class="text-xs text-slate-400">WWHM+42F, Urban, Chamarajanagar 571313</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="luxury-card rounded-3xl overflow-hidden border border-amber-500/30 p-3">
+            <div class="relative rounded-2xl overflow-hidden h-64 bg-black">
+              <video src="/media/hotel-video-1.mp4" autoplay loop muted playsinline controls class="w-full h-full object-cover"></video>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 text-amber-300 text-[10px] font-extrabold uppercase border border-amber-500/30">Night Exterior & Dining Illumination</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-white text-sm">Hotel Nandhi Inn — Grand Night Facade & Restaurant</h4>
+              <p class="text-xs text-slate-400 mt-0.5">Illuminated multi-story lodge building, paved parking forecourt, and ground floor lattice dining hall.</p>
+            </div>
+          </div>
+          <div class="luxury-card rounded-3xl overflow-hidden border border-amber-500/30 p-3">
+            <div class="relative rounded-2xl overflow-hidden h-64 bg-black">
+              <video src="/media/hotel-video-2.mp4" autoplay loop muted playsinline controls class="w-full h-full object-cover"></video>
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 text-emerald-300 text-[10px] font-extrabold uppercase border border-emerald-500/30">Grand Entrance & Elevator Lobby</span>
+            </div>
+            <div class="p-3">
+              <h4 class="font-bold text-white text-sm">Lodge Reception Corridor & Passenger Lift Access</h4>
+              <p class="text-xs text-slate-400 mt-0.5">Step-free illuminated walkway leading directly to our 24-hour lodge reception and elevator to Floors 1 & 2.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SIGNATURE PLATES SHOWCASE (4 AUTHENTIC NANDHI HOTEL PURE-VEG DISHES) -->
+  <section id="signatures" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <p class="font-script-accent text-2xl text-amber-400">Signature Plates</p>
+      <h2 class="font-serif-luxury text-4xl sm:text-5xl font-bold text-white mt-1">Signature Dishes. Classic Roots.</h2>
+      <p class="text-xs sm:text-sm text-slate-400 mt-2">Handpicked pure vegetarian favorites loved by our regular guests at Hotel Nandhi Inn, Chamarajanagar</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <!-- Signature 1 -->
+      <div class="luxury-card rounded-3xl overflow-hidden group flex flex-col justify-between">
+        <div>
+          <div class="h-52 overflow-hidden relative">
+            <img src="/All Dieshes/BreakFast/Gee Pudi Masala Dose.jpg" alt="Gee Pudi Masala Dose" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <span class="absolute top-3 left-3 bg-amber-500 text-black text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">Morning Bestseller</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-white">Gee Pudi Masala Dose</h3>
+            <p class="text-xs text-slate-400 mt-1">Golden crispy dosa roasted in pure Nandhi ghee, dusted with spiced chutney pudi, potato palya, coconut chutney & sambar.</p>
+          </div>
+        </div>
+        <div class="px-5 pb-5 flex items-center justify-between">
+          <span class="text-xl font-extrabold text-amber-400">₹100</span>
+          <a href="#full-menu" class="text-xs font-bold text-amber-300 hover:underline">Order Now →</a>
+        </div>
+      </div>
+
+      <!-- Signature 2 -->
+      <div class="luxury-card rounded-3xl overflow-hidden group flex flex-col justify-between">
+        <div>
+          <div class="h-52 overflow-hidden relative">
+            <img src="/All Dieshes/Main Course/Paneer Nandhi Special.jpg" alt="Paneer Nandhi Special" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <span class="absolute top-3 left-3 bg-emerald-500 text-black text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">House Signature</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-white">Paneer Nandhi Special</h3>
+            <p class="text-xs text-slate-400 mt-1">Chef's signature rich cashew-tomato gravy simmered with soft malai paneer cubes, roasted spices, and fresh cream.</p>
+          </div>
+        </div>
+        <div class="px-5 pb-5 flex items-center justify-between">
+          <span class="text-xl font-extrabold text-amber-400">₹270</span>
+          <a href="#full-menu" class="text-xs font-bold text-amber-300 hover:underline">Order Now →</a>
+        </div>
+      </div>
+
+      <!-- Signature 3 -->
+      <div class="luxury-card rounded-3xl overflow-hidden group flex flex-col justify-between">
+        <div>
+          <div class="h-52 overflow-hidden relative">
+            <img src="/All Dieshes/Rice Items/Veg Hyderabadi Biriyani.jpg" alt="Veg Hyderabadi Biriyani" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <span class="absolute top-3 left-3 bg-amber-500 text-black text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">Royal Dum Rice</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-white">Veg Hyderabadi Biriyani</h3>
+            <p class="text-xs text-slate-400 mt-1">Fragrant long-grain basmati rice slow-cooked on dum with garden vegetables, saffron, mint, pure ghee & boondi raita.</p>
+          </div>
+        </div>
+        <div class="px-5 pb-5 flex items-center justify-between">
+          <span class="text-xl font-extrabold text-amber-400">₹195</span>
+          <a href="#full-menu" class="text-xs font-bold text-amber-300 hover:underline">Order Now →</a>
+        </div>
+      </div>
+
+      <!-- Signature 4 -->
+      <div class="luxury-card rounded-3xl overflow-hidden group flex flex-col justify-between">
+        <div>
+          <div class="h-52 overflow-hidden relative">
+            <img src="/All Dieshes/Tandoor & Breads/Paneer Tikka.jpg" alt="Tandoori Paneer Tikka" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+            <span class="absolute top-3 left-3 bg-cyan-400 text-black text-[10px] font-extrabold px-2.5 py-1 rounded-full uppercase">Clay-Oven Tandoor</span>
+          </div>
+          <div class="p-5">
+            <h3 class="font-bold text-lg text-white">Tandoori Paneer Tikka</h3>
+            <p class="text-xs text-slate-400 mt-1">Char-grilled cottage cheese cubes marinated in spiced hung curd, bell peppers & onions, served with mint chutney.</p>
+          </div>
+        </div>
+        <div class="px-5 pb-5 flex items-center justify-between">
+          <span class="text-xl font-extrabold text-amber-400">₹230</span>
+          <a href="#full-menu" class="text-xs font-bold text-amber-300 hover:underline">Order Now →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE 129-DISH MENU & LIVE TABLE ORDERING -->
+  
+  <!-- ===================================================================== -->
+  <!-- HOTEL NANDHI INN — COMPLETE 20-ROOM LODGE BOOKING & STAY PORTAL       -->
+  <!-- ===================================================================== -->
+  <section id="lodge-booking" class="py-20 bg-gradient-to-b from-[#06100C] via-[#091812] to-[#08130F] border-t border-amber-500/25 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+      <!-- Section Header -->
+      <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-10">
+        <div>
+          <span class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-extrabold uppercase tracking-widest">
+            <i class="fa-solid fa-hotel"></i> Nandhi Group • Luxury Stay & Hospitality
+          </span>
+          <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mt-3">
+            Hotel Nandhi Inn — <span class="gold-gradient-text">Lodge & Suite Reservations</span>
+          </h2>
+          <p class="text-xs sm:text-sm text-slate-300 mt-2 max-w-2xl">
+            Experience effortless comfort across our 20 well-appointed AC & Non-AC rooms and family suites on Floors 1 & 2, featuring elevator access, 24-hour front desk, high-speed Wi-Fi, room service, and ample paved parking at WWHM+42F, Urban, Chamarajanagar.
+          </p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3 text-xs">
+          <div class="px-4 py-2.5 rounded-2xl bg-[#0E1F18] border border-emerald-500/30 text-emerald-300 font-bold flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+            <span id="webLiveAvailableRoomsCount">16 / 20 Rooms Available Today</span>
+          </div>
+          <a href="/owner.html" class="px-4 py-2.5 rounded-2xl bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 text-amber-300 font-extrabold transition">
+            <i class="fa-solid fa-crown mr-1.5"></i>View on Owner Dashboard
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 Room Categories Showcase Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mb-12">
+        <!-- Room Card 1 -->
+        <div class="luxury-card rounded-3xl overflow-hidden flex flex-col justify-between border border-amber-500/25 hover:border-amber-400 transition group">
+          <div>
+            <div class="relative h-44 overflow-hidden">
+              <img src="media/storefront-day.png" alt="Standard Non-AC Room" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-amber-300 text-[11px] font-bold border border-amber-500/30">Floor 1 • Rooms 101–105</span>
+              <span class="absolute bottom-3 right-3 px-3 py-1 rounded-xl bg-emerald-500 text-black font-extrabold text-xs">₹1,299 / night</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-extrabold text-white">Standard Non-AC Room</h3>
+              <p class="text-xs text-slate-400 mt-1">Spacious cross-ventilated room with Queen/Twin bed, work desk, 43" Smart TV, and hot water bath.</p>
+              <div class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-300">
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-user-group text-amber-400 mr-1"></i>2 Adults</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-wifi text-amber-400 mr-1"></i>Free Wi-Fi</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-elevator text-amber-400 mr-1"></i>Lift</span>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5">
+            <button type="button" onclick="selectLodgeRoomType('Standard Non-AC Room', 1299, '101')" class="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40 font-extrabold text-xs transition">
+              Select Standard Room — ₹1,299
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Card 2 -->
+        <div class="luxury-card rounded-3xl overflow-hidden flex flex-col justify-between border border-amber-500/40 shadow-lg shadow-amber-500/10 group">
+          <div>
+            <div class="relative h-44 overflow-hidden">
+              <img src="media/exterior-night.png" alt="Deluxe AC Room" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-amber-500 text-black text-[11px] font-extrabold">MOST POPULAR • AC</span>
+              <span class="absolute bottom-3 right-3 px-3 py-1 rounded-xl bg-emerald-500 text-black font-extrabold text-xs">₹1,899 / night</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-extrabold text-white">Deluxe AC Room</h3>
+              <p class="text-xs text-slate-400 mt-1">Climate-controlled luxury room on Floors 1 & 2 (106–110, 201–204) with orthopedic King bed & tea maker.</p>
+              <div class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-300">
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-snowflake text-cyan-400 mr-1"></i>Split AC</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-bed text-amber-400 mr-1"></i>King Bed</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-mug-hot text-amber-400 mr-1"></i>Room Service</span>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5">
+            <button type="button" onclick="selectLodgeRoomType('Deluxe AC Room', 1899, '107')" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-extrabold text-xs transition shadow-md">
+              Select Deluxe AC — ₹1,899
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Card 3 -->
+        <div class="luxury-card rounded-3xl overflow-hidden flex flex-col justify-between border border-amber-500/25 hover:border-amber-400 transition group">
+          <div>
+            <div class="relative h-44 overflow-hidden">
+              <img src="media/dining-arch.png" alt="Executive AC King Suite" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-amber-300 text-[11px] font-bold border border-amber-500/30">Floor 2 • Rooms 205–208</span>
+              <span class="absolute bottom-3 right-3 px-3 py-1 rounded-xl bg-emerald-500 text-black font-extrabold text-xs">₹2,599 / night</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-extrabold text-white">Executive AC King Suite</h3>
+              <p class="text-xs text-slate-400 mt-1">Premium suite with plush lounge seating, work desk, mini-fridge, complimentary breakfast & priority service.</p>
+              <div class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-300">
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-couch text-amber-400 mr-1"></i>Lounge Sofa</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-utensils text-emerald-400 mr-1"></i>Breakfast Incl.</span>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5">
+            <button type="button" onclick="selectLodgeRoomType('Executive AC King Suite', 2599, '206')" class="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40 font-extrabold text-xs transition">
+              Select Executive Suite — ₹2,599
+            </button>
+          </div>
+        </div>
+
+        <!-- Room Card 4 -->
+        <div class="luxury-card rounded-3xl overflow-hidden flex flex-col justify-between border border-amber-500/25 hover:border-amber-400 transition group">
+          <div>
+            <div class="relative h-44 overflow-hidden">
+              <img src="media/street-wide.png" alt="Family Interconnected AC Suite" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+              <span class="absolute top-3 left-3 px-3 py-1 rounded-full bg-black/75 backdrop-blur-md text-amber-300 text-[11px] font-bold border border-amber-500/30">Floor 2 • Rooms 209–210</span>
+              <span class="absolute bottom-3 right-3 px-3 py-1 rounded-xl bg-emerald-500 text-black font-extrabold text-xs">₹3,299 / night</span>
+            </div>
+            <div class="p-5">
+              <h3 class="text-lg font-extrabold text-white">Family Interconnected Suite</h3>
+              <p class="text-xs text-slate-400 mt-1">Dual King beds for families & wedding guests visiting Chamarajanagar, with 2 baths & free parking.</p>
+              <div class="flex flex-wrap gap-1.5 mt-3 text-[11px] text-slate-300">
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-users text-amber-400 mr-1"></i>Up to 6 Guests</span>
+                <span class="px-2 py-0.5 rounded bg-white/5 border border-white/10"><i class="fa-solid fa-car text-emerald-400 mr-1"></i>Free Parking</span>
+              </div>
+            </div>
+          </div>
+          <div class="px-5 pb-5">
+            <button type="button" onclick="selectLodgeRoomType('Family Interconnected AC Suite', 3299, '210')" class="w-full py-2.5 rounded-xl bg-amber-500/15 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/40 font-extrabold text-xs transition">
+              Select Family Suite — ₹3,299
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Live 20-Room Selector & Complete Reservation Form -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+
+        <!-- Left 7 Cols: Booking Engine Form -->
+        <div class="lg:col-span-7 luxury-card rounded-3xl p-6 sm:p-8 border border-amber-500/30">
+          <div class="flex items-center justify-between pb-4 border-b border-amber-500/20 mb-6">
+            <div>
+              <h3 class="text-xl font-extrabold text-white">Instant Room Booking & Check-In Reservation</h3>
+              <p class="text-xs text-slate-400 mt-0.5">All bookings sync immediately to the Hotel Nandhi Inn Owner Command Dashboard & Reception</p>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-amber-500/15 text-amber-300 text-[11px] font-bold border border-amber-500/30">12:00 PM Check-In</span>
+          </div>
+
+          <form id="lodgeBookingForm" onsubmit="submitLodgeBooking(event)" class="space-y-4 text-xs">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Check-In Date *</label>
+                <input type="date" id="lbCheckIn" required onchange="recalcLodgePrice()" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Check-Out Date *</label>
+                <input type="date" id="lbCheckOut" required onchange="recalcLodgePrice()" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Room Category *</label>
+                <select id="lbRoomType" onchange="onLodgeTypeChange()" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-amber-300 font-bold focus:outline-none focus:border-amber-400">
+                  <option value="Standard Non-AC Room" data-price="1299">Standard Non-AC (₹1,299)</option>
+                  <option value="Deluxe AC Room" data-price="1899" selected>Deluxe AC Room (₹1,899)</option>
+                  <option value="Executive AC King Suite" data-price="2599">Executive AC Suite (₹2,599)</option>
+                  <option value="Family Interconnected AC Suite" data-price="3299">Family AC Suite (₹3,299)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Preferred Room No.</label>
+                <select id="lbRoomNo" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-emerald-300 font-mono font-bold focus:outline-none focus:border-amber-400">
+                  <option value="107">Room 107 (Floor 1 - Available)</option>
+                  <option value="108">Room 108 (Floor 1 - Available)</option>
+                  <option value="109">Room 109 (Floor 1 - Available)</option>
+                  <option value="110">Room 110 (Floor 1 - Available)</option>
+                  <option value="201">Room 201 (Floor 2 - Available)</option>
+                  <option value="202">Room 202 (Floor 2 - Available)</option>
+                  <option value="203">Room 203 (Floor 2 - Available)</option>
+                  <option value="204">Room 204 (Floor 2 - Available)</option>
+                  <option value="101">Room 101 (Standard Non-AC)</option>
+                  <option value="103">Room 103 (Standard Non-AC)</option>
+                  <option value="206">Room 206 (Executive Suite)</option>
+                  <option value="210">Room 210 (Family Suite)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Guests (Adults & Kids)</label>
+                <select id="lbGuests" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                  <option value="1 Adult">1 Adult (Single Occupancy)</option>
+                  <option value="2 Adults" selected>2 Adults (Double Occupancy)</option>
+                  <option value="2 Adults, 1 Child">2 Adults + 1 Child</option>
+                  <option value="3 Adults, 1 Child">3 Adults + 1 Child</option>
+                  <option value="4 Adults, 2 Children">4 Adults + 2 Children (Family)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Gov. ID Proof Type *</label>
+                <select id="lbIdProof" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400">
+                  <option value="Aadhaar Card">Aadhaar Card</option>
+                  <option value="Driving License">Driving License</option>
+                  <option value="Passport">Passport</option>
+                  <option value="Voter ID">Voter ID Card</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Guest Full Name *</label>
+                <input type="text" id="lbGuestName" required placeholder="e.g. Sri Venkatesh Murthy" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Mobile / WhatsApp No. *</label>
+                <input type="tel" id="lbPhone" required placeholder="+91 98450 00000" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Email / GSTIN (Optional)</label>
+                <input type="text" id="lbEmail" placeholder="guest@email.com / 29ABCDE..." class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+            </div>
+
+            <!-- Add-On Hospitality Services -->
+            <div class="p-4 rounded-2xl bg-[#060E0B] border border-amber-500/20">
+              <label class="block font-bold text-amber-300 mb-2.5">Stay Add-Ons & Guest Amenities</label>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                <label class="flex items-center gap-2 text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="addonBreakfast" checked onchange="recalcLodgePrice()" class="accent-amber-500 w-4 h-4" />
+                  <span>Complimentary Morning Tiffin & Filter Coffee (Free)</span>
+                </label>
+                <label class="flex items-center gap-2 text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="addonMattress" onchange="recalcLodgePrice()" class="accent-amber-500 w-4 h-4" />
+                  <span>Extra Orthopedic Mattress (+₹350 / night)</span>
+                </label>
+                <label class="flex items-center gap-2 text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="addonEarly" onchange="recalcLodgePrice()" class="accent-amber-500 w-4 h-4" />
+                  <span>Early Morning Check-In at 7:00 AM (+₹250)</span>
+                </label>
+                <label class="flex items-center gap-2 text-slate-200 cursor-pointer">
+                  <input type="checkbox" id="addonPickup" onchange="recalcLodgePrice()" class="accent-amber-500 w-4 h-4" />
+                  <span>Railway / KSRTC Bus Stand Pickup (+₹300)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Payment Option *</label>
+                <select id="lbPaymentMethod" onchange="recalcLodgePrice()" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-emerald-300 font-bold focus:outline-none focus:border-amber-400">
+                  <option value="50% Advance UPI" selected>Pay 50% Booking Advance via UPI</option>
+                  <option value="Full UPI Paid">Pay 100% Full Stay via UPI</option>
+                  <option value="Pay at Hotel Reception">Pay at Hotel Reception on Check-In</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-bold text-slate-300 mb-1.5">Special Requests / Arrival Time</label>
+                <input type="text" id="lbNotes" placeholder="e.g. Arriving at 2:00 PM, need ground floor access" class="w-full bg-[#060E0B] border border-amber-500/30 px-3.5 py-2.5 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+              </div>
+            </div>
+
+            <!-- Live Price Calculation Bar -->
+            <div class="p-4 rounded-2xl bg-gradient-to-r from-amber-500/15 via-emerald-500/10 to-amber-500/15 border border-amber-500/35 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div class="space-y-0.5">
+                <p class="text-[11px] text-slate-300"><span id="lbSummaryNights">1 Night</span> • Base + Add-ons + 12% GST</p>
+                <p class="text-lg sm:text-xl font-extrabold text-white">Total Stay Tariff: <span id="lbTotalDisplay" class="text-amber-400 font-mono">₹2,127</span></p>
+                <p class="text-[11px] text-emerald-300 font-semibold">Advance Payable Now: <span id="lbAdvanceDisplay" class="font-mono">₹1,064</span> • Balance at Desk: <span id="lbBalanceDisplay" class="font-mono">₹1,063</span></p>
+              </div>
+              <button type="submit" class="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-400 hover:from-amber-400 hover:to-amber-300 text-black font-extrabold text-xs sm:text-sm shadow-xl transition">
+                <i class="fa-solid fa-calendar-check mr-1.5"></i>Confirm Room Booking
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right 5 Cols: Live 20-Room Availability Grid & Hotel Amenities -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="luxury-card rounded-3xl p-6 border border-amber-500/25">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="text-base font-extrabold text-white">Live 20-Room Floor Status</h4>
+                <p class="text-[11px] text-slate-400">Click any green available room to pre-select it</p>
+              </div>
+              <div class="flex items-center gap-2 text-[10px]">
+                <span class="flex items-center gap-1 text-emerald-400"><span class="w-2 h-2 rounded-full bg-emerald-400"></span>Available</span>
+                <span class="flex items-center gap-1 text-amber-400"><span class="w-2 h-2 rounded-full bg-amber-400"></span>Reserved</span>
+                <span class="flex items-center gap-1 text-rose-400"><span class="w-2 h-2 rounded-full bg-rose-400"></span>Occupied</span>
+              </div>
+            </div>
+            <div id="webLiveRoomsGrid" class="grid grid-cols-5 gap-2 text-center text-xs">
+              <!-- Populated dynamically via JS -->
+            </div>
+          </div>
+
+          <div class="luxury-card rounded-3xl p-6 border border-amber-500/25 space-y-3 text-xs">
+            <h4 class="text-base font-extrabold text-white flex items-center gap-2">
+              <i class="fa-solid fa-shield-heart text-amber-400"></i>
+              <span>Hotel Nandhi Inn Policies & Perks</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-2.5 text-slate-300">
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <p class="font-bold text-amber-300">Check-In / Check-Out</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">12:00 PM Check-In • 11:00 AM Check-Out</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <p class="font-bold text-emerald-300">In-Room Dining</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Order from all 160 Pure Veg dishes to your room</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <p class="font-bold text-cyan-300">Convention Guests</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">2 mins from Nandhi Bhavana Convention Hall</p>
+              </div>
+              <div class="p-3 rounded-xl bg-white/5 border border-white/10">
+                <p class="font-bold text-purple-300">Parking & Lift</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Free CCTV Car/Bike Parking & Elevator</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="full-menu" class="py-20 bg-[#08130F] border-t border-amber-500/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 gap-4">
+        <div>
+          <p class="font-script-accent text-2xl text-amber-400">Explore Our Complete Kitchen</p>
+          <h2 class="font-serif-luxury text-4xl sm:text-5xl font-bold text-white">Interactive Menu & Direct Table Order</h2>
+        </div>
+
+        <!-- Search & Table Selector -->
+        <div class="flex flex-wrap items-center gap-3 w-full md:w-auto">
+          <div class="relative flex-1 sm:w-64">
+            <i class="fa-solid fa-magnifying-glass text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 text-xs"></i>
+            <input
+              type="text"
+              id="webMenuSearch"
+              oninput="renderWebMenu()"
+              placeholder="Search 160 pure veg dishes, masala dose, paneer, biryani, tandoor..."
+              class="w-full bg-[#0E1F18] border border-amber-500/30 pl-9 pr-4 py-2.5 rounded-xl text-xs text-white focus:outline-none focus:border-amber-400"
+            />
+          </div>
+          <select
+            id="webTableSelect"
+            class="bg-[#0E1F18] border border-amber-500/30 px-3 py-2.5 rounded-xl text-xs font-bold text-amber-400 focus:outline-none"
+          >
+            <option value="1">Table 01</option><option value="2">Table 02</option><option value="3">Table 03</option><option value="4">Table 04</option><option value="5">Table 05</option><option value="6">Table 06</option><option value="7">Table 07</option><option value="8">Table 08</option><option value="9">Table 09</option><option value="10">Table 10</option><option value="11">Table 11</option><option value="12">Table 12</option><option value="13">Table 13</option><option value="14">Table 14</option><option value="15">Table 15</option><option value="16">Table 16</option><option value="17">Table 17</option><option value="18">Table 18</option><option value="19">Table 19</option><option value="20">Table 20</option><option value="21">Table 21</option><option value="22">Table 22</option><option value="23">Table 23</option><option value="24">Table 24</option><option value="25">Table 25</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Pills -->
+            <div class="flex items-center gap-2 overflow-x-auto pb-4 mb-8">
+        <button onclick="setWebCategory('all')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-black whitespace-nowrap" data-cat="all">All 160 Dishes</button>
+        <button onclick="setWebCategory('breakfast')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="breakfast">🥞 Breakfast & Tiffin</button>
+        <button onclick="setWebCategory('soups_salads')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="soups_salads">🥣 Soups, Salads & Chats</button>
+        <button onclick="setWebCategory('tandoor_breads')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="tandoor_breads">🫓 Tandoor & Breads</button>
+        <button onclick="setWebCategory('main_course')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="main_course">🍛 North Indian Main Course</button>
+        <button onclick="setWebCategory('rice_items')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="rice_items">🍚 Biryani & Rice</button>
+        <button onclick="setWebCategory('chinese_fast')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="chinese_fast">🍜 Chinese & Wok</button>
+        <button onclick="setWebCategory('continental')" class="web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap" data-cat="continental">🍕 Continental, Pizza & Pasta</button>
+      </div>
+
+      <!-- Menu Grid + Floating Cart Layout -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div id="webMenuGrid" class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[750px] overflow-y-auto pr-1"></div>
+
+        <!-- Sticky Cart Box -->
+        <div class="luxury-card rounded-3xl p-6 h-fit sticky top-28">
+          <div class="flex items-center justify-between pb-4 border-b border-amber-500/20 mb-4">
+            <div>
+              <h3 class="font-bold text-white text-lg">Your Dining Tray</h3>
+              <p class="text-xs text-amber-400">Syncs directly with Hotel Nandhi Inn Admin</p>
+            </div>
+            <span id="webCartCount" class="px-2.5 py-1 rounded-full bg-amber-500 text-black font-extrabold text-xs">0 Items</span>
+          </div>
+
+          <div id="webCartList" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-xs mb-4">
+            <div class="text-center py-10 text-slate-500">Select any dish from the menu to start your order</div>
+          </div>
+
+          <div class="border-t border-amber-500/20 pt-3 space-y-2 mb-4 text-xs">
+            <div class="flex justify-between text-slate-300">
+              <span>Subtotal</span>
+              <span id="webCartSubtotal">₹0</span>
+            </div>
+            <div class="flex justify-between text-slate-300">
+              <span>GST (5%)</span>
+              <span id="webCartTax">₹0</span>
+            </div>
+            <div class="flex justify-between text-base font-extrabold text-amber-400 pt-2 border-t border-amber-500/20">
+              <span>Total Payable</span>
+              <span id="webCartTotal">₹0</span>
+            </div>
+          </div>
+
+          <button onclick="placeWebOrder()" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-3.5 rounded-2xl text-xs uppercase tracking-wider shadow-lg transition">
+            Place Order Now →
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIDEO & PHOTO GALLERY SECTION -->
+  <section id="gallery" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-2xl mx-auto mb-12">
+      <p class="font-script-accent text-2xl text-amber-400">Inside Hotel Nandhi Inn</p>
+      <h2 class="font-serif-luxury text-4xl sm:text-5xl font-bold text-white">Ambiance & Celebrations</h2>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+      <!-- Storefront & Neon Sign Showcase from Cafe.zip -->
+      <div class="luxury-card rounded-3xl overflow-hidden p-3 flex flex-col justify-between">
+        <div class="space-y-3">
+          <img src="/media/storefront-day.png" alt="Hotel Nandhi Inn Daytime Storefront" class="w-full h-52 object-cover rounded-2xl border border-amber-500/20" />
+          <img src="/media/neon-sign.png" alt="Hotel Nandhi Inn Neon Sign" class="w-full h-44 object-cover rounded-2xl border border-amber-500/20" />
+        </div>
+        <div class="p-3 text-center">
+          <p class="font-bold text-white text-sm">Hotel Nandhi Inn (ಹೋಟೆಲ್ ನಂದಿ ಇನ್)</p>
+          <p class="text-xs text-amber-400">Pure Veg Restaurant • 20-Room AC Lodge • Chamarajanagar — Chamarajanagar</p>
+        </div>
+      </div>
+
+      <!-- Interior & Exterior Photos -->
+      <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="luxury-card rounded-3xl overflow-hidden">
+          <img src="/media/exterior-night.png" alt="Hotel Nandhi Inn Night Lights" class="w-full h-56 object-cover" />
+          <div class="p-4">
+            <h4 class="font-bold text-white text-sm">WWHM+42F, Urban • Chamarajanagar 571313</h4>
+            <p class="text-xs text-slate-400">Illuminated multi-story Hotel Nandhi Inn Restaurant & 20-Room Lodge</p>
+          </div>
+        </div>
+        <div class="luxury-card rounded-3xl overflow-hidden">
+          <img src="/media/dining-arch.png" alt="Hotel Nandhi Inn Archway" class="w-full h-56 object-cover" />
+          <div class="p-4">
+            <h4 class="font-bold text-white text-sm">Cozy Wooden Booth & Pendant Lounge</h4>
+            <p class="text-xs text-slate-400">Spacious seating across 25 tables for families & groups</p>
+          </div>
+        </div>
+        <div class="sm:col-span-2 luxury-card rounded-3xl overflow-hidden flex flex-col sm:flex-row items-center">
+          <img src="/media/dining-hall.png" alt="Hotel Nandhi Inn Counter" class="w-full sm:w-1/2 h-52 object-cover" />
+          <div class="p-6 space-y-2">
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-full">Catering & Family Events</span>
+            <h4 class="font-serif-luxury text-2xl font-bold text-white">Host Your Family Celebrations With Us</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              From birthday treats and college hangouts to family evening outings in Chamarajanagar, enjoy our full spread of pizzas, burgers, faloodas, and shakes.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT OUR GUESTS SAY (REVIEWS) -->
+  <section id="reviews" class="py-20 bg-[#08130F] border-t border-amber-500/15">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between mb-12 gap-4">
+        <div>
+          <p class="font-script-accent text-2xl text-amber-400">4.9 ★ Google Rating</p>
+          <h2 class="font-serif-luxury text-4xl sm:text-5xl font-bold text-white">What Our Guests Say</h2>
+        </div>
+        <a href="https://maps.app.goo.gl/nLwSdu5rog3DVc7QA?g_st=ac" target="_blank" rel="noopener noreferrer" class="bg-amber-500 hover:bg-amber-400 text-black font-extrabold px-5 py-3 rounded-2xl text-xs uppercase tracking-wider shadow-lg transition flex items-center gap-2">
+          <i class="fa-brands fa-google"></i>
+          <span>Review Us on Google Maps</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="luxury-card p-6 rounded-3xl space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white text-sm">Prashanth Gowda</span>
+            <span class="text-amber-400 text-xs font-bold">★★★★★</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            "Best pure veg restaurant and lodge in Chamarajanagar! Their Gee Pudi Masala Dose, Paneer Nandhi Special, and clean AC deluxe rooms are unbeatable."
+          </p>
+          <span class="block text-[10px] text-amber-400/80 uppercase tracking-wider">Verified Google Review</span>
+        </div>
+
+        <div class="luxury-card p-6 rounded-3xl space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white text-sm">Nandini Murthy</span>
+            <span class="text-amber-400 text-xs font-bold">★★★★★</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            "Cozy wooden booth seating and warm pendant lighting! We stayed in the Executive AC Suite and ordered Veg Hyderabadi Biriyani and Butter Naan via the QR code—super fast!"
+          </p>
+          <span class="block text-[10px] text-amber-400/80 uppercase tracking-wider">Verified Google Review</span>
+        </div>
+
+        <div class="luxury-card p-6 rounded-3xl space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-white text-sm">Darshan Kumar C.R.</span>
+            <span class="text-amber-400 text-xs font-bold">★★★★★</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            "160 pure vegetarian dishes across 7 categories with ample car parking and elevator access! Filter Coffee and Ghee Masala Dose are must-tries."
+          </p>
+          <span class="block text-[10px] text-amber-400/80 uppercase tracking-wider">Verified Google Review</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TABLE RESERVATION SECTION -->
+  <section id="reserve" class="py-20 max-w-4xl mx-auto px-4 sm:px-6">
+    <div class="luxury-card rounded-3xl p-8 sm:p-12 border border-amber-500/30 shadow-2xl">
+      <div class="text-center mb-8">
+        <p class="font-script-accent text-2xl text-amber-400">Book Your Dining Table</p>
+        <h2 class="font-serif-luxury text-3xl sm:text-5xl font-bold text-white">Reserve A Table at Hotel Nandhi Inn</h2>
+        <p class="text-xs text-slate-400 mt-1">Instant reservation syncs live with our 25-table Admin Floor Map</p>
+      </div>
+
+      <form onsubmit="submitWebReservation(event)" class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Your Full Name</label>
+          <input type="text" id="resGuestName" required placeholder="e.g. Rajeshwari S." class="w-full bg-[#060E0B] border border-amber-500/30 px-4 py-3 rounded-xl text-white focus:outline-none focus:border-amber-400" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Select Table (01 – 25)</label>
+          <select id="resTableId" class="w-full bg-[#060E0B] border border-amber-500/30 px-4 py-3 rounded-xl text-amber-400 font-bold focus:outline-none">
+            <option value="1">Table 01 (2 Seats)</option><option value="2">Table 02 (4 Seats)</option><option value="3">Table 03 (2 Seats)</option><option value="4">Table 04 (6 Seats)</option><option value="5">Table 05 (2 Seats)</option><option value="6">Table 06 (4 Seats)</option><option value="7">Table 07 (2 Seats)</option><option value="8">Table 08 (6 Seats)</option><option value="9">Table 09 (2 Seats)</option><option value="10">Table 10 (4 Seats)</option><option value="11">Table 11 (2 Seats)</option><option value="12">Table 12 (6 Seats)</option><option value="13">Table 13 (2 Seats)</option><option value="14">Table 14 (4 Seats)</option><option value="15">Table 15 (2 Seats)</option><option value="16">Table 16 (6 Seats)</option><option value="17">Table 17 (2 Seats)</option><option value="18">Table 18 (4 Seats)</option><option value="19">Table 19 (2 Seats)</option><option value="20">Table 20 (6 Seats)</option><option value="21">Table 21 (2 Seats)</option><option value="22">Table 22 (4 Seats)</option><option value="23">Table 23 (2 Seats)</option><option value="24">Table 24 (6 Seats)</option><option value="25">Table 25 (2 Seats)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Number of Guests</label>
+          <input type="number" id="resGuestsCount" defaultValue="4" min="1" max="15" required class="w-full bg-[#060E0B] border border-amber-500/30 px-4 py-3 rounded-xl text-white" />
+        </div>
+        <div>
+          <label class="block font-bold text-slate-300 mb-1.5">Preferred Time</label>
+          <input type="text" id="resTimeSlot" value="7:30 PM (Dinner)" required class="w-full bg-[#060E0B] border border-amber-500/30 px-4 py-3 rounded-xl text-white" />
+        </div>
+        <div class="sm:col-span-2 pt-3">
+          <button type="submit" class="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-slate-950 font-extrabold py-4 rounded-2xl text-xs uppercase tracking-widest shadow-xl transition">
+            Confirm Table Reservation
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-[#040907] border-t border-amber-500/20 py-14 text-xs text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+      <div class="flex items-center gap-3.5">
+        <img src="/hotel-logo.png" alt="Hotel Nandhi Inn" class="w-14 h-14 rounded-2xl object-cover border border-amber-400/50" />
+        <div>
+          <h4 class="font-serif-luxury text-xl font-bold text-white">HOTEL NANDHI INN</h4>
+          <p class="text-amber-400 text-[11px]">Fresh Juice • Food & Drink</p>
+          <p class="text-[11px] text-slate-400 mt-1">WWHM+42F, Urban, Chamarajanagar, Karnataka 571313</p>
+        </div>
+      </div>
+
+      <div class="text-center space-y-1">
+        <p class="font-bold text-white">Open Daily: 10:30 AM – 10:30 PM</p>
+        <p>Call / WhatsApp: <a href="tel:6363172214" class="text-amber-400 font-bold">6363172214</a></p>
+      </div>
+
+      <div class="flex items-center justify-start md:justify-end gap-4">
+        <a href="https://www.justdial.com/Chamarajanagar/hotel-nandhi-inn-Opposite-To-Honda-Showroom-Double-Road-Chamarajanagar/9999P8226-8226-230704162145-S5X3_BZDET" target="_blank" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-amber-500 hover:text-black flex items-center justify-center text-base transition">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://maps.app.goo.gl/nLwSdu5rog3DVc7QA?g_st=ac" target="_blank" class="w-10 h-10 rounded-xl bg-white/5 hover:bg-amber-500 hover:text-black flex items-center justify-center text-base transition">
+          <i class="fa-solid fa-location-dot"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT FOR LIVE MENU, SOLD-OUT SYNC & ORDER PLACEMENT -->
+  <script>
+    const MENU_ITEMS = [
+  {
+    "id": "ndh_1",
+    "name": "Bisibele Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Bisibele Bath — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Bisibele Bath.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_2",
+    "name": "Button Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Button Idli — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Button Idli.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_3",
+    "name": "Chow Chow Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Chow Chow Bath — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Chow Chow Bath.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_4",
+    "name": "Gee Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Gee Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Gee Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_5",
+    "name": "Gee Karam Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 90,
+    "desc": "Gee Karam Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Gee Karam Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_6",
+    "name": "Gee Pudi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 90,
+    "desc": "Gee Pudi Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Gee Pudi Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_7",
+    "name": "Gee Pudi Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 100,
+    "desc": "Gee Pudi Masala Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Gee Pudi Masala Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_8",
+    "name": "Idli Vada Sambar",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 65,
+    "desc": "Idli Vada Sambar — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Idli Vada Sambar.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_9",
+    "name": "Karam Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Karam Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Karam Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_10",
+    "name": "Karam Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 85,
+    "desc": "Karam Masala Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Karam Masala Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_11",
+    "name": "Kesari Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Kesari Bath — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Kesari Bath.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_12",
+    "name": "Morning Lemon Rice",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Morning Lemon Rice — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Lemon Rice.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_13",
+    "name": "Mangalore Bonda",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 50,
+    "desc": "Mangalore Bonda — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Mangalore Bonda.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_14",
+    "name": "Masala Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Masala Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Masala Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_15",
+    "name": "Normal Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Normal Idli — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Normal Idli.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_16",
+    "name": "Onion Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Onion Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Onion Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_17",
+    "name": "Paddu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Paddu — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Paddu.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_18",
+    "name": "Pesarattu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 80,
+    "desc": "Pesarattu — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Pesarattu.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_19",
+    "name": "Plain Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Plain Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Plain Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_20",
+    "name": "Pongal",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 60,
+    "desc": "Pongal — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Pongal.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_21",
+    "name": "Pudi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Pudi Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Pudi Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_22",
+    "name": "Raagi Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 70,
+    "desc": "Raagi Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Raagi Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_23",
+    "name": "Rava Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 85,
+    "desc": "Rava Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Rava Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_24",
+    "name": "Rava Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Rava Idli — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Rava Idli.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_25",
+    "name": "Set Dose",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 75,
+    "desc": "Set Dose — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Set Dose.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_26",
+    "name": "Shavige Bath",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 55,
+    "desc": "Shavige Bath — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Shavige Bath.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_27",
+    "name": "Tea Coffee",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 25,
+    "desc": "Tea Coffee — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Tea Coffee.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_28",
+    "name": "Thatte Idli",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 45,
+    "desc": "Thatte Idli — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Thatte Idli.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_29",
+    "name": "Uddina Vada",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 35,
+    "desc": "Uddina Vada — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/BreakFast/Uddina Vada.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_30",
+    "name": "Uppittu",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 40,
+    "desc": "Uppittu — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/BreakFast/Uppittu.jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_31",
+    "name": "Vada Sambar",
+    "category": "breakfast",
+    "categoryFolder": "BreakFast",
+    "price": 50,
+    "desc": "Vada Sambar — Authentic South Indian temple-town tiffin prepared fresh with pure Nandhi ghee, served with coconut chutney and aromatic sambar.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/BreakFast/Vada Sambar..jpg",
+    "icon": "🥞",
+    "isVeg": true,
+    "prepTime": "8 min"
+  },
+  {
+    "id": "ndh_32",
+    "name": "Aloo Chat",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 75,
+    "desc": "Aloo Chat — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Aloo Chat.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_33",
+    "name": "American Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 120,
+    "desc": "American Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/American Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_34",
+    "name": "Boondi Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 65,
+    "desc": "Boondi Raita — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Boondi Raita.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_35",
+    "name": "Channa Chat",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 80,
+    "desc": "Channa Chat — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Channa Chat.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_36",
+    "name": "Cucumber Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 60,
+    "desc": "Cucumber Raita — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Cucumber Raita.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_37",
+    "name": "Cucumber Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 55,
+    "desc": "Cucumber Salad — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Cucumber Salad.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_38",
+    "name": "Green Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 65,
+    "desc": "Green Salad — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Green Salad.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_39",
+    "name": "Hot & Sour Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Hot & Sour Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Hot & Sour Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_40",
+    "name": "Classic Hot & Sour Veg Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Classic Hot & Sour Veg Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Hot and Sour Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_41",
+    "name": "Lemon Coriander Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 105,
+    "desc": "Lemon Coriander Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Lemon Coriander Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_42",
+    "name": "Manchow Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 115,
+    "desc": "Manchow Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Manchow Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_43",
+    "name": "Masala Papad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 45,
+    "desc": "Masala Papad — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Masala Papad.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_44",
+    "name": "Mix Pakoda",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 85,
+    "desc": "Mix Pakoda — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Mix Pakoda.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_45",
+    "name": "Mix Raita",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 70,
+    "desc": "Mix Raita — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Mix Raita.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_46",
+    "name": "Plain Curd",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 40,
+    "desc": "Plain Curd — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Plain Curd.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_47",
+    "name": "Plain Papad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 25,
+    "desc": "Plain Papad — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Plain Papad.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_48",
+    "name": "Raja Special Salad",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 95,
+    "desc": "Raja Special Salad — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Raja Special Salad.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_49",
+    "name": "Sweet Corn Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 105,
+    "desc": "Sweet Corn Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Sweet Corn Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_50",
+    "name": "Sweet Corn Veg Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 110,
+    "desc": "Sweet Corn Veg Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Sweet Corn Veg Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_51",
+    "name": "Tomato Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 95,
+    "desc": "Tomato Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Tomato Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_52",
+    "name": "Veg Clear Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 90,
+    "desc": "Veg Clear Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Soups & Salads/Veg Clear Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_53",
+    "name": "Veg Manchow Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 115,
+    "desc": "Veg Manchow Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Soups & Salads/Veg Manchow Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_54",
+    "name": "Wonton Soup",
+    "category": "soups_salads",
+    "categoryFolder": "Soups & Salads",
+    "price": 120,
+    "desc": "Wonton Soup — Freshly simmered soup / crisp garden salad & tangy chaat seasoned with roasted cumin, herbs, and black pepper.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Soups & Salads/Wonton Soup.jpg",
+    "icon": "🥣",
+    "isVeg": true,
+    "prepTime": "10 min"
+  },
+  {
+    "id": "ndh_55",
+    "name": "Aloo Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 75,
+    "desc": "Aloo Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Aloo Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_56",
+    "name": "Butter Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Kulcha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Butter Kulcha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_57",
+    "name": "Butter Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Naan — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Butter Naan.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_58",
+    "name": "Butter Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Butter Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Butter Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_59",
+    "name": "Butter Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 40,
+    "desc": "Butter Roti — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Butter Roti.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_60",
+    "name": "Cheese Garlic Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 95,
+    "desc": "Cheese Garlic Naan — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Cheese Garlic Naan.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_61",
+    "name": "Garlic Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 65,
+    "desc": "Garlic Kulcha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Garlic Kulcha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_62",
+    "name": "Garlic Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 70,
+    "desc": "Garlic Naan — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Garlic Naan.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_63",
+    "name": "Gobi Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 80,
+    "desc": "Gobi Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Gobi Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_64",
+    "name": "Harabhara Kabab",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 180,
+    "desc": "Harabhara Kabab — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Harabhara Kabab.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_65",
+    "name": "Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Kulcha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Kulcha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_66",
+    "name": "Mushroom Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 210,
+    "desc": "Mushroom Tikka — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Mushroom Tikka.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_67",
+    "name": "Paneer Hariyali Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 240,
+    "desc": "Paneer Hariyali Tikka — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Hariyali Tikka.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_68",
+    "name": "Paneer Malai",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 250,
+    "desc": "Paneer Malai — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Malai.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_69",
+    "name": "Paneer Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 100,
+    "desc": "Paneer Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_70",
+    "name": "Paneer Tikka",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 230,
+    "desc": "Paneer Tikka — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Paneer Tikka.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_71",
+    "name": "Plain Kulcha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Kulcha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Plain Kulcha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_72",
+    "name": "Plain Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Naan — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Plain Naan.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_73",
+    "name": "Plain Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Plain Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Plain Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_74",
+    "name": "Plain Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 30,
+    "desc": "Plain Roti — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Plain Roti.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_75",
+    "name": "Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 30,
+    "desc": "Roti — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Roti.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_76",
+    "name": "Tandoori Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 55,
+    "desc": "Tandoori Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Tandoori Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_77",
+    "name": "Veg Stuff Paratha",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 85,
+    "desc": "Veg Stuff Paratha — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/Veg Stuff Paratha.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_78",
+    "name": "Wheat Butter Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 45,
+    "desc": "Wheat Butter Roti — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Tandoor & Breads/Wheat Butter Roti.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_79",
+    "name": "Wheat Roti",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 35,
+    "desc": "Wheat Roti — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Tandoor & Breads/Wheat Roti.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_80",
+    "name": "Tandoori Naan",
+    "category": "tandoor_breads",
+    "categoryFolder": "Tandoor & Breads",
+    "price": 75,
+    "desc": "Tandoori Naan — Clay-oven char-grilled tandoori starter or artisan flatbread brushed with farm-fresh butter and aromatic herbs.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Tandoor & Breads/naan.jpg",
+    "icon": "🫓",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_81",
+    "name": "Aloo Gobi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 160,
+    "desc": "Aloo Gobi — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Aloo Gobi.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_82",
+    "name": "Aloo Jeera",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 150,
+    "desc": "Aloo Jeera — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Aloo Jeera.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_83",
+    "name": "Channa Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Channa Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Channa Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_84",
+    "name": "Dal Fry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 140,
+    "desc": "Dal Fry — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Dal Fry.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_85",
+    "name": "Dal Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 160,
+    "desc": "Dal Kolhapuri — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Dal Kolhapuri.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_86",
+    "name": "Dal Makhani",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Dal Makhani — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Dal Makhani.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_87",
+    "name": "Dal Palak",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 155,
+    "desc": "Dal Palak — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Dal Palak.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_88",
+    "name": "Dal Thadka",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 155,
+    "desc": "Dal Thadka — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Dal Thadka.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_89",
+    "name": "Kaju Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 265,
+    "desc": "Kaju Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Kaju Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_90",
+    "name": "Malai Kofta",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 225,
+    "desc": "Malai Kofta — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Malai Kofta.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_91",
+    "name": "Matar Paneer",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 205,
+    "desc": "Matar Paneer — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Matar Paneer.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_92",
+    "name": "Mix Veg Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 175,
+    "desc": "Mix Veg Curry — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Mix Veg Curry.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_93",
+    "name": "Mushroom Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 215,
+    "desc": "Mushroom Hyderabadi — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Mushroom Hyderabadi.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_94",
+    "name": "Mushroom Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Mushroom Kolhapuri — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Mushroom Kolhapuri.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_95",
+    "name": "Mushroom Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 205,
+    "desc": "Mushroom Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Mushroom Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_96",
+    "name": "Navratan Kurma",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Navratan Kurma — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Navratan Kurma.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_97",
+    "name": "Nizami Haandi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 220,
+    "desc": "Nizami Haandi — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Nizami Haandi.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_98",
+    "name": "Palak Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Palak Curry — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Palak Curry.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_99",
+    "name": "Palak Paneer",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 210,
+    "desc": "Palak Paneer — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Palak Paneer.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_100",
+    "name": "Paneer Bhurji",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 240,
+    "desc": "Paneer Bhurji — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Bhurji.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_101",
+    "name": "Paneer Butter Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 225,
+    "desc": "Paneer Butter Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Butter Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_102",
+    "name": "Paneer Chatpata",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 230,
+    "desc": "Paneer Chatpata — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Chatpata.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_103",
+    "name": "Paneer Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 235,
+    "desc": "Paneer Hyderabadi — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Hyderabadi.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_104",
+    "name": "Paneer Kadai",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 230,
+    "desc": "Paneer Kadai — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Kadai.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_105",
+    "name": "Paneer Lawabar",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 240,
+    "desc": "Paneer Lawabar — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Lawabar.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_106",
+    "name": "Paneer Nandhi Special",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 270,
+    "desc": "Paneer Nandhi Special — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Paneer Nandhi Special.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_107",
+    "name": "Paneer Tawa",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 235,
+    "desc": "Paneer Tawa — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Paneer Tawa.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_108",
+    "name": "Paneer Tikka Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 250,
+    "desc": "Paneer Tikka Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Paneer Tikka Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_109",
+    "name": "Sweet Corn Masala",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Sweet Corn Masala — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Sweet Corn Masala.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_110",
+    "name": "Veg Curry",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 165,
+    "desc": "Veg Curry — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Veg Curry.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_111",
+    "name": "Veg Hyderabadi",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 195,
+    "desc": "Veg Hyderabadi — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Veg Hyderabadi.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_112",
+    "name": "Veg Kadai",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 190,
+    "desc": "Veg Kadai — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Main Course/Veg Kadai.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_113",
+    "name": "Veg Kolhapuri",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 185,
+    "desc": "Veg Kolhapuri — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Main Course/Veg Kolhapuri.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_114",
+    "name": "Vegetable Kurma",
+    "category": "main_course",
+    "categoryFolder": "Main Course",
+    "price": 175,
+    "desc": "Vegetable Kurma — Rich North Indian signature gravy slow-cooked with fresh cottage cheese, garden vegetables, cashew paste, and whole spices.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Main Course/Vegetable Kurma.jpg",
+    "icon": "🍛",
+    "isVeg": true,
+    "prepTime": "16 min"
+  },
+  {
+    "id": "ndh_115",
+    "name": "Curd Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 95,
+    "desc": "Curd Rice — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Curd Rice.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_116",
+    "name": "Dal Kichdi",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 150,
+    "desc": "Dal Kichdi — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Dal Kichdi.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_117",
+    "name": "Ghee Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 145,
+    "desc": "Ghee Rice — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Ghee Rice.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_118",
+    "name": "Green Peas Biryani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 175,
+    "desc": "Green Peas Biryani — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Green Peas biryani.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_119",
+    "name": "Jeera Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 130,
+    "desc": "Jeera Rice — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Jeera Rice.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_120",
+    "name": "Special Ghee Lemon Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 60,
+    "desc": "Special Ghee Lemon Rice — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Lemon Rice.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_121",
+    "name": "Palak Kichdi",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 160,
+    "desc": "Palak Kichdi — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Palak Kichdi.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_122",
+    "name": "Palak Rice",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 145,
+    "desc": "Palak Rice — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Palak Rice.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_123",
+    "name": "Paneer Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 220,
+    "desc": "Paneer Biriyani — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Paneer Biriyani.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_124",
+    "name": "Veg Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 175,
+    "desc": "Veg Biriyani — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/Veg Biriyani.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_125",
+    "name": "Veg Hyderabadi Biriyani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 195,
+    "desc": "Veg Hyderabadi Biriyani — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.9",
+    "image": "All Dieshes/Rice Items/Veg Hyderabadi Biriyani.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_126",
+    "name": "Veg Palav",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 150,
+    "desc": "Veg Palav — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Rice Items/Veg Palav.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_127",
+    "name": "Mushroom Biryani",
+    "category": "rice_items",
+    "categoryFolder": "Rice Items",
+    "price": 205,
+    "desc": "Mushroom Biryani — Fragrant long-grain basmati rice cooked with aromatic whole spices, pure ghee, fresh herbs, and served with raita.",
+    "badge": "Chef's Special",
+    "rating": "4.8",
+    "image": "All Dieshes/Rice Items/mushroom biryani.jpg",
+    "icon": "🍚",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_128",
+    "name": "Hakka Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 155,
+    "desc": "Hakka Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Hakka Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_129",
+    "name": "Mushroom Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 170,
+    "desc": "Mushroom Fried Rice — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Mushroom Fried Rice.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_130",
+    "name": "Mushroom Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 175,
+    "desc": "Mushroom Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Mushroom Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_131",
+    "name": "Paneer Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 185,
+    "desc": "Paneer Fried Rice — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Paneer Fried Rice.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_132",
+    "name": "Paneer Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 185,
+    "desc": "Paneer Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Paneer Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_133",
+    "name": "Schezwan Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 160,
+    "desc": "Schezwan Fried Rice — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Schezwan Fried Rice..jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_134",
+    "name": "Schezwan Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 165,
+    "desc": "Schezwan Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Schezwan Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_135",
+    "name": "Triple Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 210,
+    "desc": "Triple Fried Rice — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Triple Fried Rice.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_136",
+    "name": "Triple Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 210,
+    "desc": "Triple Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Chinese & Fast/Triple Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_137",
+    "name": "Veg Fried Rice",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 140,
+    "desc": "Veg Fried Rice — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Chinese & Fast/Veg Fried Rice.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_138",
+    "name": "Veg Noodles",
+    "category": "chinese_fast",
+    "categoryFolder": "Chinese & Fast",
+    "price": 140,
+    "desc": "Veg Noodles — High-flame wok-tossed noodles or fried rice with crisp julienned vegetables, garlic, spring onions, and house sauces.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Chinese & Fast/Veg Noodles.jpg",
+    "icon": "🍜",
+    "isVeg": true,
+    "prepTime": "12 min"
+  },
+  {
+    "id": "ndh_139",
+    "name": "All Veggies Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 240,
+    "desc": "All Veggies Pizza — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/All Veggies Pizza.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_140",
+    "name": "Aloo Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 75,
+    "desc": "Aloo Cutlet — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Aloo Cutlet.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_141",
+    "name": "Cheese Burst Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 145,
+    "desc": "Cheese Burst Garlic Bread — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Cheese Burst Garlic Bread.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_142",
+    "name": "Cheese Burst Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 275,
+    "desc": "Cheese Burst Pizza — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Cheese Burst Pizza.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_143",
+    "name": "Cheese Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 110,
+    "desc": "Cheese Cutlet — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Cheese Cutlet.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_144",
+    "name": "Cheese Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 120,
+    "desc": "Cheese Garlic Bread — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Cheese Garlic Bread.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_145",
+    "name": "Chilli Cheese Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 130,
+    "desc": "Chilli Cheese Garlic Bread — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Chilli Cheese Garlic Bread.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_146",
+    "name": "Classic Garlic Bread",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 95,
+    "desc": "Classic Garlic Bread — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Classic Garlic Bread.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_147",
+    "name": "Corn Cheese Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 210,
+    "desc": "Corn Cheese Pizza — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Corn Cheese Pizza.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_148",
+    "name": "Hara Bara Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 95,
+    "desc": "Hara Bara Cutlet — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Hara Bara Cutlet.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_149",
+    "name": "Mushroom Pizza",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 225,
+    "desc": "Mushroom Pizza — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Mushroom Pizza.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_150",
+    "name": "Pahadi Cheese Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 150,
+    "desc": "Pahadi Cheese Grilled Sandwich — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Pahadi Cheese Grilled Sandwich.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_151",
+    "name": "Paneer Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 115,
+    "desc": "Paneer Cutlet — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Paneer Cutlet.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_152",
+    "name": "Pesto Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 205,
+    "desc": "Pesto Pasta — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Pesto Pasta.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_153",
+    "name": "Pink Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 195,
+    "desc": "Pink Sauce Pasta — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Pink Sauce Pasta.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_154",
+    "name": "Pizza Margherita",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 190,
+    "desc": "Pizza Margherita — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Pizza Margherita.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_155",
+    "name": "Red Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 180,
+    "desc": "Red Sauce Pasta — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Red Sauce Pasta.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_156",
+    "name": "Veg Cheese Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 135,
+    "desc": "Veg Cheese Grilled Sandwich — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Veg Cheese Grilled Sandwich.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_157",
+    "name": "Veg Cheese Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 110,
+    "desc": "Veg Cheese Sandwich — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/Veg Cheese Sandwich.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_158",
+    "name": "Veg Cutlet",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 80,
+    "desc": "Veg Cutlet — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.9",
+    "image": "All Dieshes/Continental/Veg Cutlet.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_159",
+    "name": "Veg Grilled Sandwich",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 115,
+    "desc": "Veg Grilled Sandwich — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Popular",
+    "rating": "4.7",
+    "image": "All Dieshes/Continental/Veg Grilled Sandwich.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  },
+  {
+    "id": "ndh_160",
+    "name": "White Sauce Pasta",
+    "category": "continental",
+    "categoryFolder": "Continental",
+    "price": 185,
+    "desc": "White Sauce Pasta — Artisan oven-baked pizza, creamy Italian pasta, golden grilled sandwich, or crispy herb cutlet topped with melted mozzarella.",
+    "badge": "Pure Veg",
+    "rating": "4.8",
+    "image": "All Dieshes/Continental/White Sauce Pasta.jpg",
+    "icon": "🍕",
+    "isVeg": true,
+    "prepTime": "15 min"
+  }
+];
+
+    const socket = io();
+    let soldOutSet = new Set();
+    let webCategory = 'all';
+    let webCart = {};
+
+    socket.on('connect', () => {
+      socket.emit('get-table-status', { tableId: 1 });
+    });
+
+    socket.on('stock-sync', (data) => {
+      if (data && Array.isArray(data.soldOutIds)) {
+        soldOutSet = new Set(data.soldOutIds.map(x => String(x)));
+      }
+      if (data && Array.isArray(data.customDishes)) {
+        data.customDishes.forEach(cd => {
+          if (!MENU_ITEMS.some(m => String(m.id) === String(cd.id))) {
+            MENU_ITEMS.unshift({
+              id: String(cd.id),
+              name: cd.name,
+              category: cd.category || 'fresh_juice',
+              price: Number(cd.price) || 70,
+              desc: cd.description || 'Hotel Nandhi Inn Special',
+              image: cd.image ? cd.image.replace(/^\//, '') : '',
+              icon: '🍲'
+            });
+          }
+        });
+      }
+      renderWebMenu();
+    });
+
+    function setWebCategory(cat) {
+      webCategory = cat;
+      document.querySelectorAll('.web-cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = 'web-cat-btn px-4 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-black whitespace-nowrap';
+        } else {
+          btn.className = 'web-cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[#0E1F18] text-slate-300 border border-amber-500/20 whitespace-nowrap';
+        }
+      });
+      renderWebMenu();
+    }
+
+    function renderWebMenu() {
+      const q = (document.getElementById('webMenuSearch').value || '').toLowerCase();
+      const grid = document.getElementById('webMenuGrid');
+      grid.innerHTML = '';
+
+      const filtered = MENU_ITEMS.filter(item => {
+        const mCat = webCategory === 'all' || item.category === webCategory;
+        const mQ = item.name.toLowerCase().includes(q) || (item.desc && item.desc.toLowerCase().includes(q));
+        return mCat && mQ;
+      });
+
+      filtered.forEach(item => {
+        const isSoldOut = soldOutSet.has(String(item.id)) || soldOutSet.has(item.name.toLowerCase().trim());
+        const qty = webCart[item.id] || 0;
+        const card = document.createElement('div');
+        card.className = `luxury-card rounded-2xl p-3.5 flex gap-3.5 items-center transition ${isSoldOut ? 'opacity-50' : ''}`;
+        card.innerHTML = `
+          <img src="/${encodeURI(item.image)}" onerror="this.style.display='none'" class="w-20 h-20 rounded-xl object-cover bg-black/40 shrink-0 border border-amber-500/20" />
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center justify-between">
+              <h4 class="font-bold text-white text-sm truncate">${item.name}</h4>
+              <span class="text-[10px] text-amber-400 font-bold">★ ${item.rating || '4.8'}</span>
+            </div>
+            <p class="text-[11px] text-slate-400 line-clamp-1 mt-0.5">${item.desc}</p>
+            <div class="flex items-center justify-between mt-2 pt-2 border-t border-white/5">
+              <span class="text-sm font-extrabold text-amber-400">₹${item.price}</span>
+              ${isSoldOut ? `
+                <span class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-400 border border-rose-500/30 text-[10px] font-extrabold">SOLD OUT</span>
+              ` : qty === 0 ? `
+                <button onclick="updateWebCart('${item.id}', 1)" class="px-3 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-black border border-amber-500/30 text-xs font-extrabold transition">+ Add</button>
+              ` : `
+                <div class="flex items-center gap-2 bg-black/50 px-2.5 py-1 rounded-lg border border-amber-500/40">
+                  <button onclick="updateWebCart('${item.id}', -1)" class="text-amber-400 font-bold">-</button>
+                  <span class="text-xs font-bold text-white">${qty}</span>
+                  <button onclick="updateWebCart('${item.id}', 1)" class="text-amber-400 font-bold">+</button>
+                </div>
+              `}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function updateWebCart(id, delta) {
+      const next = (webCart[id] || 0) + delta;
+      if (next <= 0) delete webCart[id];
+      else webCart[id] = next;
+      renderWebMenu();
+      renderWebCart();
+    }
+
+    function renderWebCart() {
+      const list = document.getElementById('webCartList');
+      const ids = Object.keys(webCart);
+      if (ids.length === 0) {
+        list.innerHTML = '<div class="text-center py-10 text-slate-500">Select any dish from the menu to start your order</div>';
+        document.getElementById('webCartCount').textContent = '0 Items';
+        document.getElementById('webCartSubtotal').textContent = '₹0';
+        document.getElementById('webCartTax').textContent = '₹0';
+        document.getElementById('webCartTotal').textContent = '₹0';
+        return;
+      }
+
+      list.innerHTML = '';
+      let sub = 0, count = 0;
+      ids.forEach(id => {
+        const item = MENU_ITEMS.find(m => m.id === id);
+        if (!item) return;
+        const q = webCart[id];
+        count += q;
+        sub += item.price * q;
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between bg-black/30 p-2.5 rounded-xl border border-white/5';
+        row.innerHTML = `
+          <div class="min-w-0 flex-1 pr-2">
+            <p class="font-bold text-white truncate">${item.name}</p>
+            <p class="text-[10px] text-slate-400">₹${item.price} × ${q}</p>
+          </div>
+          <span class="font-bold text-amber-400">₹${item.price * q}</span>
+        `;
+        list.appendChild(row);
+      });
+
+      const tax = Math.round(sub * 0.05);
+      document.getElementById('webCartCount').textContent = `${count} Items`;
+      document.getElementById('webCartSubtotal').textContent = `₹${sub}`;
+      document.getElementById('webCartTax').textContent = `₹${tax}`;
+      document.getElementById('webCartTotal').textContent = `₹${sub + tax}`;
+    }
+
+    function placeWebOrder() {
+      const ids = Object.keys(webCart);
+      if (ids.length === 0) {
+        alert('Please add at least one dish to your order tray.');
+        return;
+      }
+      const tableId = Number(document.getElementById('webTableSelect').value) || 1;
+      const items = ids.map(id => {
+        const item = MENU_ITEMS.find(m => m.id === id);
+        return {
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          qty: webCart[id],
+          image: item.image
+        };
+      });
+      const total = items.reduce((s, i) => s + (i.price * i.qty), 0);
+
+      socket.emit('order-placed', {
+        tableId: tableId,
+        table: `Table ${tableId < 10 ? '0' + tableId : tableId}`,
+        orderId: `#WEB-${Math.floor(1000 + Math.random() * 9000)}`,
+        customer: `Table ${tableId < 10 ? '0' + tableId : tableId} (Website Order)`,
+        source: 'Website Order',
+        items: items,
+        total: total,
+        roundTotal: total
+      });
+
+      webCart = {};
+      renderWebMenu();
+      renderWebCart();
+      alert(`Order sent for Table ${tableId}! Our Admin Dashboard has been notified with a chime.`);
+    }
+
+    function submitWebReservation(e) {
+      e.preventDefault();
+      const guest = document.getElementById('resGuestName').value;
+      const tableId = Number(document.getElementById('resTableId').value);
+      const count = document.getElementById('resGuestsCount').value;
+      const time = document.getElementById('resTimeSlot').value;
+
+      socket.emit('update-table-reservation', {
+        tableId: tableId,
+        status: 'reserved',
+        guest: `${guest} (${count} guests)`,
+        time: time
+      });
+
+      alert(`Table ${tableId} reserved for ${guest} at ${time}!`);
+      e.target.reset();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderWebMenu();
+    });
+  
+    // =========================================================================
+    // HOTEL NANDHI INN — LODGE ROOM BOOKING & SYNC TO OWNER DASHBOARD
+    // =========================================================================
+    let webLodgeRooms = {};
+    const todayIso = new Date().toISOString().split('T')[0];
+    const tomorrowIso = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+    if (document.getElementById('lbCheckIn')) document.getElementById('lbCheckIn').value = todayIso;
+    if (document.getElementById('lbCheckOut')) document.getElementById('lbCheckOut').value = tomorrowIso;
+
+    function selectLodgeRoomType(typeName, price, defaultRoomNo) {
+      const sel = document.getElementById('lbRoomType');
+      if (sel) sel.value = typeName;
+      const rSel = document.getElementById('lbRoomNo');
+      if (rSel && defaultRoomNo) rSel.value = defaultRoomNo;
+      recalcLodgePrice();
+      document.getElementById('lodgeBookingForm')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function onLodgeTypeChange() {
+      recalcLodgePrice();
+    }
+
+    function recalcLodgePrice() {
+      const ci = document.getElementById('lbCheckIn')?.value;
+      const co = document.getElementById('lbCheckOut')?.value;
+      let nights = 1;
+      if (ci && co) {
+        const diff = Math.round((new Date(co) - new Date(ci)) / 86400000);
+        nights = diff > 0 ? diff : 1;
+      }
+      const typeSel = document.getElementById('lbRoomType');
+      const baseRate = Number(typeSel?.selectedOptions[0]?.dataset?.price || 1899);
+      let subtotal = baseRate * nights;
+      if (document.getElementById('addonMattress')?.checked) subtotal += 350 * nights;
+      if (document.getElementById('addonEarly')?.checked) subtotal += 250;
+      if (document.getElementById('addonPickup')?.checked) subtotal += 300;
+      const gst = Math.round(subtotal * 0.12);
+      const total = subtotal + gst;
+
+      const payMode = document.getElementById('lbPaymentMethod')?.value || '50% Advance UPI';
+      const advance = payMode === 'Full UPI Paid' ? total : (payMode === '50% Advance UPI' ? Math.round(total * 0.5) : 0);
+      const balance = Math.max(0, total - advance);
+
+      const nEl = document.getElementById('lbSummaryNights');
+      if (nEl) nEl.textContent = `${nights} Night${nights > 1 ? 's' : ''}`;
+      const tEl = document.getElementById('lbTotalDisplay');
+      if (tEl) tEl.textContent = `₹${total.toLocaleString('en-IN')}`;
+      const aEl = document.getElementById('lbAdvanceDisplay');
+      if (aEl) aEl.textContent = `₹${advance.toLocaleString('en-IN')}`;
+      const bEl = document.getElementById('lbBalanceDisplay');
+      if (bEl) bEl.textContent = `₹${balance.toLocaleString('en-IN')}`;
+      return { nights, total, advance, balance };
+    }
+
+    function renderWebLodgeGrid() {
+      const grid = document.getElementById('webLiveRoomsGrid');
+      if (!grid) return;
+      const roomNos = ['101','102','103','104','105','106','107','108','109','110','201','202','203','204','205','206','207','208','209','210'];
+      let availCount = 0;
+      grid.innerHTML = roomNos.map(rNo => {
+        const r = webLodgeRooms[rNo] || { roomNo: rNo, status: ['106','205'].includes(rNo) ? 'occupied' : (rNo === '209' ? 'reserved' : 'available'), type: Number(rNo) < 106 ? 'Standard Non-AC Room' : 'Deluxe AC Room' };
+        if (r.status === 'available') availCount++;
+        const colorCls = r.status === 'available'
+          ? 'bg-emerald-500/15 border-emerald-500/40 text-emerald-300 hover:bg-emerald-500 hover:text-black cursor-pointer'
+          : (r.status === 'reserved' ? 'bg-amber-500/15 border-amber-500/40 text-amber-300 opacity-80' : 'bg-rose-500/15 border-rose-500/40 text-rose-300 opacity-70');
+        return `<button type="button" onclick="pickRoomNumber('${rNo}', '${r.status}')" class="p-2 rounded-xl border font-mono font-bold transition ${colorCls}">
+          <span class="block text-xs">#${rNo}</span>
+          <span class="block text-[9px] uppercase">${r.status.slice(0,5)}</span>
+        </button>`;
+      }).join('');
+      const cntEl = document.getElementById('webLiveAvailableRoomsCount');
+      if (cntEl) cntEl.textContent = `${availCount} / 20 Rooms Available Today`;
+    }
+
+    function pickRoomNumber(rNo, status) {
+      if (status !== 'available') {
+        showWebToast(`Room ${rNo} is currently ${status}. Please pick an available room.`);
+        return;
+      }
+      const rSel = document.getElementById('lbRoomNo');
+      if (rSel) {
+        if (![...rSel.options].some(o => o.value === rNo)) {
+          const opt = document.createElement('option');
+          opt.value = rNo;
+          opt.textContent = `Room ${rNo} (Selected)`;
+          rSel.appendChild(opt);
+        }
+        rSel.value = rNo;
+      }
+      showWebToast(`Selected Room #${rNo} for your reservation!`);
+    }
+
+    async function submitLodgeBooking(e) {
+      e.preventDefault();
+      const { nights, total, advance, balance } = recalcLodgePrice();
+      const addons = [];
+      if (document.getElementById('addonBreakfast')?.checked) addons.push('Complimentary Breakfast');
+      if (document.getElementById('addonMattress')?.checked) addons.push('Extra Mattress');
+      if (document.getElementById('addonEarly')?.checked) addons.push('Early Check-In');
+      if (document.getElementById('addonPickup')?.checked) addons.push('Station Pickup');
+
+      const payload = {
+        bookingId: `NDH-${Math.floor(1000 + Math.random() * 9000)}`,
+        roomNo: document.getElementById('lbRoomNo').value,
+        roomType: document.getElementById('lbRoomType').value,
+        guestName: document.getElementById('lbGuestName').value,
+        phone: document.getElementById('lbPhone').value,
+        email: document.getElementById('lbEmail').value,
+        idProof: document.getElementById('lbIdProof').value,
+        checkIn: document.getElementById('lbCheckIn').value,
+        checkOut: document.getElementById('lbCheckOut').value,
+        nights,
+        guestsCount: document.getElementById('lbGuests').value,
+        addons,
+        specialRequests: document.getElementById('lbNotes').value,
+        totalAmount: total,
+        advancePaid: advance,
+        balanceDue: balance,
+        paymentMethod: document.getElementById('lbPaymentMethod').value,
+        source: 'Hotel Nandhi Inn Website'
+      };
+
+      if (socket) {
+        socket.emit('lodge-booking-created', payload);
+      }
+      try {
+        await fetch('/api/lodge/book', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {}
+
+      showWebToast(`Room #${payload.roomNo} (${payload.roomType}) Booked! ID: ${payload.bookingId} — Synced to Owner Dashboard!`);
+      e.target.reset();
+      if (document.getElementById('lbCheckIn')) document.getElementById('lbCheckIn').value = todayIso;
+      if (document.getElementById('lbCheckOut')) document.getElementById('lbCheckOut').value = tomorrowIso;
+      recalcLodgePrice();
+    }
+
+    if (socket) {
+      socket.on('lodge-sync', (data) => {
+        if (data && data.rooms) {
+          webLodgeRooms = data.rooms;
+          renderWebLodgeGrid();
+        }
+      });
+    }
+    setTimeout(() => {
+      recalcLodgePrice();
+      renderWebLodgeGrid();
+    }, 200);
+
+  </script>
+</body>
+</html>
